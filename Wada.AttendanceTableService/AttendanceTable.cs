@@ -3,15 +3,22 @@
     [Equals(DoNotAddEqualityOperators = true), ToString]
     public class AttendanceTable
     {
-        public AttendanceTable(AttendanceYear year, AttendanceMonth month)
+        public AttendanceTable(uint employeeNumber, AttendanceYear year, AttendanceMonth month)
         {
             ID = Ulid.NewUlid();
+            EmployeeNumber = employeeNumber;
             Year = year ?? throw new ArgumentNullException(nameof(year));
             Month = month ?? throw new ArgumentNullException(nameof(month));
             AttendanceRecords = new List<AttendanceRecord>();
         }
 
         public Ulid ID { get; }
+
+        /// <summary>
+        /// 社員番号
+        /// </summary>
+        [IgnoreDuringEquals]
+        public uint EmployeeNumber { get; init; }
 
         /// <summary>
         /// 年
@@ -81,10 +88,9 @@
     [Equals(DoNotAddEqualityOperators = true), ToString]
     public class AttendanceRecord
     {
-        public AttendanceRecord(uint employeeNumber, AttendanceDay attendanceDay, HolidayClassification holidayClassification, DayOffClassification dayOffClassification, AttendanceTime startedTime, AttendanceTime endedTime, OrderedLunchBox orderedLunchBox)
+        public AttendanceRecord(AttendanceDay attendanceDay, HolidayClassification holidayClassification, DayOffClassification dayOffClassification, AttendanceTime startedTime, AttendanceTime endedTime, OrderedLunchBox orderedLunchBox)
         {
             ID = Ulid.NewUlid();
-            EmployeeNumber = employeeNumber;
             AttendanceDay = attendanceDay;
             HolidayClassification = holidayClassification;
             DayOffClassification = dayOffClassification;
@@ -94,12 +100,6 @@
         }
 
         public Ulid ID { get; }
-
-        /// <summary>
-        /// 社員番号
-        /// </summary>
-        [IgnoreDuringEquals]
-        public uint EmployeeNumber { get; init; }
 
         /// <summary>
         /// 勤怠日
