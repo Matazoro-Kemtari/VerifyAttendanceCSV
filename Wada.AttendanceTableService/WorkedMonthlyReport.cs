@@ -9,7 +9,27 @@ namespace Wada.AttendanceTableService
     [Equals(DoNotAddEqualityOperators = true), ToString]
     public class WorkedMonthlyReport
     {
-        private WorkedMonthlyReport(AttendanceYear year, AttendanceMonth month, uint attendancePersonalCode, float attendanceDays, float holidayWorkedDays, float paidLeaveDays, int absenceDays, float transferedAttendanceDays, int paidSpecialLeaveDays, int beLateDays, int earlyLeaveDays, float businessSuspensionDays, float educationDays, float regularWorkedHours, float overtimeHours, float lateNightWorkingHours, float legalHolidayWorkedHours, float regularHolidayWorkedHours, float anomalyHourd, int lunchBoxOrderedTimes)
+        private WorkedMonthlyReport(
+            AttendanceYear year,
+            AttendanceMonth month,
+            uint attendancePersonalCode,
+            decimal attendanceDays,
+            decimal holidayWorkedDays,
+            decimal paidLeaveDays,
+            int absenceDays,
+            decimal transferedAttendanceDays,
+            int paidSpecialLeaveDays,
+            int beLateTimes,
+            int earlyLeaveTimes,
+            decimal businessSuspensionDays,
+            decimal educationDays,
+            decimal regularWorkedHours,
+            decimal overtimeHours,
+            decimal lateNightWorkingHours,
+            decimal legalHolidayWorkedHours,
+            decimal regularHolidayWorkedHours,
+            decimal anomalyHourd,
+            int lunchBoxOrderedTimes)
         {
             ID = Ulid.NewUlid();
             Year = year ?? throw new ArgumentNullException(nameof(year));
@@ -21,8 +41,8 @@ namespace Wada.AttendanceTableService
             AbsenceDays = absenceDays;
             TransferedAttendanceDays = transferedAttendanceDays;
             PaidSpecialLeaveDays = paidSpecialLeaveDays;
-            BeLateDays = beLateDays;
-            EarlyLeaveDays = earlyLeaveDays;
+            BeLateTimes = beLateTimes;
+            EarlyLeaveTimes = earlyLeaveTimes;
             BusinessSuspensionDays = businessSuspensionDays;
             EducationDays = educationDays;
             RegularWorkedHours = regularWorkedHours;
@@ -36,24 +56,87 @@ namespace Wada.AttendanceTableService
 
         public static WorkedMonthlyReport CreateForAttendanceTable(AttendanceTable attendanceTable, Func<uint, uint> convertParsonalCode)
         {
-            var attendanceDays = attendanceTable.AttendanceRecords
+            int attendanceDays = attendanceTable.AttendanceRecords
                 .Count(x =>
                 x.DayOffClassification == DayOffClassification.None
                 || x.DayOffClassification == DayOffClassification.AMPaidLeave
                 || x.DayOffClassification == DayOffClassification.PMPaidLeave
                 || x.DayOffClassification == DayOffClassification.BeLate
-                || x.DayOffClassification == DayOffClassification.EarlyLeave);
-            var attendanceHalfDays = attendanceTable.AttendanceRecords
+                || x.DayOffClassification == DayOffClassification.EarlyLeave
+                || x.DayOffClassification == DayOffClassification.TransferedAttendance
+                || x.DayOffClassification == DayOffClassification.AMBusinessSuspension
+                || x.DayOffClassification == DayOffClassification.PMBusinessSuspension);
+
+            int holidayWorkedDays = attendanceTable.AttendanceRecords
+                .Count(x =>
+                x.DayOffClassification == DayOffClassification.HolidayWorked);
+
+            int paidLeaveDays = attendanceTable.AttendanceRecords
+                .Count(x =>
+                x.DayOffClassification == DayOffClassification.PaidLeave);
+
+            int paidLeaveHalfDays = attendanceTable.AttendanceRecords
                 .Count(x =>
                 x.DayOffClassification == DayOffClassification.AMPaidLeave
-                || x.DayOffClassification == DayOffClassification.PMPaidLeave
-                || x.DayOffClassification == DayOffClassification.
+                || x.DayOffClassification == DayOffClassification.PMPaidLeave);
+
+            int absenceDays = attendanceTable.AttendanceRecords
+                .Count(x =>
+                x.DayOffClassification == DayOffClassification.Absence);
+
+            int transferedAttendanceDays = attendanceTable.AttendanceRecords
+                .Count(x =>
+                x.DayOffClassification == DayOffClassification.TransferedAttendance);
+
+            int paidSpecialLeaveDays = attendanceTable.AttendanceRecords
+                .Count(x =>
+                x.DayOffClassification == DayOffClassification.PaidSpecialLeave);
+
+            int beLateTimes = attendanceTable.AttendanceRecords
+                .Count(x =>
+                x.DayOffClassification == DayOffClassification.BeLate);
+
+            int earlyLeaveTimes = attendanceTable.AttendanceRecords
+                .Count(x =>
+                x.DayOffClassification == DayOffClassification.EarlyLeave);
+
+            int businessSuspensionDays = attendanceTable.AttendanceRecords
+                .Count(x =>
+                x.DayOffClassification == DayOffClassification.BusinessSuspension);
+
+            int businessSuspensionHalfDays = attendanceTable.AttendanceRecords
+                .Count(x =>
+                x.DayOffClassification == DayOffClassification.AMBusinessSuspension
+                || x.DayOffClassification == DayOffClassification.PMBusinessSuspension);
+
+            decimal regularWorkedHours = attendanceTable.AttendanceRecords
+                .Where(x => x.DayOffClassification == DayOffClassification.None
+                || x.DayOffClassification == DayOffClassification.TransferedAttendance)
+                .Sum(x =>
+                {
+                    TimeSpan t = x.EndedTime.Value - x.StartedTime.Value;
+                    return t.TotalHours <= 8 ? (decimal)t.TotalHours : 8;
+                });
+
+            decimal overtimeHours =
+
             return new(
                 attendanceTable.Year,
                 attendanceTable.Month,
                 convertParsonalCode(attendanceTable.EmployeeNumber),
-                attendanceDays);
-            throw new NotImplementedException();
+                attendanceDays,
+                holidayWorkedDays,
+                paidLeaveDays + (paidLeaveHalfDays * 0.5f),
+                absenceDays,
+                transferedAttendanceDays,
+                paidSpecialLeaveDays,
+                beLateTimes,
+                earlyLeaveTimes,
+                businessSuspensionDays + (businessSuspensionHalfDays * 0.5f),
+                0,// 教育日数は取得できないのでゼロ
+                regularWorkedHours,
+                );
+            //throw new NotImplementedException();
         }
 
         public Ulid ID { get; }
@@ -76,17 +159,17 @@ namespace Wada.AttendanceTableService
         /// <summary>
         /// 出勤日数
         /// </summary>
-        public float AttendanceDays { get; init; }
+        public decimal AttendanceDays { get; init; }
 
         /// <summary>
         /// 休日出勤数
         /// </summary>
-        public float HolidayWorkedDays { get; init; }
+        public decimal HolidayWorkedDays { get; init; }
 
         /// <summary>
         /// 有休日数
         /// </summary>
-        public float PaidLeaveDays { get; init; }
+        public decimal PaidLeaveDays { get; init; }
 
         /// <summary>
         /// 欠勤日数
@@ -96,7 +179,7 @@ namespace Wada.AttendanceTableService
         /// <summary>
         /// 振休出勤日数
         /// </summary>
-        public float TransferedAttendanceDays { get; init; }
+        public decimal TransferedAttendanceDays { get; init; }
 
         /// <summary>
         /// 有休特別休暇日数
@@ -106,52 +189,52 @@ namespace Wada.AttendanceTableService
         /// <summary>
         /// 遅刻回数
         /// </summary>
-        public int BeLateDays { get; init; }
+        public int BeLateTimes { get; init; }
 
         /// <summary>
         /// 早退回数
         /// </summary>
-        public int EarlyLeaveDays { get; init; }
+        public int EarlyLeaveTimes { get; init; }
 
         /// <summary>
         /// 休業日数
         /// </summary>
-        public float BusinessSuspensionDays { get; init; }
+        public decimal BusinessSuspensionDays { get; init; }
 
         /// <summary>
         /// 教育日数
         /// </summary>
-        public float EducationDays { get; } = 0f;
+        public decimal EducationDays { get; } = 0f;
 
         /// <summary>
         /// 所定時間
         /// </summary>
-        public float RegularWorkedHours { get; init; }
+        public decimal RegularWorkedHours { get; init; }
 
         /// <summary>
         /// (早出)残業時間
         /// </summary>
-        public float OvertimeHours { get; init; }
+        public decimal OvertimeHours { get; init; }
 
         /// <summary>
         /// 深夜勤務時間
         /// </summary>
-        public float LateNightWorkingHours { get; init; }
+        public decimal LateNightWorkingHours { get; init; }
 
         /// <summary>
         /// 法定休出勤時間
         /// </summary>
-        public float LegalHolidayWorkedHours { get; init; }
+        public decimal LegalHolidayWorkedHours { get; init; }
 
         /// <summary>
         /// 法定外休出勤時間
         /// </summary>
-        public float RegularHolidayWorkedHours { get; init; }
+        public decimal RegularHolidayWorkedHours { get; init; }
 
         /// <summary>
         /// 変則時間
         /// </summary>
-        public float AnomalyHourd { get; init; }
+        public decimal AnomalyHourd { get; init; }
 
         /// <summary>
         /// 弁当注文数
