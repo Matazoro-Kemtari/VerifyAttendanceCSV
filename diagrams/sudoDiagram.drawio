@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="RzdB1_ECVK01WcsdOi-J" name="sodo">
-        <mxGraphModel dx="1374" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
+        <mxGraphModel dx="1120" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -11,10 +11,10 @@
                     <mxGeometry x="210" y="1030" width="280" height="210" as="geometry"/>
                 </mxCell>
                 <mxCell id="534" value="" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
-                    <mxGeometry x="530" y="1450" width="180" height="160" as="geometry"/>
+                    <mxGeometry x="530" y="1370" width="300" height="140" as="geometry"/>
                 </mxCell>
                 <mxCell id="530" value="" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
-                    <mxGeometry x="530" y="1280" width="180" height="160" as="geometry"/>
+                    <mxGeometry x="530" y="1210" width="300" height="150" as="geometry"/>
                 </mxCell>
                 <mxCell id="IUCaD1viUXP5vsJWslPz-526" value="" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
                     <mxGeometry x="530" y="870" width="200" height="330" as="geometry"/>
@@ -144,29 +144,29 @@
                 <mxCell id="IUCaD1viUXP5vsJWslPz-532" style="html=1;fontSize=16;dashed=1;endArrow=none;endFill=0;" parent="1" source="IUCaD1viUXP5vsJWslPz-529" target="IUCaD1viUXP5vsJWslPz-530" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="553" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="527" target="551">
+                <mxCell id="553" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" parent="1" source="527" target="551" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="527" value="&lt;span style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;u&gt;勤怠&lt;/u&gt;&lt;/span&gt;&lt;br&gt;(AttendanceTable&lt;span&gt;)&lt;/span&gt;&lt;br style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;span style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;社員番号&lt;br&gt;年&lt;br&gt;月&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
                     <mxGeometry x="225" y="1060" width="120" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="528" value="(勤怠)&lt;br&gt;社員番号: 1518&lt;br&gt;年月日: 2022/10/1&lt;br&gt;休日区分:&amp;nbsp;&lt;br&gt;休暇区分:&lt;br&gt;始業時間: 8:00&lt;br&gt;終業時間: 17:00&lt;br&gt;休憩時間: 1:00&lt;br&gt;弁当注文: 否" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" parent="1" vertex="1">
-                    <mxGeometry x="550" y="1290" width="140" height="140" as="geometry"/>
+                <mxCell id="557" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" parent="1" source="528" target="555" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="529" value="(勤怠)&lt;br&gt;社員番号: 1518&lt;br&gt;年月日: 2022/10/2&lt;br&gt;休日区分:&lt;br&gt;休暇区分: 有休&lt;br&gt;始業時間:&amp;nbsp;&lt;br&gt;終業時間:&amp;nbsp;&lt;br&gt;休憩時間:&amp;nbsp;&lt;br&gt;弁当注文:&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" parent="1" vertex="1">
-                    <mxGeometry x="550" y="1460" width="140" height="140" as="geometry"/>
+                <mxCell id="528" value="(勤怠)&lt;br&gt;社員番号: 1518&lt;br&gt;年: 2022&lt;br&gt;月: 10" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="1240" width="100" height="70" as="geometry"/>
                 </mxCell>
                 <mxCell id="533" style="edgeStyle=none;html=1;dashed=1;endArrow=none;endFill=0;" parent="1" source="531" target="530" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="531" value="&lt;span style=&quot;font-size: 13px&quot;&gt;通常出勤&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=13;spacing=2;" parent="1" vertex="1">
-                    <mxGeometry x="730" y="1280" width="100" height="30" as="geometry"/>
+                    <mxGeometry x="840" y="1211" width="100" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="535" style="edgeStyle=none;html=1;dashed=1;endArrow=none;endFill=0;" parent="1" source="536" target="534" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="536" value="&lt;span style=&quot;font-size: 13px&quot;&gt;有給休暇&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=13;spacing=2;" parent="1" vertex="1">
-                    <mxGeometry x="730" y="1450" width="100" height="30" as="geometry"/>
+                    <mxGeometry x="840" y="1370" width="100" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="538" style="edgeStyle=none;html=1;dashed=1;endArrow=none;endFill=0;" parent="1" source="537" target="551" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -198,8 +198,38 @@
                 <mxCell id="549" value="&lt;font color=&quot;#ffffff&quot;&gt;&lt;u&gt;社員番号対応表&lt;/u&gt;&lt;/font&gt;&lt;br&gt;(MatchedEmployeeNumber&lt;span&gt;)&lt;/span&gt;&lt;br style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;span style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;社員番号&lt;br&gt;勤怠個人コード&lt;br&gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
                     <mxGeometry x="215" y="1450" width="160.62" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="551" value="&lt;span style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;u&gt;勤怠&lt;/u&gt;&lt;/span&gt;&lt;br&gt;(AttendanceRecord&lt;span&gt;)&lt;/span&gt;&lt;br style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;span style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;日付&lt;br&gt;&lt;/span&gt;休日区分&lt;br&gt;休暇区分&lt;br style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;font color=&quot;#ffffff&quot;&gt;始業時間&lt;br&gt;&lt;/font&gt;終業時間&lt;br&gt;休憩時間&lt;br&gt;弁当注文" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
-                    <mxGeometry x="360" y="1060" width="120" height="150" as="geometry"/>
+                <mxCell id="551" value="&lt;span style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;u&gt;勤怠&lt;/u&gt;&lt;/span&gt;&lt;br&gt;(AttendanceRecord&lt;span&gt;)&lt;/span&gt;&lt;br style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;日付&lt;br&gt;休日区分&lt;br&gt;休暇区分&lt;br style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;font color=&quot;#ffffff&quot;&gt;始業時間&lt;br&gt;&lt;/font&gt;終業時間&lt;br&gt;休憩時間&lt;br&gt;弁当注文" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="1060" width="120" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="554" value="(勤怠)&lt;br&gt;日付: 2022/10/3&lt;br&gt;休日区分:&lt;br&gt;休暇区分: 有休&lt;br&gt;始業時間:&amp;nbsp;&lt;br&gt;終業時間:&amp;nbsp;&lt;br&gt;休憩時間:&amp;nbsp;&lt;br&gt;弁当注文:&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="1380" width="160" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="555" value="(勤怠)&lt;br&gt;日付: 2022/10/1&lt;br&gt;休日区分:&amp;nbsp;&lt;br&gt;休暇区分:&lt;br&gt;始業時間:2022/10/1&amp;nbsp;8:00&lt;br&gt;終業時間:2022/10/1&amp;nbsp;17:00&lt;br&gt;休憩時間: 1:00&lt;br&gt;弁当注文: 否" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="1221" width="160" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="558" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" parent="1" source="556" target="554" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="556" value="(勤怠)&lt;br&gt;社員番号: 1518&lt;br&gt;年: 2022&lt;br&gt;月: 10" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="1400" width="100" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="560" value="" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;" vertex="1" parent="1">
+                    <mxGeometry x="530" y="1520" width="300" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="561" value="(勤怠)&lt;br&gt;日付: 2022/10/23&lt;br&gt;休日区分:&amp;nbsp;&lt;br&gt;休暇区分:&lt;br&gt;始業時間:2022/10/11&amp;nbsp;22:00&lt;br&gt;終業時間:2022/10/12 8:00&lt;br&gt;休憩時間: 1:00&lt;br&gt;弁当注文: 否" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="666.25" y="1525.5" width="160" height="119" as="geometry"/>
+                </mxCell>
+                <mxCell id="565" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="562" target="561">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="562" value="(勤怠)&lt;br&gt;社員番号: 1518&lt;br&gt;年: 2022&lt;br&gt;月: 10" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="550" y="1550" width="100" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="564" style="edgeStyle=none;html=1;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1" source="563" target="560">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="563" value="&lt;span style=&quot;font-size: 13px&quot;&gt;夜勤出勤&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=13;spacing=2;" vertex="1" parent="1">
+                    <mxGeometry x="840" y="1520" width="100" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
