@@ -263,12 +263,14 @@
         public static AttendanceTable Create(
             uint employeeNumber = 500,
             AttendanceYear? year = null,
-            AttendanceMonth? month = null)
+            AttendanceMonth? month = null,
+            IList<AttendanceRecord>? AttendanceRecords = null)
         {
             year ??= new AttendanceYear(2022);
             month ??= new AttendanceMonth(5);
             AttendanceTable at = new(employeeNumber, year, month);
-            AddRecord(at.AttendanceRecords);
+            if (AttendanceRecords == null)
+                AddRecord(at.AttendanceRecords);
             return at;
         }
 
