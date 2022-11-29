@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerifyAttendanceCSV", "VerifyAttendanceCSV\VerifyAttendanceCSV.csproj", "{E5F12913-1124-44F6-A68F-7EFACD7DEF82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VerifyAttendanceCSV", "VerifyAttendanceCSV\VerifyAttendanceCSV.csproj", "{E5F12913-1124-44F6-A68F-7EFACD7DEF82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{A4F95C76-45DC-4CDB-816E-DFC05648154F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{CA9E2383-0E27-4018-9723-183AC5FC2F18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{98097411-AAF1-4A6A-95E5-13A406718B98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UseCase", "UseCase", "{F09417BC-393B-4DF0-9DE4-02604E8136E4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.AttendanceTableService", "Wada.AttendanceTableService\Wada.AttendanceTableService.csproj", "{0A29018A-1370-4F06-988E-E47D2CBE3384}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.AttendanceTableServiceTests", "Wada.AttendanceTableServiceTests\Wada.AttendanceTableServiceTests.csproj", "{1EF00D80-344A-4387-8E6E-627933AF3F65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +27,21 @@ Global
 		{E5F12913-1124-44F6-A68F-7EFACD7DEF82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5F12913-1124-44F6-A68F-7EFACD7DEF82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5F12913-1124-44F6-A68F-7EFACD7DEF82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A29018A-1370-4F06-988E-E47D2CBE3384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A29018A-1370-4F06-988E-E47D2CBE3384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A29018A-1370-4F06-988E-E47D2CBE3384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A29018A-1370-4F06-988E-E47D2CBE3384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EF00D80-344A-4387-8E6E-627933AF3F65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF00D80-344A-4387-8E6E-627933AF3F65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EF00D80-344A-4387-8E6E-627933AF3F65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EF00D80-344A-4387-8E6E-627933AF3F65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0A29018A-1370-4F06-988E-E47D2CBE3384} = {A4F95C76-45DC-4CDB-816E-DFC05648154F}
+		{1EF00D80-344A-4387-8E6E-627933AF3F65} = {A4F95C76-45DC-4CDB-816E-DFC05648154F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6BBC0BD-A5F6-44C4-B7A6-7FAD6289890C}
