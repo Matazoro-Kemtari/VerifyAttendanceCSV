@@ -1,7 +1,5 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Bibliography;
 using NLog;
-using System.IO;
 using System.Reflection;
 using Wada.AttendanceTableService;
 
@@ -136,7 +134,7 @@ namespace Wada.AttendanceSpreadSheet
                 ? DayOffClassification.None
                 : startTime == startGeneralShift || startTime == startLateShift || startTime == startNightShift
                     ? DayOffClassification.EarlyLeave
-                    : DayOffClassification.BeLate;
+                    : DayOffClassification.Lateness;
         }
 
         private static DayOffClassification ConvertDayOffClassification(string dayOffValue) => dayOffValue switch

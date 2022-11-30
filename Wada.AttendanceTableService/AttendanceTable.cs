@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Wada.AttendanceTableService
+﻿namespace Wada.AttendanceTableService
 {
     [Equals(DoNotAddEqualityOperators = true), ToString]
     public class AttendanceTable
@@ -209,7 +207,7 @@ namespace Wada.AttendanceTableService
         /// <summary>
         /// 遅刻
         /// </summary>
-        BeLate,
+        Lateness,
 
         /// <summary>
         /// 早退
@@ -291,7 +289,7 @@ namespace Wada.AttendanceTableService
                 {10,DayOffClassification.Absence},
                 {11,DayOffClassification.HolidayWorked},
                 {12,DayOffClassification.None},
-                {13,DayOffClassification.BeLate},
+                {13,DayOffClassification.Lateness},
                 {14,DayOffClassification.EarlyLeave},
                 {15,DayOffClassification.BusinessSuspension},
                 {16,DayOffClassification.AMBusinessSuspension},

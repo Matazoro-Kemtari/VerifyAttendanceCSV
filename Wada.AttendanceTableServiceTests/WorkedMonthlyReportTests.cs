@@ -19,23 +19,23 @@ namespace Wada.AttendanceTableService.Tests
             Assert.AreEqual(attendanceTable.Year, actual.Year);
             Assert.AreEqual(attendanceTable.Month, actual.Month);
             Assert.AreEqual(1500u, actual.AttendancePersonalCode);
-            Assert.AreEqual(22m, actual.AttendanceDays);
-            Assert.AreEqual(2m, actual.HolidayWorkedDays);
-            Assert.AreEqual(2m, actual.PaidLeaveDays);
-            Assert.AreEqual(1m, actual.AbsenceDays);
-            Assert.AreEqual(1m, actual.TransferedAttendanceDays);
-            Assert.AreEqual(1m, actual.PaidSpecialLeaveDays);
-            Assert.AreEqual(1m, actual.BeLateTimes);
-            Assert.AreEqual(1m, actual.EarlyLeaveTimes);
-            Assert.AreEqual(2m, actual.BusinessSuspensionDays);
-            Assert.AreEqual(0m, actual.EducationDays);
-            Assert.AreEqual(115m, actual.RegularWorkedHours);
-            Assert.AreEqual(15m, actual.OvertimeHours);
-            Assert.AreEqual(35m, actual.LateNightWorkingHours);
-            Assert.AreEqual(8m, actual.LegalHolidayWorkedHours);
-            Assert.AreEqual(8m, actual.RegularHolidayWorkedHours);
-            Assert.AreEqual(49m, actual.AnomalyHourd);
-            Assert.AreEqual(16, actual.LunchBoxOrderedTimes);
+            Assert.AreEqual(22m, actual.AttendanceDay);
+            Assert.AreEqual(2m, actual.HolidayWorkedDay);
+            Assert.AreEqual(2m, actual.PaidLeaveDay);
+            Assert.AreEqual(1m, actual.AbsenceDay);
+            Assert.AreEqual(1m, actual.TransferedAttendanceDay);
+            Assert.AreEqual(1m, actual.PaidSpecialLeaveDay);
+            Assert.AreEqual(1m, actual.LatenessTime);
+            Assert.AreEqual(1m, actual.EarlyLeaveTime);
+            Assert.AreEqual(2m, actual.BusinessSuspensionDay);
+            Assert.AreEqual(0m, actual.EducationDay);
+            Assert.AreEqual(115m, actual.RegularWorkedHour);
+            Assert.AreEqual(15m, actual.OvertimeHour);
+            Assert.AreEqual(35m, actual.LateNightWorkingHour);
+            Assert.AreEqual(8m, actual.LegalHolidayWorkedHour);
+            Assert.AreEqual(8m, actual.RegularHolidayWorkedHour);
+            Assert.AreEqual(49m, actual.AnomalyHour);
+            Assert.AreEqual(16, actual.LunchBoxOrderedTime);
         }
     }
 }
