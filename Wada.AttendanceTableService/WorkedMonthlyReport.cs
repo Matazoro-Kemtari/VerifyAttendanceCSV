@@ -57,7 +57,7 @@ namespace Wada.AttendanceTableService
         }
 
         public static WorkedMonthlyReport CreateForAttendanceTable(AttendanceTable attendanceTable, Func<uint, uint> convertParsonalCode)
-        {
+        {//TODO: デリゲートをIFに変更しよう
             int attendanceDays = CountAttendanceDays(attendanceTable);
             int holidayWorkedDays = CountHolidayWorkedDays(attendanceTable);
             decimal paidLeaveDays = CountPaidLeaveDays(attendanceTable);

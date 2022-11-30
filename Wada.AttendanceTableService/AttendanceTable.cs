@@ -1,4 +1,6 @@
-﻿namespace Wada.AttendanceTableService
+﻿using System.Runtime.InteropServices;
+
+namespace Wada.AttendanceTableService
 {
     [Equals(DoNotAddEqualityOperators = true), ToString]
     public class AttendanceTable
@@ -33,7 +35,7 @@
         /// <summary>
         /// 勤怠
         /// </summary>
-        public IList<AttendanceRecord> AttendanceRecords { get; init; }
+        public ICollection<AttendanceRecord> AttendanceRecords { get; init; }
     }
 
     public record class AttendanceYear
@@ -90,7 +92,6 @@
     {
         public AttendanceRecord(AttendanceDay attendanceDay, HolidayClassification holidayClassification, DayOffClassification dayOffClassification, AttendanceTime? startedTime, AttendanceTime? endedTime, TimeSpan? restTime, OrderedLunchBox orderedLunchBox)
         {
-            ID = Ulid.NewUlid();
             AttendanceDay = attendanceDay ?? throw new ArgumentNullException(nameof(attendanceDay));
             HolidayClassification = holidayClassification;
             DayOffClassification = dayOffClassification;
@@ -100,16 +101,13 @@
             OrderedLunchBox = orderedLunchBox;
         }
 
-        public Ulid ID { get; }
-
         /// <summary>
         /// 勤怠日
         /// </summary>
-        [IgnoreDuringEquals]
         public AttendanceDay AttendanceDay { get; init; }
 
         /// <summary>
-        /// 休日区分
+        /// 休日区分 カレンダー上の定義 振替を追従はしていない
         /// </summary>
         [IgnoreDuringEquals]
         public HolidayClassification HolidayClassification { get; init; }
@@ -264,17 +262,20 @@
             uint employeeNumber = 500,
             AttendanceYear? year = null,
             AttendanceMonth? month = null,
-            IList<AttendanceRecord>? AttendanceRecords = null)
+            ICollection<AttendanceRecord>? AttendanceRecords = null)
         {
             year ??= new AttendanceYear(2022);
             month ??= new AttendanceMonth(5);
             AttendanceTable at = new(employeeNumber, year, month);
             if (AttendanceRecords == null)
                 AddRecord(at.AttendanceRecords);
+            else
+                AttendanceRecords.ToList().ForEach(x => at.AttendanceRecords.Add(x));
+
             return at;
         }
 
-        static void AddRecord(IList<AttendanceRecord> AttendanceRecords)
+        static void AddRecord(ICollection<AttendanceRecord> AttendanceRecords)
         {
             Dictionary<int, DayOffClassification> dayOffMap = new()
             {
@@ -344,7 +345,7 @@
             };
             for (int i = 0; i < 30; i++)
             {
-                DateTime addDay = new(2022, 6, i+1);
+                DateTime addDay = new(2022, 6, i + 1);
 
                 var _aY = new AttendanceYear(addDay.Year);
                 var _aM = new AttendanceMonth(addDay.Month);
