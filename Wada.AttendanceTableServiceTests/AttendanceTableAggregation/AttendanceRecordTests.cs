@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Wada.AttendanceTableService.AttendanceTableAggregation;
+using Wada.AttendanceTableService.ValueObjects;
 
 namespace Wada.AttendanceTableServiceTests.AttendanceTableAggregation
 {

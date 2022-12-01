@@ -3,6 +3,7 @@ using NLog;
 using System.Reflection;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
+using Wada.AttendanceTableService.ValueObjects;
 
 namespace Wada.AttendanceSpreadSheet
 {
@@ -120,7 +121,7 @@ namespace Wada.AttendanceSpreadSheet
             return attendanceTable;
         }
 
-        private DayOffClassification DetermineLateEarly(DateTime startTime, DateTime endTime)
+        private static DayOffClassification DetermineLateEarly(DateTime startTime, DateTime endTime)
         {
             // 一般勤務 8:00-17:00
             // 交代勤務1 15:00-24:00
