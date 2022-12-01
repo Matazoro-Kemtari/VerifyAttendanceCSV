@@ -16,8 +16,6 @@ namespace Wada.AttendanceTableService.Tests
             WorkedMonthlyReport actual = WorkedMonthlyReport.CreateForAttendanceTable(attendanceTable, func);
 
             // when
-            Assert.AreEqual(attendanceTable.Year, actual.Year);
-            Assert.AreEqual(attendanceTable.Month, actual.Month);
             Assert.AreEqual(1500u, actual.AttendancePersonalCode);
             Assert.AreEqual(22m, actual.AttendanceDay);
             Assert.AreEqual(2m, actual.HolidayWorkedDay);

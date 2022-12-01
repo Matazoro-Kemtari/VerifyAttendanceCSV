@@ -5,6 +5,7 @@ using Prism.Ioc;
 using System.IO;
 using System.Windows;
 using VerifyAttendanceCSV.Views;
+using Wada.AttendanceCSV;
 using Wada.AttendanceSpreadSheet;
 using Wada.AttendanceTableService;
 
@@ -32,6 +33,8 @@ namespace VerifyAttendanceCSV
 
             // DI 勤怠表エクセル
             _ = containerRegistry.Register<IAttendanceTableRepository, AttendanceTableRepository>();
+            // DI 勤怠CSV
+            _ = containerRegistry.Register<IEmployeeAttendanceRepository, EmployeeAttendanceRepository>();
         }
 
         // 設定情報ライブラリを作る

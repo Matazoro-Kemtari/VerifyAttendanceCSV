@@ -4,8 +4,6 @@
     public class WorkedMonthlyReport
     {
         private WorkedMonthlyReport(
-            AttendanceYear year,
-            AttendanceMonth month,
             uint attendancePersonalCode,
             decimal attendanceDay,
             decimal holidayWorkedDay,
@@ -26,8 +24,6 @@
             int lunchBoxOrderedTime)
         {
             ID = Ulid.NewUlid();
-            Year = year ?? throw new ArgumentNullException(nameof(year));
-            Month = month ?? throw new ArgumentNullException(nameof(month));
             AttendancePersonalCode = attendancePersonalCode;
             AttendanceDay = attendanceDay;
             HolidayWorkedDay = holidayWorkedDay;
@@ -48,6 +44,12 @@
             LunchBoxOrderedTime = lunchBoxOrderedTime;
         }
 
+        /// <summary>
+        /// 勤怠表エクセルからのFactoryメソッド
+        /// </summary>
+        /// <param name="attendanceTable"></param>
+        /// <param name="convertParsonalCode"></param>
+        /// <returns></returns>
         public static WorkedMonthlyReport CreateForAttendanceTable(AttendanceTable attendanceTable, Func<uint, uint> convertParsonalCode)
         {//TODO: デリゲートをIFに変更しよう
             int attendanceDay = CountAttendanceDay(attendanceTable);
@@ -68,8 +70,6 @@
             int lunchBoxOrderedTime = CountLunchBoxOrderedTime(attendanceTable);
 
             return new(
-                attendanceTable.Year,
-                attendanceTable.Month,
                 convertParsonalCode(attendanceTable.EmployeeNumber),
                 attendanceDay,
                 holidayWorkedDay,
@@ -91,6 +91,28 @@
                 );
         }
 
+        public static WorkedMonthlyReport CreateForAttendanceCSV(EmployeeAttendance employeeAttendance)
+        {
+            return new(
+                employeeAttendance.AttendancePersonalCode,
+                employeeAttendance.AttendanceDay,
+                employeeAttendance.HolidayWorkedDay,
+                employeeAttendance.PaidLeaveDay,
+                employeeAttendance.AbsenceDay,
+                employeeAttendance.TransferedAttendanceDay,
+                employeeAttendance.PaidSpecialLeaveDay,
+                employeeAttendance.LatenessTime,
+                employeeAttendance.EarlyLeaveTime,
+                employeeAttendance.BusinessSuspensionDay,
+                employeeAttendance.EducationDay,
+                employeeAttendance.RegularWorkedHour,
+                employeeAttendance.OvertimeHour,
+                employeeAttendance.LateNightWorkingHour,
+                employeeAttendance.LegalHolidayWorkedHour,
+                employeeAttendance.RegularHolidayWorkedHour,
+                employeeAttendance.AnomalyHour,
+                employeeAttendance.LunchBoxOrderedTime);
+        }
         /// <summary>
         /// 弁当注文数を返す
         /// </summary>
@@ -408,16 +430,6 @@
         }
 
         public Ulid ID { get; }
-
-        /// <summary>
-        /// 年
-        /// </summary>
-        public AttendanceYear Year { get; init; }
-
-        /// <summary>
-        /// 月
-        /// </summary>
-        public AttendanceMonth Month { get; init; }
 
         /// <summary>
         /// 勤怠個人コード

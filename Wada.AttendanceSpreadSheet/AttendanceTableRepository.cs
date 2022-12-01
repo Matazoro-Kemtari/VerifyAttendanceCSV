@@ -16,7 +16,7 @@ namespace Wada.AttendanceSpreadSheet
             this.wadaHolidayRepository = wadaHolidayRepository;
         }
 
-        public AttendanceTable LoadMonth(Stream stream, int month)
+        public AttendanceTable ReadByMonth(Stream stream, int month)
         {
             logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
 

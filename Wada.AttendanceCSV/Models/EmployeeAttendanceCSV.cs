@@ -1,8 +1,9 @@
 ﻿using CsvHelper.Configuration.Attributes;
+using Wada.AttendanceTableService;
 
 namespace Wada.AttendanceCSV.Models
 {
-    internal record class EmployeeAttendance(
+    internal record class EmployeeAttendanceCSV(
         [Index(0)]
         uint AttendancePersonalCode,
         [Index(1)]
@@ -38,5 +39,26 @@ namespace Wada.AttendanceCSV.Models
         [Index(16)]
         int LunchBoxOrderedTime,
         [Index(17)]
-        decimal AnomalyHour);
+        decimal AnomalyHour)
+    {
+        internal EmployeeAttendance ToDomainEntity() => new(
+            AttendancePersonalCode,
+            AttendanceDay,
+            HolidayWorkedDay,
+            RegularWorkedHour,
+            LatenessTime,
+            EarlyLeaveTime,
+            PaidLeaveDay,
+            TransferedAttendanceDay,
+            PaidSpecialLeaveDay,
+            EducationDay,
+            BusinessSuspensionDay,
+            AbsenceDay,
+            OvertimeHour,
+            LegalHolidayWorkedHour,
+            LateNightWorkingHour,
+            RegularHolidayWorkedHour,
+            LunchBoxOrderedTime,
+            AnomalyHour);
+    }
 }

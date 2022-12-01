@@ -2,6 +2,6 @@
 {
     public interface IAttendanceTableRepository
     {
-        AttendanceTable LoadMonth(Stream stream, int month);
+        AttendanceTable ReadByMonth(Stream stream, int month);
     }
 }
