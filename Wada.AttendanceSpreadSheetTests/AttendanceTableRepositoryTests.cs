@@ -3,6 +3,7 @@ using Moq;
 using NLog;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
+using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 using Wada.AttendanceTableService.ValueObjects;
 
 namespace Wada.AttendanceSpreadSheet.Tests
@@ -21,43 +22,26 @@ namespace Wada.AttendanceSpreadSheet.Tests
             string path = DotNetEnv.Env.GetString("TEST_XLS_PATH");
             using Stream xlsStream = streamOpener.Open(path);
 
-            Mock<IWadaHolidayRepository> mock_holiday = new();
-            #region mock_setup
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/1"))).Returns(HolidayClassification.LegalHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/2"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/3"))).Returns(HolidayClassification.RegularHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/4"))).Returns(HolidayClassification.RegularHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/5"))).Returns(HolidayClassification.RegularHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/6"))).Returns(HolidayClassification.RegularHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/7"))).Returns(HolidayClassification.RegularHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/8"))).Returns(HolidayClassification.LegalHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/9"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/10"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/11"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/12"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/13"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/14"))).Returns(HolidayClassification.RegularHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/15"))).Returns(HolidayClassification.LegalHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/16"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/17"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/18"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/19"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/20"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/21"))).Returns(HolidayClassification.RegularHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/22"))).Returns(HolidayClassification.LegalHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/23"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/24"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/25"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/26"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/27"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/28"))).Returns(HolidayClassification.RegularHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/29"))).Returns(HolidayClassification.LegalHoliday);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/30"))).Returns(HolidayClassification.None);
-            mock_holiday.Setup(x => x.FindByDay(DateTime.Parse("2022/5/31"))).Returns(HolidayClassification.None);
-            #endregion
+            Mock<IOwnCompanyCalendarRepository> mock_calendar = new();
+            mock_calendar.Setup(x => x.FindByYearMonth(2022, 5))
+                .Returns(new List<OwnCompanyCalendar>{
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/1"),HolidayClassification.LegalHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/3"),HolidayClassification.RegularHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/4"),HolidayClassification.RegularHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/5"),HolidayClassification.RegularHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/6"),HolidayClassification.RegularHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/7"),HolidayClassification.RegularHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/8"),HolidayClassification.LegalHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/14"),HolidayClassification.RegularHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/15"),HolidayClassification.LegalHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/21"),HolidayClassification.RegularHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/22"),HolidayClassification.LegalHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/28"),HolidayClassification.RegularHoliday),
+                    new OwnCompanyCalendar(DateTime.Parse("2022/5/29"),HolidayClassification.LegalHoliday),
+                });
 
             // when
-            IAttendanceTableRepository attendanceTableRepository = new AttendanceTableRepository(mock_logger.Object, mock_holiday.Object);
+            IAttendanceTableRepository attendanceTableRepository = new AttendanceTableRepository(mock_logger.Object, mock_calendar.Object);
             int month = 5;
             var actual = attendanceTableRepository.ReadByMonth(xlsStream, month);
 
@@ -73,7 +57,7 @@ namespace Wada.AttendanceSpreadSheet.Tests
             Assert.AreEqual(expected.Year, actual.Year);
             Assert.AreEqual(expected.Month, actual.Month);
             CollectionAssert.AreEqual(expected.AttendanceRecords.ToList(), actual.AttendanceRecords.ToList());
-            mock_holiday.Verify(x => x.FindByDay(It.IsAny<DateTime>()), Times.Exactly(19));
+            mock_calendar.Verify(x => x.FindByYearMonth(It.IsAny<int>(),It.IsAny<int>()), Times.Once);
         }
 
         private static ICollection<AttendanceRecord> CreateTestRecords()

@@ -10,12 +10,12 @@ namespace Wada.AttendanceSpreadSheet
     public class AttendanceTableRepository : IAttendanceTableRepository
     {
         private readonly ILogger logger;
-        private readonly IWadaHolidayRepository wadaHolidayRepository;
+        private readonly IOwnCompanyCalendarRepository ownCompanyCalendarRepository;
 
-        public AttendanceTableRepository(ILogger logger, IWadaHolidayRepository wadaHolidayRepository)
+        public AttendanceTableRepository(ILogger logger, IOwnCompanyCalendarRepository ownCompanyCalendarRepository)
         {
             this.logger = logger;
-            this.wadaHolidayRepository = wadaHolidayRepository;
+            this.ownCompanyCalendarRepository = ownCompanyCalendarRepository;
         }
 
         public AttendanceTable ReadByMonth(Stream stream, int month)
@@ -29,6 +29,14 @@ namespace Wada.AttendanceSpreadSheet
             (uint employeeNumber, AttendanceYear attendanceYear, AttendanceMonth attendanceMonth) =
                 GetAttendanceTableBaseInfo(targetSheet);
             AttendanceTable attendanceTable = new(employeeNumber, attendanceYear, attendanceMonth);
+
+            // 自社カレンダーを取得
+            var calendar = ownCompanyCalendarRepository.FindByYearMonth(attendanceYear.Value, attendanceMonth.Value);
+            HolidayClassification FindByDay(DateTime day)
+            {
+                var result = calendar?.SingleOrDefault(x => x.Date == day);
+                return result == null ? HolidayClassification.None : result.HolidayClassification;
+            }
 
             // ヘッダ部分をスキップして走査
             IEnumerable<IXLRow> rows = targetSheet.Rows().Skip(4);
@@ -106,7 +114,7 @@ namespace Wada.AttendanceSpreadSheet
 
                 AttendanceRecord attendanceRecord = new(
                     new AttendanceDay(attendanceYear, attendanceMonth, attendanceDay),
-                    wadaHolidayRepository.FindByDay(date),
+                    FindByDay(date),
                     dayOff,
                     startTime,
                     endTime,
