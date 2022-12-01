@@ -2,6 +2,7 @@
 using Moq;
 using NLog;
 using Wada.AttendanceTableService;
+using Wada.AttendanceTableService.AttendanceTableAggregation;
 
 namespace Wada.AttendanceSpreadSheet.Tests
 {
@@ -57,7 +58,7 @@ namespace Wada.AttendanceSpreadSheet.Tests
             // when
             IAttendanceTableRepository attendanceTableRepository = new AttendanceTableRepository(mock_logger.Object, mock_holiday.Object);
             int month = 5;
-            var actual = attendanceTableRepository.LoadMonth(xlsStream, month);
+            var actual = attendanceTableRepository.ReadByMonth(xlsStream, month);
 
             // then
             uint employeeNumber = (uint)DotNetEnv.Env.GetInt("EMPLOYEE_NUMBER");

@@ -1,9 +1,8 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Bibliography;
 using NLog;
-using System.IO;
 using System.Reflection;
 using Wada.AttendanceTableService;
+using Wada.AttendanceTableService.AttendanceTableAggregation;
 
 namespace Wada.AttendanceSpreadSheet
 {
@@ -18,7 +17,7 @@ namespace Wada.AttendanceSpreadSheet
             this.wadaHolidayRepository = wadaHolidayRepository;
         }
 
-        public AttendanceTable LoadMonth(Stream stream, int month)
+        public AttendanceTable ReadByMonth(Stream stream, int month)
         {
             logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
 
@@ -136,7 +135,7 @@ namespace Wada.AttendanceSpreadSheet
                 ? DayOffClassification.None
                 : startTime == startGeneralShift || startTime == startLateShift || startTime == startNightShift
                     ? DayOffClassification.EarlyLeave
-                    : DayOffClassification.BeLate;
+                    : DayOffClassification.Lateness;
         }
 
         private static DayOffClassification ConvertDayOffClassification(string dayOffValue) => dayOffValue switch

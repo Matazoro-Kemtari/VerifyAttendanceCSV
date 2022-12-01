@@ -1,4 +1,6 @@
-﻿namespace Wada.AttendanceTableService
+﻿using Wada.AttendanceTableService.AttendanceTableAggregation;
+
+namespace Wada.AttendanceTableService
 {
     public interface IWadaHolidayRepository
     {

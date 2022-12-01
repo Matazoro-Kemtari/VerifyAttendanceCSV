@@ -1,7 +1,9 @@
-﻿namespace Wada.AttendanceTableService
+﻿using Wada.AttendanceTableService.AttendanceTableAggregation;
+
+namespace Wada.AttendanceTableService
 {
     public interface IAttendanceTableRepository
     {
-        AttendanceTable LoadMonth(Stream stream, int month);
+        AttendanceTable ReadByMonth(Stream stream, int month);
     }
 }
