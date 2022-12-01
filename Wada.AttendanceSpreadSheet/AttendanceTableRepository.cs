@@ -2,6 +2,7 @@
 using NLog;
 using System.Reflection;
 using Wada.AttendanceTableService;
+using Wada.AttendanceTableService.AttendanceTableAggregation;
 
 namespace Wada.AttendanceSpreadSheet
 {

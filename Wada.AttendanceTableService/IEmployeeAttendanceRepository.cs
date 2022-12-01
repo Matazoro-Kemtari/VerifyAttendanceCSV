@@ -1,4 +1,6 @@
-﻿namespace Wada.AttendanceTableService
+﻿using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
+
+namespace Wada.AttendanceTableService
 {
     public interface IEmployeeAttendanceRepository
     {

@@ -1,4 +1,6 @@
-﻿namespace Wada.AttendanceTableService
+﻿using Wada.AttendanceTableService.AttendanceTableAggregation;
+
+namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
 {
     [Equals(DoNotAddEqualityOperators = true), ToString]
     public class WorkedMonthlyReport
@@ -217,11 +219,11 @@
                     DateTime tspEnd = workDate.Add(tsp.TSEnd);     // 計算対象時間帯の終了時刻設定
 
                     // 勤務時間が計算対象時間帯に入っているか判定
-                    if (!((workStart >= tspEnd) || (endTime <= tspStart)))
+                    if (!(workStart >= tspEnd || endTime <= tspStart))
                     {
-                        tspStart = (tspStart < workStart) ? workStart : tspStart;   // 実際の開始時刻に調整
-                        tspEnd = (tspEnd > endTime) ? endTime : tspEnd;             // 実際の終了時刻に調整
-                        result += (tspEnd - tspStart);                              // 計算対象時間帯の勤務時間を計算して報告値に加算
+                        tspStart = tspStart < workStart ? workStart : tspStart;   // 実際の開始時刻に調整
+                        tspEnd = tspEnd > endTime ? endTime : tspEnd;             // 実際の終了時刻に調整
+                        result += tspEnd - tspStart;                              // 計算対象時間帯の勤務時間を計算して報告値に加算
                     }
                 }
                 workStart = workDate.AddDays(1.0);  // 翌日の勤務開始時刻を00:00とする
@@ -318,7 +320,7 @@
                 x.DayOffClassification == DayOffClassification.AMBusinessSuspension
                 || x.DayOffClassification == DayOffClassification.PMBusinessSuspension);
 
-            return businessSuspensionDays + (businessSuspensionHalfDays * 0.5m);
+            return businessSuspensionDays + businessSuspensionHalfDays * 0.5m;
         }
 
         /// <summary>
@@ -395,7 +397,7 @@
                 .Count(x =>
                 x.DayOffClassification == DayOffClassification.AMPaidLeave
                 || x.DayOffClassification == DayOffClassification.PMPaidLeave);
-            return paidLeaveDays + (paidLeaveHalfDays * 0.5m);
+            return paidLeaveDays + paidLeaveHalfDays * 0.5m;
         }
 
         /// <summary>

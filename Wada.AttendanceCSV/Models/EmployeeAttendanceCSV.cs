@@ -1,5 +1,5 @@
 ﻿using CsvHelper.Configuration.Attributes;
-using Wada.AttendanceTableService;
+using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
 namespace Wada.AttendanceCSV.Models
 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Wada.AttendanceTableService.AttendanceTableAggregation;
 
-namespace Wada.AttendanceTableService.Tests
+namespace Wada.AttendanceTableServiceTests.AttendanceTableAggregation
 {
     [TestClass]
     public class AttendanceYearTests

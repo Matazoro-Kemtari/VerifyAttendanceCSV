@@ -2,6 +2,7 @@
 using Moq;
 using NLog;
 using Wada.AttendanceTableService;
+using Wada.AttendanceTableService.AttendanceTableAggregation;
 
 namespace Wada.AttendanceSpreadSheet.Tests
 {

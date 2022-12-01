@@ -4,6 +4,7 @@ using NLog;
 using System.Globalization;
 using Wada.AttendanceCSV.Models;
 using Wada.AttendanceTableService;
+using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
 namespace Wada.AttendanceCSV
 {

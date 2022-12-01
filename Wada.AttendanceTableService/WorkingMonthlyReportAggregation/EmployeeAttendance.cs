@@ -1,4 +1,4 @@
-﻿namespace Wada.AttendanceTableService
+﻿namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
 {
     /// <summary>
     /// WorkedMonthlyReportFactoryメソッド引数用データクラス

@@ -1,4 +1,4 @@
-﻿namespace Wada.AttendanceTableService
+﻿namespace Wada.AttendanceTableService.AttendanceTableAggregation
 {
     [Equals(DoNotAddEqualityOperators = true), ToString]
     public class AttendanceTable
@@ -62,7 +62,7 @@
                 throw new ArgumentOutOfRangeException(msg);
             }
 
-            Value = (int)value;
+            Value = value;
         }
 
         public int Value { get; init; }
