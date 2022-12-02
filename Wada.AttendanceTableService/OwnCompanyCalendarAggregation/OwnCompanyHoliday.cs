@@ -3,18 +3,18 @@
 namespace Wada.AttendanceTableService.OwnCompanyCalendarAggregation
 {
     [Equals(DoNotAddEqualityOperators = true), ToString]
-    public class OwnCompanyCalendar
+    public class OwnCompanyHoliday
     {
-        public OwnCompanyCalendar(DateTime date, HolidayClassification holidayClassification)
+        public OwnCompanyHoliday(DateTime holidayDate, HolidayClassification holidayClassification)
         {
-            Date = date;
+            HolidayDate = holidayDate;
             HolidayClassification = holidayClassification;
         }
 
         /// <summary>
         /// 日付
         /// </summary>
-        public DateTime Date { get; init; }
+        public DateTime HolidayDate { get; init; }
 
         /// <summary>
         /// 休日区分

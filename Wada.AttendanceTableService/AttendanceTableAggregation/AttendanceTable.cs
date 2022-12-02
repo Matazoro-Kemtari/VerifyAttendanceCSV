@@ -186,20 +186,12 @@ namespace Wada.AttendanceTableService.AttendanceTableAggregation
 
                 var _aY = new AttendanceYear(addDay.Year);
                 var _aM = new AttendanceMonth(addDay.Month);
-
-                HolidayClassification holiday;
-                switch (addDay.DayOfWeek)
+                var holiday = addDay.DayOfWeek switch
                 {
-                    case DayOfWeek.Sunday:
-                        holiday = HolidayClassification.LegalHoliday;
-                        break;
-                    case DayOfWeek.Saturday:
-                        holiday = HolidayClassification.RegularHoliday;
-                        break;
-                    default:
-                        holiday = HolidayClassification.None;
-                        break;
-                }
+                    DayOfWeek.Sunday => HolidayClassification.LegalHoliday,
+                    DayOfWeek.Saturday => HolidayClassification.RegularHoliday,
+                    _ => HolidayClassification.None,
+                };
 #pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
 #pragma warning disable CS8629 // Null 許容値型は Null になる場合があります。
                 AttendanceRecord ar = new(

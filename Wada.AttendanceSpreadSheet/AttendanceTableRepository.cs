@@ -10,12 +10,12 @@ namespace Wada.AttendanceSpreadSheet
     public class AttendanceTableRepository : IAttendanceTableRepository
     {
         private readonly ILogger logger;
-        private readonly IOwnCompanyCalendarRepository ownCompanyCalendarRepository;
+        private readonly IOwnCompanyHolidayRepository ownCompanyHolidayRepository;
 
-        public AttendanceTableRepository(ILogger logger, IOwnCompanyCalendarRepository ownCompanyCalendarRepository)
+        public AttendanceTableRepository(ILogger logger, IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
         {
             this.logger = logger;
-            this.ownCompanyCalendarRepository = ownCompanyCalendarRepository;
+            this.ownCompanyHolidayRepository = ownCompanyHolidayRepository;
         }
 
         public AttendanceTable ReadByMonth(Stream stream, int month)
@@ -31,10 +31,10 @@ namespace Wada.AttendanceSpreadSheet
             AttendanceTable attendanceTable = new(employeeNumber, attendanceYear, attendanceMonth);
 
             // 自社カレンダーを取得
-            var calendar = ownCompanyCalendarRepository.FindByYearMonth(attendanceYear.Value, attendanceMonth.Value);
+            var calendar = ownCompanyHolidayRepository.FindByYearMonth(attendanceYear.Value, attendanceMonth.Value);
             HolidayClassification FindByDay(DateTime day)
             {
-                var result = calendar?.SingleOrDefault(x => x.Date == day);
+                var result = calendar?.SingleOrDefault(x => x.HolidayDate == day);
                 return result == null ? HolidayClassification.None : result.HolidayClassification;
             }
 

@@ -2,7 +2,7 @@
 
 namespace Wada.AttendanceTableService
 {
-    public interface IOwnCompanyCalendarRepository
+    public interface IOwnCompanyHolidayRepository
     {
         /// <summary>
         /// 指定した年月のカレンダーを取得する
@@ -10,7 +10,7 @@ namespace Wada.AttendanceTableService
         /// <param name="year"></param>
         /// <param name="month"></param>
         /// <returns></returns>
-        IEnumerable<OwnCompanyCalendar> FindByYearMonth(int year, int month);
+        IEnumerable<OwnCompanyHoliday> FindByYearMonth(int year, int month);
 
         /// <summary>
         /// 登録されたカレンダーの最終日付を取得する

@@ -180,7 +180,7 @@
                 <mxCell id="542" value="&lt;u&gt;自社カレンダー集約&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;" parent="1" vertex="1">
                     <mxGeometry x="24.380000000000003" y="1710" width="161.24" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="543" value="&lt;font color=&quot;#ffffff&quot;&gt;&lt;u&gt;自社カレンダー&lt;/u&gt;&lt;/font&gt;&lt;br&gt;(MyCompanyCalendar&lt;span&gt;)&lt;/span&gt;&lt;br style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;span style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;日付&lt;br&gt;法定休日&lt;br&gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
+                <mxCell id="543" value="&lt;font color=&quot;#ffffff&quot;&gt;&lt;u&gt;自社カレンダー&lt;/u&gt;&lt;/font&gt;&lt;br&gt;(OwnCompanyHoliday&lt;span&gt;)&lt;/span&gt;&lt;br style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;&lt;span style=&quot;color: rgb(255 , 255 , 255)&quot;&gt;日付&lt;br&gt;法定休日&lt;br&gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
                     <mxGeometry x="39.379999999999995" y="1740" width="136.24" height="70" as="geometry"/>
                 </mxCell>
                 <mxCell id="544" value="自社カレンダーを登録する" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
