@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 using Wada.AttendanceTableService.ValueObjects;
+using System.Transactions;
 
 namespace Wada.OrderDataBase.Tests
 {
@@ -107,5 +108,73 @@ namespace Wada.OrderDataBase.Tests
             Assert.AreEqual(maxDate, actual.ToString("yyyy/M/d"));
         }
 
+        [TestMethod()]
+        public void 正常系_複数のカレンダーを登録できること()
+        {
+            // given
+            ILogger mock_logger = OwnCompanyHolidayRepositoryTests.mock_logger!;
+            IConfiguration configuration = OwnCompanyHolidayRepositoryTests.configuration!;
+
+            // when
+            var expecteds = new List<OwnCompanyHoliday>
+            {
+                new(DateTime.Parse("2023/04/01"), HolidayClassification.LegalHoliday),
+                new(DateTime.Parse("2023/04/02"), HolidayClassification.RegularHoliday),
+                new(DateTime.Parse("2023/04/03"), HolidayClassification.RegularHoliday),
+                new(DateTime.Parse("2023/04/04"), HolidayClassification.RegularHoliday),
+                new(DateTime.Parse("2023/04/07"), HolidayClassification.RegularHoliday),
+                new(DateTime.Parse("2023/04/08"), HolidayClassification.LegalHoliday),
+                new(DateTime.Parse("2023/04/09"), HolidayClassification.RegularHoliday),
+                new(DateTime.Parse("2023/04/14"), HolidayClassification.RegularHoliday),
+                new(DateTime.Parse("2023/04/15"), HolidayClassification.LegalHoliday),
+                new(DateTime.Parse("2023/04/21"), HolidayClassification.RegularHoliday),
+                new(DateTime.Parse("2023/04/22"), HolidayClassification.LegalHoliday),
+                new(DateTime.Parse("2023/04/28"), HolidayClassification.RegularHoliday),
+                new(DateTime.Parse("2023/04/29"), HolidayClassification.LegalHoliday),
+            };
+
+            IOwnCompanyHolidayRepository repository = new OwnCompanyHolidayRepository(mock_logger, configuration);
+            using TransactionScope scope = new();
+            repository.AddRange(expecteds);
+
+            var actuals = repository.FindByYearMonth(2023, 4);
+
+            // then
+            CollectionAssert.AreEquivalent(expecteds, actuals.ToList());
+            var enumEquals = expecteds
+                .Join(
+                actuals,
+                e => e.HolidayDate,
+                a => a.HolidayDate,
+                (ex, ac) => ex.HolidayClassification == ac.HolidayClassification);
+            Assert.IsTrue(enumEquals.All(x => x));
+        }
+
+        [TestMethod()]
+        public void 異常系_重複したカレンダーを登録しようとすると例外を返すこと()
+        {
+            // given
+            ILogger mock_logger = OwnCompanyHolidayRepositoryTests.mock_logger!;
+            IConfiguration configuration = OwnCompanyHolidayRepositoryTests.configuration!;
+
+            // when
+            var expecteds = new List<OwnCompanyHoliday>
+            {
+                new(DateTime.Parse("2023/01/01"), HolidayClassification.LegalHoliday),
+                new(DateTime.Parse("2023/01/02"), HolidayClassification.RegularHoliday),
+            };
+
+            IOwnCompanyHolidayRepository repository = new OwnCompanyHolidayRepository(mock_logger, configuration);
+            void target()
+            {
+                using TransactionScope scope = new();
+                repository.AddRange(expecteds);
+            }
+
+            // then
+            var ex = Assert.ThrowsException<AttendanceTableServiceException>(target);
+            var expected = "登録済みの日付の自社カレンダーは追加・上書きできません";
+            Assert.AreEqual(expected, ex.Message);
+        }
     }
 }

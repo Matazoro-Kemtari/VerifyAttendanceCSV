@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,35 @@ namespace Wada.OrderDataBase
         {
             this.logger = logger;
             this.configuration = configuration;
+        }
+
+        public void AddRange(IEnumerable<OwnCompanyHoliday> ownCompanyHolidays)
+        {
+            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
+
+            OrderDbConfig dbConfig = new(configuration);
+            using var dbContext = new OrderDbContext(dbConfig);
+
+            dbContext.OwnCompanyHolidays!
+                .AddRange(
+                ownCompanyHolidays.Select(x => new Models.OwnCompanyHoliday(
+                    x.HolidayDate,
+                    x.HolidayClassification == HolidayClassification.LegalHoliday)));
+
+            int _additionalNumber;
+            try
+            {
+                _additionalNumber = dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                string msg = "登録済みの日付の自社カレンダーは追加・上書きできません";
+                logger.Error(ex, msg);
+                throw new AttendanceTableServiceException(msg, ex);
+            }
+            logger.Info($"データベースに{_additionalNumber}件追加しました");
+
+            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
         }
 
         public IEnumerable<OwnCompanyHoliday> FindByYearMonth(int year, int month)

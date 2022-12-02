@@ -8,6 +8,12 @@ namespace Wada.OrderDataBase.Models
     [Table("OwnCompanyHolidays")]
     internal class OwnCompanyHoliday
     {
+        public OwnCompanyHoliday(DateTime holidayDate, bool legalHoliday)
+        {
+            HolidayDate = holidayDate;
+            LegalHoliday = legalHoliday;
+        }
+
         [Key, Required]
         public DateTime HolidayDate { get; set; }
 

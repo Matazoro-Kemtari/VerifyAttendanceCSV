@@ -17,5 +17,11 @@ namespace Wada.AttendanceTableService
         /// </summary>
         /// <returns></returns>
         DateTime MaxDate();
+
+        /// <summary>
+        /// 複数のカレンダーを追加する
+        /// </summary>
+        /// <param name="ownCompanyHolidays"></param>
+        void AddRange(IEnumerable<OwnCompanyHoliday> ownCompanyHolidays);
     }
 }
