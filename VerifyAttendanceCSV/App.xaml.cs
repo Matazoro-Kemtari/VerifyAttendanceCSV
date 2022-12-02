@@ -1,5 +1,4 @@
-﻿using Example;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using NLog;
 using Prism.Ioc;
 using System.IO;

@@ -3,18 +3,19 @@ using NLog;
 using System.Reflection;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
+using Wada.AttendanceTableService.ValueObjects;
 
 namespace Wada.AttendanceSpreadSheet
 {
     public class AttendanceTableRepository : IAttendanceTableRepository
     {
         private readonly ILogger logger;
-        private readonly IWadaHolidayRepository wadaHolidayRepository;
+        private readonly IOwnCompanyHolidayRepository ownCompanyHolidayRepository;
 
-        public AttendanceTableRepository(ILogger logger, IWadaHolidayRepository wadaHolidayRepository)
+        public AttendanceTableRepository(ILogger logger, IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
         {
             this.logger = logger;
-            this.wadaHolidayRepository = wadaHolidayRepository;
+            this.ownCompanyHolidayRepository = ownCompanyHolidayRepository;
         }
 
         public AttendanceTable ReadByMonth(Stream stream, int month)
@@ -28,6 +29,14 @@ namespace Wada.AttendanceSpreadSheet
             (uint employeeNumber, AttendanceYear attendanceYear, AttendanceMonth attendanceMonth) =
                 GetAttendanceTableBaseInfo(targetSheet);
             AttendanceTable attendanceTable = new(employeeNumber, attendanceYear, attendanceMonth);
+
+            // 自社カレンダーを取得
+            var calendar = ownCompanyHolidayRepository.FindByYearMonth(attendanceYear.Value, attendanceMonth.Value);
+            HolidayClassification FindByDay(DateTime day)
+            {
+                var result = calendar?.SingleOrDefault(x => x.HolidayDate == day);
+                return result == null ? HolidayClassification.None : result.HolidayClassification;
+            }
 
             // ヘッダ部分をスキップして走査
             IEnumerable<IXLRow> rows = targetSheet.Rows().Skip(4);
@@ -105,7 +114,7 @@ namespace Wada.AttendanceSpreadSheet
 
                 AttendanceRecord attendanceRecord = new(
                     new AttendanceDay(attendanceYear, attendanceMonth, attendanceDay),
-                    wadaHolidayRepository.FindByDay(date),
+                    FindByDay(date),
                     dayOff,
                     startTime,
                     endTime,
@@ -120,7 +129,7 @@ namespace Wada.AttendanceSpreadSheet
             return attendanceTable;
         }
 
-        private DayOffClassification DetermineLateEarly(DateTime startTime, DateTime endTime)
+        private static DayOffClassification DetermineLateEarly(DateTime startTime, DateTime endTime)
         {
             // 一般勤務 8:00-17:00
             // 交代勤務1 15:00-24:00

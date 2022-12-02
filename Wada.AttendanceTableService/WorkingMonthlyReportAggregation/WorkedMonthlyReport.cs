@@ -1,4 +1,5 @@
 ﻿using Wada.AttendanceTableService.AttendanceTableAggregation;
+using Wada.AttendanceTableService.ValueObjects;
 
 namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
 {
