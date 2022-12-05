@@ -5,11 +5,13 @@ namespace Wada.AttendanceTableService.OwnCompanyCalendarAggregation
     [Equals(DoNotAddEqualityOperators = true), ToString]
     public class OwnCompanyHoliday
     {
-        public OwnCompanyHoliday(DateTime holidayDate, HolidayClassification holidayClassification)
+        private OwnCompanyHoliday(DateTime holidayDate, HolidayClassification holidayClassification)
         {
             HolidayDate = holidayDate;
             HolidayClassification = holidayClassification;
         }
+
+        public static OwnCompanyHoliday ReConstruct(DateTime holidayDate, HolidayClassification holidayClassification) => new(holidayDate, holidayClassification);
 
         /// <summary>
         /// 日付
