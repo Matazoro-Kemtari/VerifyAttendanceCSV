@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -35,6 +36,8 @@ namespace DetermineDifferenceApplication
 
         public async Task<Dictionary<uint, List<string>>> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
         {
+            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
+
             // CSVを取得する
             StreamReader reader = streamReaderOpener.Open(csvPath);
             Task<IEnumerable<WorkedMonthlyReport>> taskCSV = Task.Run(() => employeeAttendanceRepository.ReadAll(reader));
@@ -169,6 +172,9 @@ namespace DetermineDifferenceApplication
                 if (differentialMsgs.Count > 0)
                     differntialMaps.Add(item.AttendancePersonalCode, differentialMsgs);
             }
+
+            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
+
             return differntialMaps;
         }
     }
