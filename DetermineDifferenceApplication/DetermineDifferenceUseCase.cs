@@ -68,7 +68,8 @@ namespace DetermineDifferenceApplication
             IEnumerable<WorkedMonthlyReport> csvReports = await taskCSV;
             IEnumerable<WorkedMonthlyReport> xlsReports = await Task.WhenAll(taskXLSs);
 
-            var differentialReports = csvReports
+            // 差分確認
+            var differentialCSVReports = csvReports
                 .GroupJoin(xlsReports,
                 c => c.AttendancePersonalCode,
                 x => x.AttendancePersonalCode,
@@ -95,9 +96,39 @@ namespace DetermineDifferenceApplication
                     AnomalyHour = outer.csv.AnomalyHour == xlsx?.AnomalyHour,
                     LunchBoxOrderedTime = outer.csv.LunchBoxOrderedTime == xlsx?.LunchBoxOrderedTime,
                 });
+            // 左右入れ替え
+            var differentialXLSXReports = xlsReports
+                .GroupJoin(csvReports,
+                x => x.AttendancePersonalCode,
+                c => c.AttendancePersonalCode,
+                (xlsx, csv) => new { xlsx, csv })
+                .SelectMany(x => x.csv.DefaultIfEmpty(),
+                (outer, csv) => new
+                {
+                    outer.xlsx.AttendancePersonalCode,
+                    AttendanceDay = outer.xlsx.AttendanceDay == csv?.AttendanceDay,
+                    HolidayWorkedDay = outer.xlsx.HolidayWorkedDay == csv?.HolidayWorkedDay,
+                    PaidLeaveDay = outer.xlsx.PaidLeaveDay == csv?.PaidLeaveDay,
+                    AbsenceDay = outer.xlsx.AbsenceDay == csv?.AbsenceDay,
+                    TransferedAttendanceDay = outer.xlsx.TransferedAttendanceDay == csv?.TransferedAttendanceDay,
+                    PaidSpecialLeaveDay = outer.xlsx.PaidSpecialLeaveDay == csv?.PaidSpecialLeaveDay,
+                    LatenessTime = outer.xlsx.LatenessTime == csv?.LatenessTime,
+                    EarlyLeaveTime = outer.xlsx.EarlyLeaveTime == csv?.EarlyLeaveTime,
+                    BusinessSuspensionDay = outer.xlsx.BusinessSuspensionDay == csv?.BusinessSuspensionDay,
+                    EducationDay = outer.xlsx.EducationDay == csv?.EducationDay,
+                    RegularWorkedHour = outer.xlsx.RegularWorkedHour == csv?.RegularWorkedHour,
+                    OvertimeHour = outer.xlsx.OvertimeHour == csv?.OvertimeHour,
+                    LateNightWorkingHour = outer.xlsx.LateNightWorkingHour == csv?.LateNightWorkingHour,
+                    LegalHolidayWorkedHour = outer.xlsx.LegalHolidayWorkedHour == csv?.LegalHolidayWorkedHour,
+                    RegularHolidayWorkedHour = outer.xlsx.RegularHolidayWorkedHour == csv?.RegularHolidayWorkedHour,
+                    AnomalyHour = outer.xlsx.AnomalyHour == csv?.AnomalyHour,
+                    LunchBoxOrderedTime = outer.xlsx.LunchBoxOrderedTime == csv?.LunchBoxOrderedTime,
+                });
+            // 結果を集合
+            var unionDifferentialReports = differentialCSVReports.Union(differentialXLSXReports);
 
             Dictionary<uint, List<string>> differntialMaps = new();
-            foreach (var item in differentialReports)
+            foreach (var item in unionDifferentialReports)
             {
                 List<string> differentialMsgs = new List<string>();
                 if (!item.AttendanceDay)
