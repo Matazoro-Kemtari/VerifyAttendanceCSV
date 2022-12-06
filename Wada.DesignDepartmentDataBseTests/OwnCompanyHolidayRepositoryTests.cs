@@ -1,19 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Wada.OrderDataBase;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NLog;
-using Microsoft.Extensions.Configuration;
+using System.Transactions;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 using Wada.AttendanceTableService.ValueObjects;
-using System.Transactions;
 
-namespace Wada.OrderDataBase.Tests
+namespace Wada.DesignDepartmentDataBse.Tests
 {
     [TestClass()]
     public class OwnCompanyHolidayRepositoryTests
@@ -48,19 +42,19 @@ namespace Wada.OrderDataBase.Tests
             // then
             var expecteds = new List<OwnCompanyHoliday>
             {
-                new(DateTime.Parse("2023/01/01"), HolidayClassification.LegalHoliday),
-                new(DateTime.Parse("2023/01/02"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/01/03"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/01/04"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/01/07"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/01/08"), HolidayClassification.LegalHoliday),
-                new(DateTime.Parse("2023/01/09"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/01/14"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/01/15"), HolidayClassification.LegalHoliday),
-                new(DateTime.Parse("2023/01/21"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/01/22"), HolidayClassification.LegalHoliday),
-                new(DateTime.Parse("2023/01/28"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/01/29"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/01"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/02"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/03"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/04"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/07"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/08"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/09"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/14"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/15"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/21"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/22"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/28"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/29"), HolidayClassification.LegalHoliday),
             };
             CollectionAssert.AreEquivalent(expecteds, actuals.ToList());
             // CollectionAssertじゃenumの違いみてくれない
@@ -118,19 +112,19 @@ namespace Wada.OrderDataBase.Tests
             // when
             var expecteds = new List<OwnCompanyHoliday>
             {
-                new(DateTime.Parse("2023/04/01"), HolidayClassification.LegalHoliday),
-                new(DateTime.Parse("2023/04/02"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/04/03"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/04/04"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/04/07"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/04/08"), HolidayClassification.LegalHoliday),
-                new(DateTime.Parse("2023/04/09"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/04/14"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/04/15"), HolidayClassification.LegalHoliday),
-                new(DateTime.Parse("2023/04/21"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/04/22"), HolidayClassification.LegalHoliday),
-                new(DateTime.Parse("2023/04/28"), HolidayClassification.RegularHoliday),
-                new(DateTime.Parse("2023/04/29"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/01"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/02"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/03"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/04"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/07"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/08"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/09"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/14"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/15"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/21"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/22"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/28"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/04/29"), HolidayClassification.LegalHoliday),
             };
 
             IOwnCompanyHolidayRepository repository = new OwnCompanyHolidayRepository(mock_logger, configuration);
@@ -160,8 +154,8 @@ namespace Wada.OrderDataBase.Tests
             // when
             var expecteds = new List<OwnCompanyHoliday>
             {
-                new(DateTime.Parse("2023/01/01"), HolidayClassification.LegalHoliday),
-                new(DateTime.Parse("2023/01/02"), HolidayClassification.RegularHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/01"), HolidayClassification.LegalHoliday),
+                OwnCompanyHoliday.ReConstruct(DateTime.Parse("2023/01/02"), HolidayClassification.RegularHoliday),
             };
 
             IOwnCompanyHolidayRepository repository = new OwnCompanyHolidayRepository(mock_logger, configuration);

@@ -3,12 +3,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Wada.OrderDataBase.Models
+namespace Wada.DesignDepartmentDataBse.Models
 {
     [Table("OwnCompanyHolidays")]
     internal class OwnCompanyHoliday
     {
-        public OwnCompanyHoliday(DateTime holidayDate, bool legalHoliday)
+        internal OwnCompanyHoliday(DateTime holidayDate, bool legalHoliday)
         {
             HolidayDate = holidayDate;
             LegalHoliday = legalHoliday;

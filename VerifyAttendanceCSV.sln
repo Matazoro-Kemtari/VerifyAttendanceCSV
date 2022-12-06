@@ -31,7 +31,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterOwnCompanyCalendarA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.OrderDataBase", "Wada.OrderDataBase\Wada.OrderDataBase.csproj", "{6BF1F728-FD19-48D9-9E28-1BEE4BF2D2DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.OrderDataBaseTests", "Wada.OrderDataBaseTests\Wada.OrderDataBaseTests.csproj", "{05ADE978-38DC-4EBC-BEF3-970291F06414}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.OrderDataBaseTests", "Wada.OrderDataBaseTests\Wada.OrderDataBaseTests.csproj", "{05ADE978-38DC-4EBC-BEF3-970291F06414}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterEmployeeNumberTableApplication", "RegisterEmployeeNumberTableApplication\RegisterEmployeeNumberTableApplication.csproj", "{EFADF3B0-F50A-4546-A591-44CCB417A72D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.DesignDepartmentDataBse", "Wada.DesignDepartmentDataBse\Wada.DesignDepartmentDataBse.csproj", "{F4FF479B-11CA-41D1-812F-FA905F088D9B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.DesignDepartmentDataBseTests", "Wada.DesignDepartmentDataBseTests\Wada.DesignDepartmentDataBseTests.csproj", "{AA5949DA-788B-4BE9-AE25-A2A886DECE23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DetermineDifferenceApplicationTests", "DetermineDifferenceApplicationTests\DetermineDifferenceApplicationTests.csproj", "{23B60C52-7336-4F6D-A54F-8158D50A60D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +91,22 @@ Global
 		{05ADE978-38DC-4EBC-BEF3-970291F06414}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05ADE978-38DC-4EBC-BEF3-970291F06414}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05ADE978-38DC-4EBC-BEF3-970291F06414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFADF3B0-F50A-4546-A591-44CCB417A72D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFADF3B0-F50A-4546-A591-44CCB417A72D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFADF3B0-F50A-4546-A591-44CCB417A72D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFADF3B0-F50A-4546-A591-44CCB417A72D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4FF479B-11CA-41D1-812F-FA905F088D9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4FF479B-11CA-41D1-812F-FA905F088D9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4FF479B-11CA-41D1-812F-FA905F088D9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4FF479B-11CA-41D1-812F-FA905F088D9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA5949DA-788B-4BE9-AE25-A2A886DECE23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA5949DA-788B-4BE9-AE25-A2A886DECE23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA5949DA-788B-4BE9-AE25-A2A886DECE23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA5949DA-788B-4BE9-AE25-A2A886DECE23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23B60C52-7336-4F6D-A54F-8158D50A60D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23B60C52-7336-4F6D-A54F-8158D50A60D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23B60C52-7336-4F6D-A54F-8158D50A60D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23B60C52-7336-4F6D-A54F-8158D50A60D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +122,10 @@ Global
 		{9297CA21-4E57-44E1-888E-CAB442E855CB} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
 		{6BF1F728-FD19-48D9-9E28-1BEE4BF2D2DB} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 		{05ADE978-38DC-4EBC-BEF3-970291F06414} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{EFADF3B0-F50A-4546-A591-44CCB417A72D} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
+		{F4FF479B-11CA-41D1-812F-FA905F088D9B} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{AA5949DA-788B-4BE9-AE25-A2A886DECE23} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{23B60C52-7336-4F6D-A54F-8158D50A60D3} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6BBC0BD-A5F6-44C4-B7A6-7FAD6289890C}

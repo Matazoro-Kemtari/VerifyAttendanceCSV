@@ -25,19 +25,19 @@ namespace Wada.AttendanceSpreadSheet.Tests
             Mock<IOwnCompanyHolidayRepository> mock_holiday = new();
             mock_holiday.Setup(x => x.FindByYearMonth(2022, 5))
                 .Returns(new List<OwnCompanyHoliday>{
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/1"),HolidayClassification.LegalHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/3"),HolidayClassification.RegularHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/4"),HolidayClassification.RegularHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/5"),HolidayClassification.RegularHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/6"),HolidayClassification.RegularHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/7"),HolidayClassification.RegularHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/8"),HolidayClassification.LegalHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/14"),HolidayClassification.RegularHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/15"),HolidayClassification.LegalHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/21"),HolidayClassification.RegularHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/22"),HolidayClassification.LegalHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/28"),HolidayClassification.RegularHoliday),
-                    new OwnCompanyHoliday(DateTime.Parse("2022/5/29"),HolidayClassification.LegalHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/1"),HolidayClassification.LegalHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/3"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/4"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/5"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/6"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/7"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/8"),HolidayClassification.LegalHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/14"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/15"),HolidayClassification.LegalHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/21"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/22"),HolidayClassification.LegalHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/28"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/29"),HolidayClassification.LegalHoliday),
                 });
 
             // when

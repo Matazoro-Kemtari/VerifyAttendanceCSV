@@ -1,17 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 using Wada.AttendanceTableService.ValueObjects;
 
-namespace Wada.OrderDataBase
+namespace Wada.DesignDepartmentDataBse
 {
     public class OwnCompanyHolidayRepository : IOwnCompanyHolidayRepository
     {
@@ -28,8 +23,8 @@ namespace Wada.OrderDataBase
         {
             logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
 
-            OrderDbConfig dbConfig = new(configuration);
-            using var dbContext = new OrderDbContext(dbConfig);
+            DbConfig dbConfig = new(configuration);
+            using var dbContext = new DbContext(dbConfig);
 
             dbContext.OwnCompanyHolidays!
                 .AddRange(
@@ -57,13 +52,13 @@ namespace Wada.OrderDataBase
         {
             logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
 
-            OrderDbConfig dbConfig = new(configuration);
-            using var dbContext = new OrderDbContext(dbConfig);
+            DbConfig dbConfig = new(configuration);
+            using var dbContext = new DbContext(dbConfig);
 
             var ownHoliday = dbContext.OwnCompanyHolidays!
                 .Where(x => x.HolidayDate >= new DateTime(year, month, 1))
                 .Where(x => x.HolidayDate < new DateTime(year, month, 1).AddMonths(1))
-                .Select(x => new OwnCompanyHoliday(
+                .Select(x => OwnCompanyHoliday.ReConstruct(
                     x.HolidayDate,
                     x.LegalHoliday ? HolidayClassification.LegalHoliday : HolidayClassification.RegularHoliday));
 
@@ -84,8 +79,8 @@ namespace Wada.OrderDataBase
         {
             logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
 
-            OrderDbConfig dbConfig = new(configuration);
-            using var dbContext = new OrderDbContext(dbConfig);
+            DbConfig dbConfig = new(configuration);
+            using var dbContext = new DbContext(dbConfig);
 
             var maxHoliday = dbContext.OwnCompanyHolidays!
                 .Max(x => x.HolidayDate);
