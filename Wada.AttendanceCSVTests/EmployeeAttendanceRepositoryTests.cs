@@ -1,5 +1,4 @@
-﻿using DetermineDifferenceApplication;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NLog;
 using System.Text;
@@ -121,7 +120,7 @@ namespace Wada.AttendanceCSV.Tests
 
             // then
             var msg = "CSVファイルにデータがありません";
-            var ex = Assert.ThrowsException<DetermineDifferenceApplicationException>(target);
+            var ex = Assert.ThrowsException<AttendanceTableServiceException>(target);
             Assert.AreEqual(msg, ex.Message);
         }
     }

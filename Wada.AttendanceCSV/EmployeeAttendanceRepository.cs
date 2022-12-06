@@ -1,5 +1,4 @@
 ﻿using CsvHelper;
-using DetermineDifferenceApplication;
 using NLog;
 using System.Globalization;
 using Wada.AttendanceCSV.Models;
@@ -32,7 +31,7 @@ namespace Wada.AttendanceCSV
             {
                 string msg = "CSVファイルにデータがありません";
                 logger.Error(msg);
-                throw new DetermineDifferenceApplicationException(msg);
+                throw new AttendanceTableServiceException(msg);
             }
 
             return employeeAttendanceCSVs.Select(x => x.ToDomainEntity())

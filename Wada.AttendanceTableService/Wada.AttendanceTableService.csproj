@@ -10,6 +10,7 @@
     <PackageReference Include="Equals.Fody" Version="4.0.2">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="NLog" Version="5.1.0" />
     <PackageReference Include="ToString.Fody" Version="1.11.1">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
