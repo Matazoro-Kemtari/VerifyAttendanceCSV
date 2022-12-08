@@ -39,7 +39,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.DesignDepartmentDataBs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.DesignDepartmentDataBseTests", "Wada.DesignDepartmentDataBseTests\Wada.DesignDepartmentDataBseTests.csproj", "{AA5949DA-788B-4BE9-AE25-A2A886DECE23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DetermineDifferenceApplicationTests", "DetermineDifferenceApplicationTests\DetermineDifferenceApplicationTests.csproj", "{23B60C52-7336-4F6D-A54F-8158D50A60D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DetermineDifferenceApplicationTests", "DetermineDifferenceApplicationTests\DetermineDifferenceApplicationTests.csproj", "{23B60C52-7336-4F6D-A54F-8158D50A60D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.VerifyAttendanceCSV", "Wada.VerifyAttendanceCSV\Wada.VerifyAttendanceCSV.csproj", "{77089DAF-B8D3-43C3-BDF6-F3022B104860}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.CommonDialogLib", "Wada.CommonDialogLib\Wada.CommonDialogLib.csproj", "{D9149DF1-AC7F-4B5F-AB9C-784111F4703F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +111,14 @@ Global
 		{23B60C52-7336-4F6D-A54F-8158D50A60D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23B60C52-7336-4F6D-A54F-8158D50A60D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23B60C52-7336-4F6D-A54F-8158D50A60D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77089DAF-B8D3-43C3-BDF6-F3022B104860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77089DAF-B8D3-43C3-BDF6-F3022B104860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77089DAF-B8D3-43C3-BDF6-F3022B104860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77089DAF-B8D3-43C3-BDF6-F3022B104860}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9149DF1-AC7F-4B5F-AB9C-784111F4703F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9149DF1-AC7F-4B5F-AB9C-784111F4703F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9149DF1-AC7F-4B5F-AB9C-784111F4703F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9149DF1-AC7F-4B5F-AB9C-784111F4703F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +138,8 @@ Global
 		{F4FF479B-11CA-41D1-812F-FA905F088D9B} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 		{AA5949DA-788B-4BE9-AE25-A2A886DECE23} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 		{23B60C52-7336-4F6D-A54F-8158D50A60D3} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
+		{77089DAF-B8D3-43C3-BDF6-F3022B104860} = {98097411-AAF1-4A6A-95E5-13A406718B98}
+		{D9149DF1-AC7F-4B5F-AB9C-784111F4703F} = {98097411-AAF1-4A6A-95E5-13A406718B98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6BBC0BD-A5F6-44C4-B7A6-7FAD6289890C}

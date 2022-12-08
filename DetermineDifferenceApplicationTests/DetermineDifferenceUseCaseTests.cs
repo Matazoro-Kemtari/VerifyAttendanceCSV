@@ -1,8 +1,7 @@
-﻿using DetermineDifferenceApplication;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NLog;
-using System.Text;
+using NLog.Targets;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
 using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
@@ -267,6 +266,72 @@ namespace DetermineDifferenceApplication.Tests
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
             mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
+        }
+
+        [TestMethod]
+        public async Task 異常系_社員番号対応表に無い社員番号を検索すると例外を返すこと()
+        {
+            // given
+            DotNetEnv.Env.Load(".env");
+            string[] paths = DotNetEnv.Env.GetString("TEST_XLS_PATHS").Split(';');
+            uint employeeNumber = (uint)DotNetEnv.Env.GetInt("EMPLOYEE_NUMBER");
+            uint attendancePersonalCode = (uint)DotNetEnv.Env.GetInt("PERSONAL_CODE");
+
+            // ロガーモック
+            Mock<ILogger> mock_logger = new();
+
+            // ストリームリーダーモック
+            Mock<IStreamReaderOpener> mock_stream_reader = new();
+
+            // ストリームモック
+            Mock<IStreamOpener> mock_stream = new();
+
+            // 社員番号対応表モック
+            Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
+            mock_match_employee.Setup(x => x.FindAll())
+                .Returns(new List<MatchedEmployeeNumber>
+                {
+                    MatchedEmployeeNumber.ReConsttuct(1001u, 1u),
+                    MatchedEmployeeNumber.ReConsttuct(1002u, 2u),
+                    MatchedEmployeeNumber.ReConsttuct(1003u, 3u),
+                    MatchedEmployeeNumber.ReConsttuct(1004u, 4u),
+                });
+
+            // CSVの読み込みモック
+            Mock<IEmployeeAttendanceRepository> mock_csv = new();
+            mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
+                .Returns(AttendanceCSVReturns(attendancePersonalCode));
+
+            // 勤怠表の読み込みモック
+            AttendanceTable spreads =
+                TestAttendanceTableFactory.Create(
+                    employeeNumber,
+                    new AttendanceYear(2022),
+                    new AttendanceMonth(5),
+                    CreateTestRecords());
+            Mock<IAttendanceTableRepository> mock_spread = new();
+            mock_spread.Setup(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()))
+                .Returns(spreads);
+
+            // when
+            IDetermineDifferenceUseCase determineDifference =
+            new DetermineDifferenceUseCase(
+                mock_logger.Object,
+                mock_stream_reader.Object,
+                mock_stream.Object,
+                mock_match_employee.Object,
+                mock_csv.Object,
+                mock_spread.Object);
+
+            async Task target()
+            {
+                await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            }
+
+            // then
+            var msg = $"社員番号対応表に該当がありません 社員番号: {employeeNumber}";
+            var ex = await Assert.ThrowsExceptionAsync<EmployeeNumberNotFoundException>(target);
+            Assert.AreEqual(msg, ex.Message);
         }
     }
 }

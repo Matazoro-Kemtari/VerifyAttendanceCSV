@@ -18,7 +18,9 @@
     <ProjectReference Include="..\Wada.AttendanceCSV\Wada.AttendanceCSV.csproj" />
     <ProjectReference Include="..\Wada.AttendanceSpreadSheet\Wada.AttendanceSpreadSheet.csproj" />
     <ProjectReference Include="..\Wada.AttendanceTableService\Wada.AttendanceTableService.csproj" />
+    <ProjectReference Include="..\Wada.CommonDialogLib\Wada.CommonDialogLib.csproj" />
     <ProjectReference Include="..\Wada.DesignDepartmentDataBse\Wada.DesignDepartmentDataBse.csproj" />
+    <ProjectReference Include="..\Wada.VerifyAttendanceCSV\Wada.VerifyAttendanceCSV.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update=".env">
