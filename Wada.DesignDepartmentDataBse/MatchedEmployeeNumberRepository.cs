@@ -66,8 +66,8 @@ namespace Wada.DesignDepartmentDataBse
                 throw new AttendanceTableServiceException(msg);
             }
 
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}"); 
-            
+            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
+
             return matchedEmployee.ToList();
         }
 

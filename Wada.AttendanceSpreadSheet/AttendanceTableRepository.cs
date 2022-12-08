@@ -45,13 +45,22 @@ namespace Wada.AttendanceSpreadSheet
                 if (row.RowNumber() == 36)
                     break;
 
-                if (row.Cell("D").IsEmpty() && row.Cell("O").IsEmpty() && row.Cell("P").IsEmpty())
+                const string StartedTimeColumnLetter = "E";
+                const string EndedTimeColumnLetter = "F";
+                const string DayOffColumnLetter = "D";
+                const string DayColumnLetter = "B";
+                const string RestTimeColumnLetter = "O";
+                const string OrderedLunchBoxColumnLetter = "K";
+
+                if (row.Cell(DayOffColumnLetter).IsEmpty()
+                    && row.Cell(StartedTimeColumnLetter).IsEmpty()
+                    && row.Cell(EndedTimeColumnLetter).IsEmpty())
                     continue;
 
                 // 日付列
-                if (!row.Cell("B").TryGetValue(out int attendanceDay))
+                if (!row.Cell(DayColumnLetter).TryGetValue(out int attendanceDay))
                 {
-                    string msg = $"日付が取得できません シート:{targetSheet.Name}, セル:{row.Cell("B").Address}";
+                    string msg = $"日付が取得できません シート:{targetSheet.Name}, セル:{row.Cell(DayColumnLetter).Address}";
                     logger.Error(msg);
                     throw new AttendanceTableServiceException(msg);
                 }
@@ -60,7 +69,7 @@ namespace Wada.AttendanceSpreadSheet
                 DateTime date = new(attendanceYear.Value, attendanceMonth.Value, attendanceDay);
                 if (date.Year != attendanceYear.Value || date.Month != attendanceMonth.Value)
                 {
-                    string msg = $"日付の値が範囲を超えています シート:{targetSheet.Name}, セル:{row.Cell("B").Address}";
+                    string msg = $"日付の値が範囲を超えています シート:{targetSheet.Name}, セル:{row.Cell(DayColumnLetter).Address}";
                     logger.Error(msg);
                     throw new AttendanceTableServiceException(msg);
                 }
@@ -68,21 +77,22 @@ namespace Wada.AttendanceSpreadSheet
                 AttendanceTime? startTime = null;
                 AttendanceTime? endTime = null;
                 TimeSpan? restTime = null;
-                if (!row.Cell("O").IsEmpty() && !row.Cell("P").IsEmpty() && !row.Cell("Q").IsEmpty())
+                if (!row.Cell(StartedTimeColumnLetter).IsEmpty()
+                    && !row.Cell(EndedTimeColumnLetter).IsEmpty())
                 {
                     // 始業時間列
-                    if (!row.Cell("O").TryGetValue(out DateTime _startTime))
+                    if (!row.Cell(StartedTimeColumnLetter).TryGetValue(out DateTime _startTime))
                     {
-                        string msg = $"始業時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell("O").Address}";
+                        string msg = $"始業時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell(StartedTimeColumnLetter).Address}";
                         logger.Error(msg);
                         throw new AttendanceTableServiceException(msg);
                     }
                     startTime = new AttendanceTime(date + _startTime.TimeOfDay);
 
                     // 終業時間列
-                    if (!row.Cell("P").TryGetValue(out DateTime _endTime))
+                    if (!row.Cell(EndedTimeColumnLetter).TryGetValue(out DateTime _endTime))
                     {
-                        string msg = $"終業時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell("P").Address}";
+                        string msg = $"終業時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell(EndedTimeColumnLetter).Address}";
                         logger.Error(msg);
                         throw new AttendanceTableServiceException(msg);
                     }
@@ -91,9 +101,9 @@ namespace Wada.AttendanceSpreadSheet
                     endTime = new AttendanceTime(date + _endTime.TimeOfDay);
 
                     // 休憩時間列
-                    if (!row.Cell("Q").TryGetValue(out DateTime _restTime))
+                    if (!row.Cell(RestTimeColumnLetter).TryGetValue(out DateTime _restTime))
                     {
-                        string msg = $"休憩時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell("Q").Address}";
+                        string msg = $"休憩時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell(RestTimeColumnLetter).Address}";
                         logger.Error(msg);
                         throw new AttendanceTableServiceException(msg);
                     }
@@ -101,9 +111,9 @@ namespace Wada.AttendanceSpreadSheet
                 }
 
                 // 勤務列
-                if (!row.Cell("D").TryGetValue(out string _dayOffValue))
+                if (!row.Cell(DayOffColumnLetter).TryGetValue(out string _dayOffValue))
                 {
-                    string msg = $"勤務が取得できません シート:{targetSheet.Name}, セル:{row.Cell("D").Address}";
+                    string msg = $"勤務が取得できません シート:{targetSheet.Name}, セル:{row.Cell(DayOffColumnLetter).Address}";
                     logger.Error(msg);
                     throw new AttendanceTableServiceException(msg);
                 }
@@ -112,6 +122,16 @@ namespace Wada.AttendanceSpreadSheet
                     // 遅刻早退の判定
                     dayOff = DetermineLateEarly(startTime.Value, endTime.Value);
 
+                // 弁当列
+                if (!row.Cell(OrderedLunchBoxColumnLetter).TryGetValue(out string _orderedLunchBox))
+                {
+                    string msg = $"弁当が取得できません シート:{targetSheet.Name}, セル:{row.Cell(OrderedLunchBoxColumnLetter).Address}";
+                    logger.Error(msg);
+                    throw new AttendanceTableServiceException(msg);
+                }
+                OrderedLunchBox orderedLunchBox = ConvertOrderedLunchBox(_orderedLunchBox);
+
+
                 AttendanceRecord attendanceRecord = new(
                     new AttendanceDay(attendanceYear, attendanceMonth, attendanceDay),
                     FindByDay(date),
@@ -119,7 +139,7 @@ namespace Wada.AttendanceSpreadSheet
                     startTime,
                     endTime,
                     restTime,
-                    OrderedLunchBox.None
+                    orderedLunchBox
                     );
                 attendanceTable.AttendanceRecords.Add(attendanceRecord);
             }
@@ -128,6 +148,12 @@ namespace Wada.AttendanceSpreadSheet
 
             return attendanceTable;
         }
+
+        private OrderedLunchBox ConvertOrderedLunchBox(string orderedLunchBox) => orderedLunchBox switch
+        {
+            "注" => OrderedLunchBox.Orderd,
+            _ => OrderedLunchBox.None,
+        };
 
         private static DayOffClassification DetermineLateEarly(DateTime startTime, DateTime endTime)
         {
@@ -140,7 +166,7 @@ namespace Wada.AttendanceSpreadSheet
             DateTime startNightShift = startTime.Date.AddHours(20);
 
             TimeSpan timeSpan = endTime - startTime;
-            return timeSpan.TotalHours > 9
+            return timeSpan.TotalHours >= 9
                 ? DayOffClassification.None
                 : startTime == startGeneralShift || startTime == startLateShift || startTime == startNightShift
                     ? DayOffClassification.EarlyLeave
