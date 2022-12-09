@@ -13,7 +13,7 @@ namespace DetermineDifferenceApplication
 {
     public interface IDetermineDifferenceUseCase
     {
-        Task<Dictionary<uint, List<string>>> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month);
+        Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month);
     }
     public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
     {
@@ -34,7 +34,7 @@ namespace DetermineDifferenceApplication
             this.attendanceTableRepository = attendanceTableRepository;
         }
 
-        public async Task<Dictionary<uint, List<string>>> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
+        public async Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
         {
             logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
 
@@ -47,12 +47,28 @@ namespace DetermineDifferenceApplication
             if (employees == null)
                 throw new Exception();
             // メモリ上に展開しておいてから照合する関数
-            uint mutchEmployee(uint id) => employees!
-                .SingleOrDefault(x => x.EmployeeNumber == id)
-                !.AttendancePersonalCode;
+            uint mutchEmployee(uint id)
+            {
+                try
+                {
+                    return employees!
+                        .Single(x => x.EmployeeNumber == id)
+                        !.AttendancePersonalCode;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    string msg = $"社員番号対応表に該当がありません 社員番号: {id}";
+                    logger.Error(msg, ex);
+                    throw new EmployeeNumberNotFoundException(msg, ex);
+                }
+            }
 
             // 勤怠表を取得する
-            Regex spreadSheetName = new($"{year}" + @"年度_勤怠表_\w+\.xlsx$");
+            Regex spreadSheetName = new($"{year}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
+            var geko = attendanceTableDirectory
+                .Where(x => Directory.Exists(x))
+                .Select(x => Directory.EnumerateFiles(x))
+                .SelectMany(x => x);
             IEnumerable<Task<WorkedMonthlyReport>> taskXLSs = attendanceTableDirectory
                 .Where(x => Directory.Exists(x))
                 .Select(x => Directory.EnumerateFiles(x))
@@ -133,7 +149,7 @@ namespace DetermineDifferenceApplication
             Dictionary<uint, List<string>> differntialMaps = new();
             foreach (var item in unionDifferentialReports)
             {
-                List<string> differentialMsgs = new List<string>();
+                List<string> differentialMsgs = new();
                 if (!item.AttendanceDay)
                     differentialMsgs.Add("出勤日数");
                 if (!item.HolidayWorkedDay)
@@ -175,7 +191,7 @@ namespace DetermineDifferenceApplication
 
             logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
-            return differntialMaps;
+            return (csvReports.Count(), xlsReports.Count(), differntialMaps);
         }
     }
 }

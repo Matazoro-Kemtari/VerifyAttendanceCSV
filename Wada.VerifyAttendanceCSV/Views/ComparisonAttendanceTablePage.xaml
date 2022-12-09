@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Wada.VerifyAttendanceCSV.Views.ComparisonAttendanceTablePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Wada.VerifyAttendanceCSV.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:viewmodels="clr-namespace:Wada.VerifyAttendanceCSV.ViewModels"
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:Background="LightGray"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ComparisonAttendanceTablePageViewModel}"
+             prism:ViewModelLocator.AutoWireViewModel="True" >
+    <DockPanel LastChildFill="True">
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="5"
+                   Text="勤務表を指定してください"/>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <!--
+            <Button Content="戻る(_B)"
+                    MinWidth="70"
+                    Margin="5,5,5,5"
+                    Padding="5,5,5,5"
+                    Command="{Binding PreviousViewCommand}"/>
+            -->
+            <Button Content="進む(_N)"
+                    MinWidth="70"
+                    Margin="5,5,5,5"
+                    Padding="5,5,5,5"
+                    Command="{Binding NextViewCommand}"/>
+        </StackPanel>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Margin="5"
+                       Text="CSVファイル" />
+            <TextBox Grid.Row="1"
+                     Margin="5"
+                     Text="{Binding CSVPath.Value, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                     InputMethod.PreferredImeState="Off"/>
+            <TextBlock Grid.Row="2"
+                       Margin="5"
+                       Text="勤務表エクセルのフォルダ" />
+            <TextBox Grid.Row="3"
+                     Margin="5"
+                     Text="{Binding XLSXPath.Value, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     InputMethod.PreferredImeState="Off"
+                     TextWrapping="Wrap" />
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal">
+                <TextBlock Margin="5"
+                           Text="年"/>
+                <TextBox Margin="5"
+                         Text="{Binding Year.Value}"/>
+                <TextBlock Margin="5"
+                           Text="月"/>
+                <TextBox Margin="5"
+                         Text="{Binding Month.Value}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="5"
+                               Text="自社休日カレンダー最終日付"/>
+                    <TextBlock Margin="5"
+                           Text="{Binding HolidayMaxDate.Value, StringFormat={}{0:yyyy年M月d日}}"/>
+                </StackPanel>
+                <TextBlock Margin="5"
+                           Text="この日以降照合できません CSVで登録機能は予定しています"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</UserControl>

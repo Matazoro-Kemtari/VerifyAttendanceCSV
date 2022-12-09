@@ -71,7 +71,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
             decimal regularHolidayWorkedHour = CountRegularHolidayWorkedHour(attendanceTable);
             decimal anomalyHour = CountAnomalyHour(attendanceTable);
             int lunchBoxOrderedTime = CountLunchBoxOrderedTime(attendanceTable);
-
+            
             return new(
                 convertParsonalCode(attendanceTable.EmployeeNumber),
                 attendanceDay,

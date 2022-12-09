@@ -18,7 +18,7 @@ namespace Wada.AttendanceCSV
         {
             logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
 
-            StreamReader reader = new(path, Encoding.GetEncoding("shift_jis"));
+            StreamReader reader = new(path);
 
             logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 

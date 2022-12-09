@@ -2,13 +2,17 @@
 using Microsoft.Extensions.Configuration;
 using NLog;
 using Prism.Ioc;
+using Prism.Modularity;
+using RegisterOwnCompanyHolidayApplication;
 using System.IO;
 using System.Windows;
 using VerifyAttendanceCSV.Views;
 using Wada.AttendanceCSV;
 using Wada.AttendanceSpreadSheet;
 using Wada.AttendanceTableService;
+using Wada.CommonDialogLib;
 using Wada.DesignDepartmentDataBse;
+using Wada.VerifyAttendanceCSV;
 
 namespace VerifyAttendanceCSV
 {
@@ -40,9 +44,22 @@ namespace VerifyAttendanceCSV
             // DI 勤怠CSV
             _ = containerRegistry.Register<IStreamReaderOpener, StreamReaderOpener>();
             _ = containerRegistry.Register<IEmployeeAttendanceRepository, EmployeeAttendanceRepository>();
+            // 自社休日
+            _ = containerRegistry.Register<IFetchOwnCompanyHolidayMaxDateUseCase, FetchOwnCompanyHolidayMaxDateUseCase>();
 
             // 勤怠エクセルと給与システムCSVを同異判定するUseCase
             _ = containerRegistry.Register<IDetermineDifferenceUseCase, DetermineDifferenceUseCase>();
+
+            // Presentation
+            _ = containerRegistry.Register<ICommonDialogSwitcher, CommonDialogSwitcher>();
+        }
+
+        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+        {
+            base.ConfigureModuleCatalog(moduleCatalog);
+
+            // Moduleを読み込む
+            moduleCatalog.AddModule<VerifyAttendanceCSVModule>(InitializationMode.WhenAvailable);
         }
 
         // 設定情報ライブラリを作る
