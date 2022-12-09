@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NLog;
-using NLog.Targets;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
 using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
@@ -77,10 +76,10 @@ namespace DetermineDifferenceApplication.Tests
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var actual = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var (csvCount, xlsxCount, differntialMaps) = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
 
             // then
-            Assert.IsTrue(actual.Count == 0);
+            Assert.IsTrue(differntialMaps.Count == 0);
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
@@ -188,11 +187,12 @@ namespace DetermineDifferenceApplication.Tests
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var actual = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            (int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps) =
+                await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
 
             // then
-            Assert.IsTrue(actual.Count == 1);
-            Assert.IsTrue(actual[4u].Count == 17);
+            Assert.IsTrue(differntialMaps.Count == 1);
+            Assert.IsTrue(differntialMaps[4u].Count == 17);
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
@@ -257,11 +257,11 @@ namespace DetermineDifferenceApplication.Tests
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var actual = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var (csvCount, xlsxCount, differntialMaps) = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
 
             // then
-            Assert.IsTrue(actual.Count == 1);
-            Assert.IsTrue(actual[4u].Count == 17);
+            Assert.IsTrue(differntialMaps.Count == 1);
+            Assert.IsTrue(differntialMaps[4u].Count == 17);
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));

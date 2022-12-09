@@ -13,7 +13,7 @@ namespace DetermineDifferenceApplication
 {
     public interface IDetermineDifferenceUseCase
     {
-        Task<Dictionary<uint, List<string>>> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month);
+        Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month);
     }
     public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
     {
@@ -34,7 +34,7 @@ namespace DetermineDifferenceApplication
             this.attendanceTableRepository = attendanceTableRepository;
         }
 
-        public async Task<Dictionary<uint, List<string>>> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
+        public async Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
         {
             logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
 
@@ -64,7 +64,11 @@ namespace DetermineDifferenceApplication
             }
 
             // 勤怠表を取得する
-            Regex spreadSheetName = new($"{year}" + @"年度_(勤務表|工数記録)_.+\.xlsx");
+            Regex spreadSheetName = new($"{year}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
+            var geko = attendanceTableDirectory
+                .Where(x => Directory.Exists(x))
+                .Select(x => Directory.EnumerateFiles(x))
+                .SelectMany(x => x);
             IEnumerable<Task<WorkedMonthlyReport>> taskXLSs = attendanceTableDirectory
                 .Where(x => Directory.Exists(x))
                 .Select(x => Directory.EnumerateFiles(x))
@@ -187,7 +191,7 @@ namespace DetermineDifferenceApplication
 
             logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
-            return differntialMaps;
+            return (csvReports.Count(), xlsReports.Count(), differntialMaps);
         }
     }
 }

@@ -14,7 +14,7 @@
     <DockPanel LastChildFill="True">
         <TextBlock DockPanel.Dock="Top"
                    Margin="5"
-                   Text="勤怠表を指定してください"/>
+                   Text="勤務表を指定してください"/>
 
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <!--
@@ -38,6 +38,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Margin="5"
@@ -48,7 +49,7 @@
                      InputMethod.PreferredImeState="Off"/>
             <TextBlock Grid.Row="2"
                        Margin="5"
-                       Text="エクセルのフォルダ" />
+                       Text="勤務表エクセルのフォルダ" />
             <TextBox Grid.Row="3"
                      Margin="5"
                      Text="{Binding XLSXPath.Value, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
@@ -57,18 +58,27 @@
                      HorizontalScrollBarVisibility="Auto"
                      InputMethod.PreferredImeState="Off"
                      TextWrapping="Wrap" />
-            <StackPanel Grid.Row="6"
+            <StackPanel Grid.Row="4"
                         Orientation="Horizontal">
                 <TextBlock Margin="5"
                            Text="年"/>
                 <TextBox Margin="5"
-                         Text="2022"/>
+                         Text="{Binding Year.Value}"/>
                 <TextBlock Margin="5"
                            Text="月"/>
                 <TextBox Margin="5"
-                         Text="2"/>
+                         Text="{Binding Month.Value}"/>
             </StackPanel>
-
+            <StackPanel Grid.Row="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="5"
+                               Text="自社休日カレンダー最終日付"/>
+                    <TextBlock Margin="5"
+                           Text="{Binding HolidayMaxDate.Value, StringFormat={}{0:yyyy年M月d日}}"/>
+                </StackPanel>
+                <TextBlock Margin="5"
+                           Text="この日以降照合できません CSVで登録機能は予定しています"/>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </UserControl>

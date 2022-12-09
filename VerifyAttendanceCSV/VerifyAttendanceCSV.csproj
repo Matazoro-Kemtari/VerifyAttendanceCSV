@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DetermineDifferenceApplication\DetermineDifferenceApplication.csproj" />
+    <ProjectReference Include="..\RegisterOwnCompanyHolidayApplication\RegisterOwnCompanyHolidayApplication.csproj" />
     <ProjectReference Include="..\Wada.AttendanceCSV\Wada.AttendanceCSV.csproj" />
     <ProjectReference Include="..\Wada.AttendanceSpreadSheet\Wada.AttendanceSpreadSheet.csproj" />
     <ProjectReference Include="..\Wada.AttendanceTableService\Wada.AttendanceTableService.csproj" />
@@ -27,6 +28,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

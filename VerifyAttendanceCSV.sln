@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DetermineDifferenceApplicat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.AttendanceCSVTests", "Wada.AttendanceCSVTests\Wada.AttendanceCSVTests.csproj", "{D3B284C4-5E49-4109-AC02-3440FC9B7A1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterOwnCompanyCalendarApplication", "RegisterOwnCompanyCalendarApplication\RegisterOwnCompanyCalendarApplication.csproj", "{9297CA21-4E57-44E1-888E-CAB442E855CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterOwnCompanyHolidayApplication", "RegisterOwnCompanyHolidayApplication\RegisterOwnCompanyHolidayApplication.csproj", "{9297CA21-4E57-44E1-888E-CAB442E855CB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.OrderDataBase", "Wada.OrderDataBase\Wada.OrderDataBase.csproj", "{6BF1F728-FD19-48D9-9E28-1BEE4BF2D2DB}"
 EndProject
@@ -44,6 +44,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.VerifyAttendanceCSV", "Wada.VerifyAttendanceCSV\Wada.VerifyAttendanceCSV.csproj", "{77089DAF-B8D3-43C3-BDF6-F3022B104860}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.CommonDialogLib", "Wada.CommonDialogLib\Wada.CommonDialogLib.csproj", "{D9149DF1-AC7F-4B5F-AB9C-784111F4703F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterOwnCompanyHolidayApplicationTests", "RegisterOwnCompanyHolidayApplicationTests\RegisterOwnCompanyHolidayApplicationTests.csproj", "{0C3A686D-B6CB-4C38-878C-D93F0EEEE727}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,10 @@ Global
 		{D9149DF1-AC7F-4B5F-AB9C-784111F4703F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9149DF1-AC7F-4B5F-AB9C-784111F4703F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9149DF1-AC7F-4B5F-AB9C-784111F4703F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C3A686D-B6CB-4C38-878C-D93F0EEEE727}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C3A686D-B6CB-4C38-878C-D93F0EEEE727}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C3A686D-B6CB-4C38-878C-D93F0EEEE727}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C3A686D-B6CB-4C38-878C-D93F0EEEE727}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +146,7 @@ Global
 		{23B60C52-7336-4F6D-A54F-8158D50A60D3} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
 		{77089DAF-B8D3-43C3-BDF6-F3022B104860} = {98097411-AAF1-4A6A-95E5-13A406718B98}
 		{D9149DF1-AC7F-4B5F-AB9C-784111F4703F} = {98097411-AAF1-4A6A-95E5-13A406718B98}
+		{0C3A686D-B6CB-4C38-878C-D93F0EEEE727} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6BBC0BD-A5F6-44C4-B7A6-7FAD6289890C}

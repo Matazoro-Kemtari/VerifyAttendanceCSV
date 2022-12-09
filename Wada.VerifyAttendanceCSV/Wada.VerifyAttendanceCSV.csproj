@@ -11,5 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DetermineDifferenceApplication\DetermineDifferenceApplication.csproj" />
+    <ProjectReference Include="..\RegisterOwnCompanyHolidayApplication\RegisterOwnCompanyHolidayApplication.csproj" />
   </ItemGroup>
 </Project>

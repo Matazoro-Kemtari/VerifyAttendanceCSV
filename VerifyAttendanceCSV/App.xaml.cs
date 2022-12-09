@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using NLog;
 using Prism.Ioc;
 using Prism.Modularity;
+using RegisterOwnCompanyHolidayApplication;
 using System.IO;
 using System.Windows;
 using VerifyAttendanceCSV.Views;
@@ -43,6 +44,8 @@ namespace VerifyAttendanceCSV
             // DI 勤怠CSV
             _ = containerRegistry.Register<IStreamReaderOpener, StreamReaderOpener>();
             _ = containerRegistry.Register<IEmployeeAttendanceRepository, EmployeeAttendanceRepository>();
+            // 自社休日
+            _ = containerRegistry.Register<IFetchOwnCompanyHolidayMaxDateUseCase, FetchOwnCompanyHolidayMaxDateUseCase>();
 
             // 勤怠エクセルと給与システムCSVを同異判定するUseCase
             _ = containerRegistry.Register<IDetermineDifferenceUseCase, DetermineDifferenceUseCase>();
