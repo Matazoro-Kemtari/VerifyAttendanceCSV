@@ -55,7 +55,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
         /// <returns></returns>
         public static WorkedMonthlyReport CreateForAttendanceTable(AttendanceTable attendanceTable, Func<uint, uint> convertParsonalCode)
         {
-            int attendanceDay = CountAttendanceDay(attendanceTable);
+            decimal attendanceDay = CountAttendanceDay(attendanceTable);
             int holidayWorkedDay = CountHolidayWorkedDay(attendanceTable);
             decimal paidLeaveDay = CountPaidLeaveDay(attendanceTable);
             int absenceDay = CountAbsenceDay(attendanceTable);
@@ -71,7 +71,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
             decimal regularHolidayWorkedHour = CountRegularHolidayWorkedHour(attendanceTable);
             decimal anomalyHour = CountAnomalyHour(attendanceTable);
             int lunchBoxOrderedTime = CountLunchBoxOrderedTime(attendanceTable);
-            
+
             return new(
                 convertParsonalCode(attendanceTable.EmployeeNumber),
                 attendanceDay,
@@ -418,18 +418,20 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
         /// </summary>
         /// <param name="attendanceTable"></param>
         /// <returns></returns>
-        private static int CountAttendanceDay(AttendanceTable attendanceTable)
+        private static decimal CountAttendanceDay(AttendanceTable attendanceTable)
         {
             return attendanceTable.AttendanceRecords
-                .Count(x =>
-                x.DayOffClassification == DayOffClassification.None
-                || x.DayOffClassification == DayOffClassification.AMPaidLeave
-                || x.DayOffClassification == DayOffClassification.PMPaidLeave
-                || x.DayOffClassification == DayOffClassification.Lateness
-                || x.DayOffClassification == DayOffClassification.EarlyLeave
-                || x.DayOffClassification == DayOffClassification.TransferedAttendance
-                || x.DayOffClassification == DayOffClassification.AMBusinessSuspension
-                || x.DayOffClassification == DayOffClassification.PMBusinessSuspension);
+                .Sum(x =>
+                {
+                    if (x.StartedTime == null || x.EndedTime == null || x.RestTime == null)
+                        return 0m;
+
+                    if (x.DayOffClassification == DayOffClassification.AMPaidLeave
+                    || x.DayOffClassification == DayOffClassification.PMPaidLeave)
+                        return 0.5m;
+
+                    return 1m;
+                });
         }
 
         public Ulid ID { get; }
