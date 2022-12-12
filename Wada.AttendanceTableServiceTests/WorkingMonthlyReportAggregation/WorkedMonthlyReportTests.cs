@@ -19,7 +19,7 @@ namespace Wada.AttendanceTableServiceTests.WorkingMonthlyReportAggregation
 
             // when
             Assert.AreEqual(1500u, actual.AttendancePersonalCode);
-            Assert.AreEqual(22m, actual.AttendanceDay);
+            Assert.AreEqual(18m, actual.AttendanceDay);
             Assert.AreEqual(2m, actual.HolidayWorkedDay);
             Assert.AreEqual(2m, actual.PaidLeaveDay);
             Assert.AreEqual(1m, actual.AbsenceDay);
