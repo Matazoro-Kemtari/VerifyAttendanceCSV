@@ -131,8 +131,8 @@ namespace Wada.AttendanceTableService.AttendanceTableAggregation
                 {13,DayOffClassification.Lateness},
                 {14,DayOffClassification.EarlyLeave},
                 {15,DayOffClassification.BusinessSuspension},
-                {16,DayOffClassification.AMBusinessSuspension},
-                {17,DayOffClassification.PMBusinessSuspension},
+                {16,DayOffClassification.BusinessSuspension},
+                {17,DayOffClassification.BusinessSuspension},
                 {18,DayOffClassification.None},
                 {19,DayOffClassification.None},
                 {20,DayOffClassification.None},
@@ -164,8 +164,8 @@ namespace Wada.AttendanceTableService.AttendanceTableAggregation
                 {13,new DateTime?[] {DateTime.Parse("2022/06/13 08:30:00"),DateTime.Parse("2022/06/13 17:00:00")}},
                 {14,new DateTime?[] {DateTime.Parse("2022/06/14 08:00:00"),DateTime.Parse("2022/06/14 16:30:00")}},
                 {15,new DateTime?[] {null,null}},
-                {16,new DateTime?[] {DateTime.Parse("2022/06/16 13:00:00"),DateTime.Parse("2022/06/16 17:00:00")}},
-                {17,new DateTime?[] {DateTime.Parse("2022/06/17 08:00:00"),DateTime.Parse("2022/06/17 12:00:00")}},
+                {16,new DateTime?[] {null,null}},
+                {17,new DateTime?[] {null,null}},
                 {18,new DateTime?[] {null,null}},
                 {19,new DateTime?[] {null,null}},
                 {20,new DateTime?[] {DateTime.Parse("2022/06/20 22:00:00"),DateTime.Parse("2022/06/21 10:00:01")}},
@@ -192,15 +192,23 @@ namespace Wada.AttendanceTableService.AttendanceTableAggregation
                     DayOfWeek.Saturday => HolidayClassification.RegularHoliday,
                     _ => HolidayClassification.None,
                 };
+
 #pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
 #pragma warning disable CS8629 // Null 許容値型は Null になる場合があります。
+                TimeSpan? rest = null;
+                if (attendance.GetValueOrDefault(i + 1)[0].HasValue)
+                {
+                    TimeSpan _rest = attendance.GetValueOrDefault(i + 1)[1].Value - attendance.GetValueOrDefault(i + 1)[0].Value;
+                    rest = _rest.TotalHours > 4 ? new TimeSpan(1, 0, 0) : null;
+                }
+
                 AttendanceRecord ar = new(
                     new AttendanceDay(_aY, _aM, addDay.Day),
                     holiday,
                     dayOffMap.GetValueOrDefault(i + 1),
                     attendance.GetValueOrDefault(i + 1)[0].HasValue ? new AttendanceTime(attendance.GetValueOrDefault(i + 1)[0].Value) : null,
                     attendance.GetValueOrDefault(i + 1)[1].HasValue ? new AttendanceTime(attendance.GetValueOrDefault(i + 1)[1].Value) : null,
-                    attendance.GetValueOrDefault(i + 1)[0].HasValue ? new TimeSpan(1, 0, 0) : null,
+                    rest,
                     holiday == HolidayClassification.None & attendance.GetValueOrDefault(i + 1)[0].HasValue ? OrderedLunchBox.Orderd : OrderedLunchBox.None
                     );
 #pragma warning restore CS8629 // Null 許容値型は Null になる場合があります。

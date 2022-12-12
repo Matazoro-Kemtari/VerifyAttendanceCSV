@@ -127,16 +127,6 @@
         /// 休業
         /// </summary>
         BusinessSuspension,
-
-        /// <summary>
-        /// 午前休業
-        /// </summary>
-        AMBusinessSuspension,
-
-        /// <summary>
-        /// 午後休業
-        /// </summary>
-        PMBusinessSuspension,
     }
 
     public record class AttendanceTime

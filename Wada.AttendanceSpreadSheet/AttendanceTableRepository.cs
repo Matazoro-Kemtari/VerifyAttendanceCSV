@@ -183,8 +183,6 @@ namespace Wada.AttendanceSpreadSheet
             "休出" => DayOffClassification.HolidayWorked,
             "欠勤" => DayOffClassification.Absence,
             "休業" => DayOffClassification.BusinessSuspension,
-            "AM休業" => DayOffClassification.AMBusinessSuspension,
-            "PM休業" => DayOffClassification.PMBusinessSuspension,
             "特休有給" => DayOffClassification.PaidSpecialLeave,
             "特休無給" => DayOffClassification.UnpaidSpecialLeave,
             _ => DayOffClassification.None,

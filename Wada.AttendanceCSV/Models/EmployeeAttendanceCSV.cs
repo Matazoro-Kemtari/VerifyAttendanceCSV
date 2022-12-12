@@ -23,9 +23,9 @@ namespace Wada.AttendanceCSV.Models
         [Index(8)]
         int PaidSpecialLeaveDay,
         [Index(9)]
-        decimal EducationDay,
+        int EducationDay,
         [Index(10)]
-        decimal BusinessSuspensionDay,
+        int BusinessSuspensionDay,
         [Index(11)]
         int AbsenceDay,
         [Index(12)]

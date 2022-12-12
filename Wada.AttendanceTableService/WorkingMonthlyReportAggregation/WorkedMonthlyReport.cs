@@ -16,8 +16,8 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
             int paidSpecialLeaveDay,
             int latenessTime,
             int earlyLeaveTime,
-            decimal businessSuspensionDay,
-            decimal educationDay,
+            int businessSuspensionDay,
+            int educationDay,
             decimal regularWorkedHour,
             decimal overtimeHour,
             decimal lateNightWorkingHour,
@@ -63,7 +63,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
             int paidSpecialLeaveDay = CountPaidSpecialLeaveDay(attendanceTable);
             int latenessTime = CountLatenessTime(attendanceTable);
             int earlyLeaveTime = CounTearlyLeaveTime(attendanceTable);
-            decimal businessSuspensionDay = CountBusinessSuspensionDay(attendanceTable);
+            int businessSuspensionDay = CountBusinessSuspensionDay(attendanceTable);
             decimal regularWorkedHour = CountRegularWorkedHour(attendanceTable);
             decimal overtimeHour = CountOvertimeHour(attendanceTable);
             decimal lateNightWorkingHour = CountLateNightWorkingHour(attendanceTable);
@@ -292,9 +292,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
                 || x.DayOffClassification == DayOffClassification.AMPaidLeave
                 || x.DayOffClassification == DayOffClassification.PMPaidLeave
                 || x.DayOffClassification == DayOffClassification.Lateness
-                || x.DayOffClassification == DayOffClassification.EarlyLeave
-                || x.DayOffClassification == DayOffClassification.AMBusinessSuspension
-                || x.DayOffClassification == DayOffClassification.PMBusinessSuspension)
+                || x.DayOffClassification == DayOffClassification.EarlyLeave)
                 .Sum(x =>
                 {
                     TimeSpan t = x.EndedTime!.Value - x.StartedTime!.Value;
@@ -311,17 +309,11 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
         /// </summary>
         /// <param name="attendanceTable"></param>
         /// <returns></returns>
-        private static decimal CountBusinessSuspensionDay(AttendanceTable attendanceTable)
+        private static int CountBusinessSuspensionDay(AttendanceTable attendanceTable)
         {
-            int businessSuspensionDays = attendanceTable.AttendanceRecords
+            return attendanceTable.AttendanceRecords
                 .Count(x =>
                 x.DayOffClassification == DayOffClassification.BusinessSuspension);
-            int businessSuspensionHalfDays = attendanceTable.AttendanceRecords
-                .Count(x =>
-                x.DayOffClassification == DayOffClassification.AMBusinessSuspension
-                || x.DayOffClassification == DayOffClassification.PMBusinessSuspension);
-
-            return businessSuspensionDays + businessSuspensionHalfDays * 0.5m;
         }
 
         /// <summary>
@@ -484,12 +476,12 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
         /// <summary>
         /// 休業日数
         /// </summary>
-        public decimal BusinessSuspensionDay { get; init; }
+        public int BusinessSuspensionDay { get; init; }
 
         /// <summary>
         /// 教育日数
         /// </summary>
-        public decimal EducationDay { get; } = 0m;
+        public int EducationDay { get; } = 0;
 
         /// <summary>
         /// 所定時間
