@@ -21,6 +21,9 @@ namespace DetermineDifferenceApplication.Tests
             uint employeeNumber = (uint)DotNetEnv.Env.GetInt("EMPLOYEE_NUMBER");
             uint attendancePersonalCode = (uint)DotNetEnv.Env.GetInt("PERSONAL_CODE");
 
+            // ロガーモック
+            Mock<ILogger> mock_logger = new();
+
             // ストリームリーダーモック
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
@@ -66,6 +69,7 @@ namespace DetermineDifferenceApplication.Tests
             // when
             IDetermineDifferenceUseCase determineDifference =
             new DetermineDifferenceUseCase(
+                mock_logger.Object,
                 mock_stream_reader.Object,
                 mock_stream.Object,
                 mock_match_employee.Object,
@@ -128,6 +132,9 @@ namespace DetermineDifferenceApplication.Tests
             uint employeeNumber = (uint)DotNetEnv.Env.GetInt("EMPLOYEE_NUMBER");
             uint attendancePersonalCode = (uint)DotNetEnv.Env.GetInt("PERSONAL_CODE");
 
+            // ロガーモック
+            Mock<ILogger> mock_logger = new();
+
             // ストリームリーダーモック
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
@@ -173,6 +180,7 @@ namespace DetermineDifferenceApplication.Tests
             // when
             IDetermineDifferenceUseCase determineDifference =
             new DetermineDifferenceUseCase(
+                mock_logger.Object,
                 mock_stream_reader.Object,
                 mock_stream.Object,
                 mock_match_employee.Object,
@@ -199,6 +207,9 @@ namespace DetermineDifferenceApplication.Tests
             string[] paths = DotNetEnv.Env.GetString("TEST_XLS_PATHS").Split(';');
             uint employeeNumber = (uint)DotNetEnv.Env.GetInt("EMPLOYEE_NUMBER");
             uint attendancePersonalCode = (uint)DotNetEnv.Env.GetInt("PERSONAL_CODE");
+
+            // ロガーモック
+            Mock<ILogger> mock_logger = new();
 
             // ストリームリーダーモック
             Mock<IStreamReaderOpener> mock_stream_reader = new();
@@ -239,6 +250,7 @@ namespace DetermineDifferenceApplication.Tests
             // when
             IDetermineDifferenceUseCase determineDifference =
             new DetermineDifferenceUseCase(
+                mock_logger.Object,
                 mock_stream_reader.Object,
                 mock_stream.Object,
                 mock_match_employee.Object,
@@ -264,6 +276,9 @@ namespace DetermineDifferenceApplication.Tests
             string[] paths = DotNetEnv.Env.GetString("TEST_XLS_PATHS").Split(';');
             uint employeeNumber = (uint)DotNetEnv.Env.GetInt("EMPLOYEE_NUMBER");
             uint attendancePersonalCode = (uint)DotNetEnv.Env.GetInt("PERSONAL_CODE");
+
+            // ロガーモック
+            Mock<ILogger> mock_logger = new();
 
             // ストリームリーダーモック
             Mock<IStreamReaderOpener> mock_stream_reader = new();
@@ -301,6 +316,7 @@ namespace DetermineDifferenceApplication.Tests
             // when
             IDetermineDifferenceUseCase determineDifference =
             new DetermineDifferenceUseCase(
+                mock_logger.Object,
                 mock_stream_reader.Object,
                 mock_stream.Object,
                 mock_match_employee.Object,
