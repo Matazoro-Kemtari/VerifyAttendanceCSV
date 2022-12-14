@@ -1,7 +1,7 @@
-﻿using NLog;
-using System.Reflection;
+﻿using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 
+[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace RegisterOwnCompanyHolidayApplication
 {
     public interface IFetchOwnCompanyHolidayMaxDateUseCase
@@ -11,23 +11,17 @@ namespace RegisterOwnCompanyHolidayApplication
 
     public class FetchOwnCompanyHolidayMaxDateUseCase : IFetchOwnCompanyHolidayMaxDateUseCase
     {
-        private readonly ILogger logger;
         private readonly IOwnCompanyHolidayRepository ownCompanyHolidayRepository;
 
-        public FetchOwnCompanyHolidayMaxDateUseCase(ILogger logger, IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
+        public FetchOwnCompanyHolidayMaxDateUseCase(IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
         {
-            this.logger = logger;
             this.ownCompanyHolidayRepository = ownCompanyHolidayRepository;
         }
 
+        [Logging]
         public async Task<DateTime> ExecuteAsyc()
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             DateTime maxDate = await Task.Run(() => ownCompanyHolidayRepository.MaxDate());
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
-
             return maxDate;
         }
     }

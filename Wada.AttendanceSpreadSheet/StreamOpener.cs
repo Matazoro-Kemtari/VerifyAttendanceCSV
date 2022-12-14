@@ -1,41 +1,28 @@
-﻿using NLog;
-using System.Reflection;
+﻿using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 
 namespace Wada.AttendanceSpreadSheet
 {
     public class StreamOpener : IStreamOpener
     {
-        private readonly ILogger logger;
-
-        public StreamOpener(ILogger logger)
-        {
-            this.logger = logger;
-        }
-
+        [Logging]
         public Stream Open(string path)
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             Stream reader;
             try
             {
                 reader = OpenFileStream(path);
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException ex)
             {
                 string msg = "ファイルが見つかりません";
-                logger.Error(e, msg);
-                throw new AttendanceTableServiceException(msg);
+                throw new AttendanceTableServiceException(msg, ex);
             }
-            catch (IOException e)
+            catch (IOException ex)
             {
                 string msg = "ファイルが使用中です";
-                logger.Error(e, msg);
-                throw new AttendanceTableServiceException(msg);
+                throw new AttendanceTableServiceException(msg, ex);
             }
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
             return reader;
         }

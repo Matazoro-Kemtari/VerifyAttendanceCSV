@@ -1,32 +1,27 @@
-﻿using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
+using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
+// https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
+[module: Logging] // <- これ重要
 namespace DetermineDifferenceApplication
 {
     public interface IDetermineDifferenceUseCase
     {
         Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month);
     }
+
     public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
     {
-        private readonly ILogger logger;
         private readonly IStreamReaderOpener streamReaderOpener;
         private readonly IStreamOpener streamOpener;
         private readonly IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository;
         private readonly IEmployeeAttendanceRepository employeeAttendanceRepository;
         private readonly IAttendanceTableRepository attendanceTableRepository;
 
-        public DetermineDifferenceUseCase(ILogger logger, IStreamReaderOpener streamReaderOpener, IStreamOpener streamOpener, IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository, IEmployeeAttendanceRepository employeeAttendanceRepository, IAttendanceTableRepository attendanceTableRepository)
+        public DetermineDifferenceUseCase(IStreamReaderOpener streamReaderOpener, IStreamOpener streamOpener, IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository, IEmployeeAttendanceRepository employeeAttendanceRepository, IAttendanceTableRepository attendanceTableRepository)
         {
-            this.logger = logger;
             this.streamReaderOpener = streamReaderOpener;
             this.streamOpener = streamOpener;
             this.matchedEmployeeNumberRepository = matchedEmployeeNumberRepository;
@@ -34,10 +29,9 @@ namespace DetermineDifferenceApplication
             this.attendanceTableRepository = attendanceTableRepository;
         }
 
+        [Logging]
         public async Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             // CSVを取得する
             StreamReader reader = streamReaderOpener.Open(csvPath);
             Task<IEnumerable<WorkedMonthlyReport>> taskCSV = Task.Run(() => employeeAttendanceRepository.ReadAll(reader));
@@ -58,7 +52,6 @@ namespace DetermineDifferenceApplication
                 catch (InvalidOperationException ex)
                 {
                     string msg = $"社員番号対応表に該当がありません 社員番号: {id}";
-                    logger.Error(msg, ex);
                     throw new EmployeeNumberNotFoundException(msg, ex);
                 }
             }
@@ -188,8 +181,6 @@ namespace DetermineDifferenceApplication
                 if (differentialMsgs.Count > 0)
                     differntialMaps.Add(item.AttendancePersonalCode, differentialMsgs);
             }
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
             return (csvReports.Count(), xlsReports.Count(), differntialMaps);
         }

@@ -1,26 +1,18 @@
 ﻿using CsvHelper;
-using NLog;
 using System.Globalization;
-using System.Reflection;
+using Wada.AOP.Logging;
 using Wada.AttendanceCSV.Models;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
+[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace Wada.AttendanceCSV
 {
     public class EmployeeAttendanceRepository : IEmployeeAttendanceRepository
     {
-        private readonly ILogger logger;
-
-        public EmployeeAttendanceRepository(ILogger logger)
-        {
-            this.logger = logger;
-        }
-
+        [Logging]
         public IEnumerable<WorkedMonthlyReport> ReadAll(StreamReader streamReader)
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-            
             var config = new CsvHelper.Configuration.CsvConfiguration(new CultureInfo("ja-JP", false))
             {
                 //ヘッダ無（デフォルトtrue）
@@ -33,11 +25,8 @@ namespace Wada.AttendanceCSV
             if (employeeAttendanceCSVs.Count == 0)
             {
                 string msg = "CSVファイルにデータがありません";
-                logger.Error(msg);
                 throw new AttendanceTableServiceException(msg);
             }
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
             return employeeAttendanceCSVs.Select(x => x.ToDomainEntity())
                 .Select(x => WorkedMonthlyReport.CreateForAttendanceCSV(x));

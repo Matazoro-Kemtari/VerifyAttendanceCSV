@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="5.1.0" />
+    <PackageReference Include="MethodDecorator.Fody" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wada.AOP.Logging\Wada.AOP.Logging.csproj" />
   </ItemGroup>
 
 </Project>

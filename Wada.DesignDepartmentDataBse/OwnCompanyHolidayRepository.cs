@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NLog;
-using System.Reflection;
+using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 using Wada.AttendanceTableService.ValueObjects;
@@ -19,10 +19,9 @@ namespace Wada.DesignDepartmentDataBse
             this.configuration = configuration;
         }
 
+        [Logging]
         public void AddRange(IEnumerable<OwnCompanyHoliday> ownCompanyHolidays)
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             DbConfig dbConfig = new(configuration);
             using var dbContext = new DbContext(dbConfig);
 
@@ -40,18 +39,14 @@ namespace Wada.DesignDepartmentDataBse
             catch (DbUpdateException ex)
             {
                 string msg = "登録済みの日付の自社カレンダーは追加・上書きできません";
-                logger.Error(ex, msg);
                 throw new AttendanceTableServiceException(msg, ex);
             }
             logger.Info($"データベースに{_additionalNumber}件追加しました");
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
         }
 
+        [Logging]
         public IEnumerable<OwnCompanyHoliday> FindByYearMonth(int year, int month)
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             DbConfig dbConfig = new(configuration);
             using var dbContext = new DbContext(dbConfig);
 
@@ -66,26 +61,20 @@ namespace Wada.DesignDepartmentDataBse
             {
                 string msg = $"自社カレンダーに該当がありませんでした "
                              + $"対象年月: {year}年{month}月";
-                logger.Error(msg);
                 throw new AttendanceTableServiceException(msg);
             }
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
             return ownHoliday.ToList();
         }
 
+        [Logging]
         public DateTime MaxDate()
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             DbConfig dbConfig = new(configuration);
             using var dbContext = new DbContext(dbConfig);
 
             var maxHoliday = dbContext.OwnCompanyHolidays!
                 .Max(x => x.HolidayDate);
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
             return maxHoliday;
         }
