@@ -10,11 +10,15 @@
     <PackageReference Include="Equals.Fody" Version="4.0.2">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="NLog" Version="5.1.0" />
+    <PackageReference Include="MethodDecorator.Fody" Version="1.1.1" />
     <PackageReference Include="ToString.Fody" Version="1.11.1">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Ulid" Version="1.2.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wada.AOP.Logging\Wada.AOP.Logging.csproj" />
   </ItemGroup>
 
 </Project>

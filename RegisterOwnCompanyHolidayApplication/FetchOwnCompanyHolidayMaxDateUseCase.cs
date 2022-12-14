@@ -1,7 +1,7 @@
 ﻿using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 
-[module: Logging] // // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
+[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace RegisterOwnCompanyHolidayApplication
 {
     public interface IFetchOwnCompanyHolidayMaxDateUseCase
