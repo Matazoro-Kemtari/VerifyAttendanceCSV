@@ -98,11 +98,13 @@ namespace Wada.AttendanceCSV.Tests
         {
             // given
             // テストデータを読み込む
+#pragma warning disable CA2208 // 引数の例外を正しくインスタンス化します
             using StreamReader reader = new StreamReader(
                 new MemoryStream(
                     Encoding.UTF8.GetBytes(text)))
                 ?? throw new ArgumentNullException(
                     "StreamReader作るときに失敗した");
+#pragma warning restore CA2208 // 引数の例外を正しくインスタンス化します
 
             // when
             IEmployeeAttendanceRepository employeeAttendanceRepository
