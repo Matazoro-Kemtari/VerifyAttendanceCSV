@@ -10,7 +10,8 @@ namespace Wada.AOP.Logging
     {
         private object? _instance;
         private MethodBase? _method;
-        private ILogger _logger = LogManager.GetCurrentClassLogger();
+        private object[]? _args;
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         // instance, method and args can be captured here and stored in attribute instance fields
         // for future usage in OnEntry/OnExit/OnException
@@ -19,21 +20,25 @@ namespace Wada.AOP.Logging
         {
             _instance = instance;
             _method = method;
+            _args = args;
         }
 
         public void OnEntry()
         {
-            _logger.Trace($"Class {_instance}, Method {_method?.Name} is executing");
+            string ar = _args == null ? string.Empty : string.Join(",", _args);
+            _logger.Trace($"Executing Class {_instance}, Method {_method?.Name}({ar})");
         }
 
         public void OnExit()
         {
-            _logger.Trace($"Class {_instance}, Method {_method?.Name} is executed");
+            string ar = _args == null ? string.Empty : string.Join(",", _args);
+            _logger.Trace($"Executed Class {_instance}, Method {_method?.Name}({ar})");
         }
 
         public void OnException(Exception exception)
         {
-            _logger.Error(exception, $"Class {_instance}, Method {_method?.Name} threw exception:{exception.Message}");
+            string ar = _args == null ? string.Empty : string.Join(",", _args);
+            _logger.Error(exception, $"Threw Exception:{exception.Message}, Class {_instance}, Method {_method?.Name}({ar})");
         }
     }
 }

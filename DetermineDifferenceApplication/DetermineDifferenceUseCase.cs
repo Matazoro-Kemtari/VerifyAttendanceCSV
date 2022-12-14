@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using NLog;
+using System.Text.RegularExpressions;
 using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
@@ -14,14 +15,16 @@ namespace DetermineDifferenceApplication
 
     public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
     {
+        private readonly ILogger logger;
         private readonly IStreamReaderOpener streamReaderOpener;
         private readonly IStreamOpener streamOpener;
         private readonly IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository;
         private readonly IEmployeeAttendanceRepository employeeAttendanceRepository;
         private readonly IAttendanceTableRepository attendanceTableRepository;
 
-        public DetermineDifferenceUseCase(IStreamReaderOpener streamReaderOpener, IStreamOpener streamOpener, IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository, IEmployeeAttendanceRepository employeeAttendanceRepository, IAttendanceTableRepository attendanceTableRepository)
+        public DetermineDifferenceUseCase(ILogger logger, IStreamReaderOpener streamReaderOpener, IStreamOpener streamOpener, IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository, IEmployeeAttendanceRepository employeeAttendanceRepository, IAttendanceTableRepository attendanceTableRepository)
         {
+            this.logger = logger;
             this.streamReaderOpener = streamReaderOpener;
             this.streamOpener = streamOpener;
             this.matchedEmployeeNumberRepository = matchedEmployeeNumberRepository;
@@ -57,11 +60,7 @@ namespace DetermineDifferenceApplication
             }
 
             // 勤怠表を取得する
-            Regex spreadSheetName = new($"{year}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
-            var geko = attendanceTableDirectory
-                .Where(x => Directory.Exists(x))
-                .Select(x => Directory.EnumerateFiles(x))
-                .SelectMany(x => x);
+            Regex spreadSheetName = new(@"(?<=\\)" + $"{year}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
             IEnumerable<Task<WorkedMonthlyReport>> taskXLSs = attendanceTableDirectory
                 .Where(x => Directory.Exists(x))
                 .Select(x => Directory.EnumerateFiles(x))
@@ -73,6 +72,7 @@ namespace DetermineDifferenceApplication
                     {
                         Stream stream = streamOpener.Open(y);
                         var tbl = attendanceTableRepository.ReadByMonth(stream, month);
+                        logger.Trace($"ファイル読み込み完了 {y}, {tbl}");
                         return WorkedMonthlyReport.CreateForAttendanceTable(tbl, mutchEmployee);
                     });
                 });
