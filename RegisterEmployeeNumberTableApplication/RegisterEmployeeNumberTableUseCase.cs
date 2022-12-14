@@ -1,25 +1,18 @@
-﻿using NLog;
-using System.Reflection;
+﻿using Wada.AOP.Logging;
 
+[module: Logging] // // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace RegisterEmployeeNumberTableApplication
 {
     public interface IRegisterEmployeeNumberTableUseCase
     {
         void Execute();
     }
+
     public class RegisterEmployeeNumberTableUseCase : IRegisterEmployeeNumberTableUseCase
     {
-        private readonly ILogger logger;
-
-        public RegisterEmployeeNumberTableUseCase(ILogger logger)
-        {
-            this.logger = logger;
-        }
-
+        [Logging]
         public void Execute()
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
             throw new NotImplementedException();
         }
     }

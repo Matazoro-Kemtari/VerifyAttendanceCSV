@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MethodDecorator.Fody" Version="1.1.1" />
-    <PackageReference Include="NLog" Version="5.1.0" />
+    <PackageReference Include="MethodDecorator.Fody" Version="1.1.1">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
