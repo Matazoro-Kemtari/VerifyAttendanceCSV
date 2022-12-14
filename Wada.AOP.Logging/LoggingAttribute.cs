@@ -33,7 +33,7 @@ namespace Wada.AOP.Logging
 
         public void OnException(Exception exception)
         {
-            _logger.Trace(exception, $"Class {_instance}, Method {_method?.Name} threw exception:{exception.Message}");
+            _logger.Error(exception, $"Class {_instance}, Method {_method?.Name} threw exception:{exception.Message}");
         }
     }
 }
