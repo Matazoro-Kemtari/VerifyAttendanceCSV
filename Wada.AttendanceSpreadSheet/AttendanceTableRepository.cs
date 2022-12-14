@@ -1,27 +1,25 @@
 ﻿using ClosedXML.Excel;
-using NLog;
-using System.Reflection;
+using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
 using Wada.AttendanceTableService.ValueObjects;
 
+[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace Wada.AttendanceSpreadSheet
 {
     public class AttendanceTableRepository : IAttendanceTableRepository
     {
-        private readonly ILogger logger;
+        //private readonly ILogger logger;
         private readonly IOwnCompanyHolidayRepository ownCompanyHolidayRepository;
 
-        public AttendanceTableRepository(ILogger logger, IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
+        public AttendanceTableRepository(IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
         {
-            this.logger = logger;
             this.ownCompanyHolidayRepository = ownCompanyHolidayRepository;
         }
 
+        [Logging]
         public AttendanceTable ReadByMonth(Stream stream, int month)
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             using var xlBook = new XLWorkbook(stream);
             IXLWorksheet targetSheet = SearchMonthSheet(xlBook, month);
 
@@ -61,7 +59,6 @@ namespace Wada.AttendanceSpreadSheet
                 if (!row.Cell(DayColumnLetter).TryGetValue(out int attendanceDay))
                 {
                     string msg = $"日付が取得できません シート:{targetSheet.Name}, セル:{row.Cell(DayColumnLetter).Address}";
-                    logger.Error(msg);
                     throw new AttendanceTableServiceException(msg);
                 }
 
@@ -70,7 +67,6 @@ namespace Wada.AttendanceSpreadSheet
                 if (date.Year != attendanceYear.Value || date.Month != attendanceMonth.Value)
                 {
                     string msg = $"日付の値が範囲を超えています シート:{targetSheet.Name}, セル:{row.Cell(DayColumnLetter).Address}";
-                    logger.Error(msg);
                     throw new AttendanceTableServiceException(msg);
                 }
 
@@ -84,7 +80,6 @@ namespace Wada.AttendanceSpreadSheet
                     if (!row.Cell(StartedTimeColumnLetter).TryGetValue(out DateTime _startTime))
                     {
                         string msg = $"始業時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell(StartedTimeColumnLetter).Address}";
-                        logger.Error(msg);
                         throw new AttendanceTableServiceException(msg);
                     }
                     startTime = new AttendanceTime(date + _startTime.TimeOfDay);
@@ -93,7 +88,6 @@ namespace Wada.AttendanceSpreadSheet
                     if (!row.Cell(EndedTimeColumnLetter).TryGetValue(out DateTime _endTime))
                     {
                         string msg = $"終業時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell(EndedTimeColumnLetter).Address}";
-                        logger.Error(msg);
                         throw new AttendanceTableServiceException(msg);
                     }
                     if (_startTime.TimeOfDay > _endTime.TimeOfDay)
@@ -104,7 +98,6 @@ namespace Wada.AttendanceSpreadSheet
                     if (!row.Cell(RestTimeColumnLetter).TryGetValue(out DateTime _restTime))
                     {
                         string msg = $"休憩時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell(RestTimeColumnLetter).Address}";
-                        logger.Error(msg);
                         throw new AttendanceTableServiceException(msg);
                     }
                     restTime = _restTime.TimeOfDay;
@@ -114,7 +107,6 @@ namespace Wada.AttendanceSpreadSheet
                 if (!row.Cell(DayOffColumnLetter).TryGetValue(out string _dayOffValue))
                 {
                     string msg = $"勤務が取得できません シート:{targetSheet.Name}, セル:{row.Cell(DayOffColumnLetter).Address}";
-                    logger.Error(msg);
                     throw new AttendanceTableServiceException(msg);
                 }
                 DayOffClassification dayOff = ConvertDayOffClassification(_dayOffValue);
@@ -126,7 +118,6 @@ namespace Wada.AttendanceSpreadSheet
                 if (!row.Cell(OrderedLunchBoxColumnLetter).TryGetValue(out string _orderedLunchBox))
                 {
                     string msg = $"弁当が取得できません シート:{targetSheet.Name}, セル:{row.Cell(OrderedLunchBoxColumnLetter).Address}";
-                    logger.Error(msg);
                     throw new AttendanceTableServiceException(msg);
                 }
                 OrderedLunchBox orderedLunchBox = ConvertOrderedLunchBox(_orderedLunchBox);
@@ -143,8 +134,6 @@ namespace Wada.AttendanceSpreadSheet
                     );
                 attendanceTable.AttendanceRecords.Add(attendanceRecord);
             }
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
             return attendanceTable;
         }
@@ -199,7 +188,6 @@ namespace Wada.AttendanceSpreadSheet
             if (!targetSheet.Cell("A1").TryGetValue(out DateTime yearMonth))
             {
                 string msg = $"年月が取得できません シート:{targetSheet.Name}, セル:A1";
-                logger.Error(msg);
                 throw new AttendanceTableServiceException(msg);
             }
             AttendanceYear year = new(yearMonth.Year);
@@ -208,7 +196,6 @@ namespace Wada.AttendanceSpreadSheet
             if (!targetSheet.Cell("G2").TryGetValue(out uint employeeNumber))
             {
                 string msg = $"社員番号が取得できません シート:{targetSheet.Name}, セル:G2";
-                logger.Error(msg);
                 throw new AttendanceTableServiceException(msg);
             }
 
@@ -230,7 +217,6 @@ namespace Wada.AttendanceSpreadSheet
             if (targetSheet == null)
             {
                 string msg = $"{month}月のシートが見つかりません";
-                logger.Error(msg);
                 throw new AttendanceTableServiceException(msg);
             }
 

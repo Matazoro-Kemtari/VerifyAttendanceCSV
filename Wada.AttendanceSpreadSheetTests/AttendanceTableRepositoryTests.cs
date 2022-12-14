@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NLog;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
 using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
@@ -17,8 +16,7 @@ namespace Wada.AttendanceSpreadSheet.Tests
             // given
             DotNetEnv.Env.Load(".env");
 
-            Mock<ILogger> mock_logger = new();
-            IStreamOpener streamOpener = new StreamOpener(mock_logger.Object);
+            IStreamOpener streamOpener = new StreamOpener();
             string path = DotNetEnv.Env.GetString("TEST_XLS_PATH");
             using Stream xlsStream = streamOpener.Open(path);
 
@@ -41,7 +39,7 @@ namespace Wada.AttendanceSpreadSheet.Tests
                 });
 
             // when
-            IAttendanceTableRepository attendanceTableRepository = new AttendanceTableRepository(mock_logger.Object, mock_holiday.Object);
+            IAttendanceTableRepository attendanceTableRepository = new AttendanceTableRepository(mock_holiday.Object);
             int month = 5;
             var actual = attendanceTableRepository.ReadByMonth(xlsStream, month);
 

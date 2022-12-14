@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NLog;
-using System.Reflection;
+using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
 
+[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace Wada.DesignDepartmentDataBse
 {
     public class MatchedEmployeeNumberRepository : IMatchedEmployeeNumberRepository
@@ -18,10 +19,9 @@ namespace Wada.DesignDepartmentDataBse
             this.configuration = configuration;
         }
 
+        [Logging]
         public void AddRange(IEnumerable<MatchedEmployeeNumber> matchedEmployeeNumbers)
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             DbConfig dbConfig = new(configuration);
             using var dbContext = new DbContext(dbConfig);
 
@@ -39,18 +39,14 @@ namespace Wada.DesignDepartmentDataBse
             catch (DbUpdateException ex)
             {
                 string msg = "登録済みの社員番号対応表は追加・上書きできません";
-                logger.Error(ex, msg);
                 throw new AttendanceTableServiceException(msg, ex);
             }
             logger.Info($"データベースに{_additionalNumber}件追加しました");
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
         }
 
+        [Logging]
         public IEnumerable<MatchedEmployeeNumber> FindAll()
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             DbConfig dbConfig = new(configuration);
             using var dbContext = new DbContext(dbConfig);
 
@@ -62,19 +58,15 @@ namespace Wada.DesignDepartmentDataBse
             if (!matchedEmployee.Any())
             {
                 string msg = "社員番号対応表がありませんでした ";
-                logger.Error(msg);
                 throw new AttendanceTableServiceException(msg);
             }
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
             return matchedEmployee.ToList();
         }
 
+        [Logging]
         public void RemoveAll()
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             DbConfig dbConfig = new(configuration);
             using var dbContext = new DbContext(dbConfig);
 
@@ -84,8 +76,6 @@ namespace Wada.DesignDepartmentDataBse
 
             dbContext.MatchedEmployeeNumbers!.RemoveRange(matchedEmployee);
             dbContext.SaveChanges();
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
         }
     }
 }

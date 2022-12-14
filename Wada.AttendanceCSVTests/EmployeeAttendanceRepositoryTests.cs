@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using NLog;
 using System.Text;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
@@ -14,8 +12,6 @@ namespace Wada.AttendanceCSV.Tests
         public void 正常系_勤怠CSVファイルが読み込めること()
         {
             // given
-            Mock<ILogger> mock_logger = new();
-
             // テストデータを読み込む
             using StreamReader reader = new StreamReader(
                 new MemoryStream(
@@ -25,7 +21,7 @@ namespace Wada.AttendanceCSV.Tests
 
             // when
             IEmployeeAttendanceRepository employeeAttendanceRepository
-                = new EmployeeAttendanceRepository(mock_logger.Object);
+                = new EmployeeAttendanceRepository();
             IEnumerable<WorkedMonthlyReport> actuals =
                 employeeAttendanceRepository.ReadAll(reader);
 
@@ -101,18 +97,18 @@ namespace Wada.AttendanceCSV.Tests
         public void 異常系_勤怠CSVファイルが0行の時例外を返すこと(string text)
         {
             // given
-            Mock<ILogger> mock_logger = new();
-
             // テストデータを読み込む
+#pragma warning disable CA2208 // 引数の例外を正しくインスタンス化します
             using StreamReader reader = new StreamReader(
                 new MemoryStream(
                     Encoding.UTF8.GetBytes(text)))
                 ?? throw new ArgumentNullException(
                     "StreamReader作るときに失敗した");
+#pragma warning restore CA2208 // 引数の例外を正しくインスタンス化します
 
             // when
             IEmployeeAttendanceRepository employeeAttendanceRepository
-                = new EmployeeAttendanceRepository(mock_logger.Object);
+                = new EmployeeAttendanceRepository();
             void target()
             {
                 _ = employeeAttendanceRepository.ReadAll(reader);

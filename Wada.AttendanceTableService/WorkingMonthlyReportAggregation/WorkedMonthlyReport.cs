@@ -1,6 +1,8 @@
-﻿using Wada.AttendanceTableService.AttendanceTableAggregation;
+﻿using Wada.AOP.Logging;
+using Wada.AttendanceTableService.AttendanceTableAggregation;
 using Wada.AttendanceTableService.ValueObjects;
 
+[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
 {
     [Equals(DoNotAddEqualityOperators = true), ToString]
@@ -53,6 +55,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
         /// <param name="attendanceTable"></param>
         /// <param name="convertParsonalCode"></param>
         /// <returns></returns>
+        [Logging]
         public static WorkedMonthlyReport CreateForAttendanceTable(AttendanceTable attendanceTable, Func<uint, uint> convertParsonalCode)
         {
             decimal attendanceDay = CountAttendanceDay(attendanceTable);
@@ -94,6 +97,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
                 );
         }
 
+        [Logging]
         public static WorkedMonthlyReport CreateForAttendanceCSV(EmployeeAttendance employeeAttendance)
         {
             return new(
@@ -116,6 +120,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
                 employeeAttendance.AnomalyHour,
                 employeeAttendance.LunchBoxOrderedTime);
         }
+
         /// <summary>
         /// 弁当注文数を返す
         /// </summary>

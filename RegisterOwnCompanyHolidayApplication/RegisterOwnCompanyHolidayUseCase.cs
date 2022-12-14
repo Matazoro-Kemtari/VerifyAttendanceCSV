@@ -1,5 +1,4 @@
-﻿using NLog;
-using System.Reflection;
+﻿using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 
 namespace RegisterOwnCompanyHolidayApplication
@@ -8,21 +7,19 @@ namespace RegisterOwnCompanyHolidayApplication
     {
         void Execute();
     }
+
     public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCase
     {
-        private readonly ILogger logger;
         private readonly IOwnCompanyHolidayRepository ownCompanyHolidayRepository;
 
-        public RegisterOwnCompanyHolidayUseCase(ILogger logger, IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
+        public RegisterOwnCompanyHolidayUseCase(IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
         {
-            this.logger = logger;
             this.ownCompanyHolidayRepository = ownCompanyHolidayRepository;
         }
 
+        [Logging]
         public void Execute()
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
             throw new NotImplementedException();
         }
     }

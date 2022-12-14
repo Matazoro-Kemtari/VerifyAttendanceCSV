@@ -1,20 +1,18 @@
 ﻿using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
+// https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
+[module: Logging] // <- これ重要
 namespace DetermineDifferenceApplication
 {
     public interface IDetermineDifferenceUseCase
     {
         Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month);
     }
+
     public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
     {
         private readonly ILogger logger;
@@ -34,10 +32,9 @@ namespace DetermineDifferenceApplication
             this.attendanceTableRepository = attendanceTableRepository;
         }
 
+        [Logging]
         public async Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
         {
-            logger.Debug($"Start {MethodBase.GetCurrentMethod()?.Name}");
-
             // CSVを取得する
             StreamReader reader = streamReaderOpener.Open(csvPath);
             Task<IEnumerable<WorkedMonthlyReport>> taskCSV = Task.Run(() => employeeAttendanceRepository.ReadAll(reader));
@@ -58,17 +55,12 @@ namespace DetermineDifferenceApplication
                 catch (InvalidOperationException ex)
                 {
                     string msg = $"社員番号対応表に該当がありません 社員番号: {id}";
-                    logger.Error(msg, ex);
                     throw new EmployeeNumberNotFoundException(msg, ex);
                 }
             }
 
             // 勤怠表を取得する
-            Regex spreadSheetName = new($"{year}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
-            var geko = attendanceTableDirectory
-                .Where(x => Directory.Exists(x))
-                .Select(x => Directory.EnumerateFiles(x))
-                .SelectMany(x => x);
+            Regex spreadSheetName = new(@"(?<=\\)" + $"{year}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
             IEnumerable<Task<WorkedMonthlyReport>> taskXLSs = attendanceTableDirectory
                 .Where(x => Directory.Exists(x))
                 .Select(x => Directory.EnumerateFiles(x))
@@ -80,6 +72,7 @@ namespace DetermineDifferenceApplication
                     {
                         Stream stream = streamOpener.Open(y);
                         var tbl = attendanceTableRepository.ReadByMonth(stream, month);
+                        logger.Trace($"ファイル読み込み完了 {y}, {tbl}");
                         return WorkedMonthlyReport.CreateForAttendanceTable(tbl, mutchEmployee);
                     });
                 });
@@ -188,8 +181,6 @@ namespace DetermineDifferenceApplication
                 if (differentialMsgs.Count > 0)
                     differntialMaps.Add(item.AttendancePersonalCode, differentialMsgs);
             }
-
-            logger.Debug($"Finish {MethodBase.GetCurrentMethod()?.Name}");
 
             return (csvReports.Count(), xlsReports.Count(), differntialMaps);
         }
