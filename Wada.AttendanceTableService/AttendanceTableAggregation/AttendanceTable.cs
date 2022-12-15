@@ -41,7 +41,7 @@ namespace Wada.AttendanceTableService.AttendanceTableAggregation
     [Equals(DoNotAddEqualityOperators = true), ToString]
     public class AttendanceRecord
     {
-        public AttendanceRecord(AttendanceDay attendanceDay, HolidayClassification holidayClassification, DayOffClassification dayOffClassification, AttendanceTime? startedTime, AttendanceTime? endedTime, TimeSpan? restTime, OrderedLunchBox orderedLunchBox)
+        public AttendanceRecord(AttendanceDay attendanceDay, HolidayClassification holidayClassification, DayOffClassification dayOffClassification, AttendanceTime? startedTime, AttendanceTime? endedTime, TimeSpan? restTime)
         {
             AttendanceDay = attendanceDay ?? throw new ArgumentNullException(nameof(attendanceDay));
             HolidayClassification = holidayClassification;
@@ -49,7 +49,6 @@ namespace Wada.AttendanceTableService.AttendanceTableAggregation
             StartedTime = startedTime;
             EndedTime = endedTime;
             RestTime = restTime;
-            OrderedLunchBox = orderedLunchBox;
         }
 
         /// <summary>
@@ -84,13 +83,8 @@ namespace Wada.AttendanceTableService.AttendanceTableAggregation
         /// <summary>
         /// 休憩時間
         /// </summary>
-        public TimeSpan? RestTime { get; init; }
-
-        /// <summary>
-        /// 弁当注文
-        /// </summary>
         [IgnoreDuringEquals]
-        public OrderedLunchBox OrderedLunchBox { get; init; }
+        public TimeSpan? RestTime { get; init; }
     }
 
     public class TestAttendanceTableFactory
@@ -208,8 +202,7 @@ namespace Wada.AttendanceTableService.AttendanceTableAggregation
                     dayOffMap.GetValueOrDefault(i + 1),
                     attendance.GetValueOrDefault(i + 1)[0].HasValue ? new AttendanceTime(attendance.GetValueOrDefault(i + 1)[0].Value) : null,
                     attendance.GetValueOrDefault(i + 1)[1].HasValue ? new AttendanceTime(attendance.GetValueOrDefault(i + 1)[1].Value) : null,
-                    rest,
-                    holiday == HolidayClassification.None & attendance.GetValueOrDefault(i + 1)[0].HasValue ? OrderedLunchBox.Orderd : OrderedLunchBox.None
+                    rest
                     );
 #pragma warning restore CS8629 // Null 許容値型は Null になる場合があります。
 #pragma warning restore CS8602 // null 参照の可能性があるものの逆参照です。

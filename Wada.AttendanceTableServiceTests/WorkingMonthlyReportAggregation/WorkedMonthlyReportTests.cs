@@ -35,7 +35,6 @@ namespace Wada.AttendanceTableServiceTests.WorkingMonthlyReportAggregation
             Assert.AreEqual(8m, actual.LegalHolidayWorkedHour);
             Assert.AreEqual(8m, actual.RegularHolidayWorkedHour);
             Assert.AreEqual(49m, actual.AnomalyHour);
-            Assert.AreEqual(14, actual.LunchBoxOrderedTime);
         }
     }
 }
