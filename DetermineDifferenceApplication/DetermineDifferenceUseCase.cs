@@ -106,7 +106,6 @@ namespace DetermineDifferenceApplication
                     LegalHolidayWorkedHour = outer.csv.LegalHolidayWorkedHour == xlsx?.LegalHolidayWorkedHour,
                     RegularHolidayWorkedHour = outer.csv.RegularHolidayWorkedHour == xlsx?.RegularHolidayWorkedHour,
                     AnomalyHour = outer.csv.AnomalyHour == xlsx?.AnomalyHour,
-                    LunchBoxOrderedTime = outer.csv.LunchBoxOrderedTime == xlsx?.LunchBoxOrderedTime,
                 });
             // 左右入れ替え
             var differentialXLSXReports = xlsReports
@@ -134,7 +133,6 @@ namespace DetermineDifferenceApplication
                     LegalHolidayWorkedHour = outer.xlsx.LegalHolidayWorkedHour == csv?.LegalHolidayWorkedHour,
                     RegularHolidayWorkedHour = outer.xlsx.RegularHolidayWorkedHour == csv?.RegularHolidayWorkedHour,
                     AnomalyHour = outer.xlsx.AnomalyHour == csv?.AnomalyHour,
-                    LunchBoxOrderedTime = outer.xlsx.LunchBoxOrderedTime == csv?.LunchBoxOrderedTime,
                 });
             // 結果を集合
             var unionDifferentialReports = differentialCSVReports.Union(differentialXLSXReports);
@@ -175,8 +173,6 @@ namespace DetermineDifferenceApplication
                     differentialMsgs.Add("法定外休出勤時間");
                 if (!item.AnomalyHour)
                     differentialMsgs.Add("変則時間");
-                if (!item.LunchBoxOrderedTime)
-                    differentialMsgs.Add("弁当注文数");
 
                 if (differentialMsgs.Count > 0)
                     differntialMaps.Add(item.AttendancePersonalCode, differentialMsgs);

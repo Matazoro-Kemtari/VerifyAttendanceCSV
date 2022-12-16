@@ -29,12 +29,12 @@ namespace Wada.AttendanceCSV.Tests
             Assert.AreEqual(6, actuals.Count());
             List<WorkedMonthlyReport> expecteds = new()
             {
-                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(202u, 20m, 1m, 160m, 0, 0, 0m, 0m, 0, 0, 0, 0, 33m, 0m, 65m, 8m, 0, 0m)),
-                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(1u, 19m, 0m, 152m, 0, 0, 0m, 0m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 19, 0m)),
-                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(201u, 19.5m, 0m, 156m, 0, 0, 0.5m, 0m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 15, 0m)),
-                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(214u, 18.5m, 1m, 148m, 0, 0, 1.5m, 0, 0, 0, 0, 0, 5.5m, 0m, 0m, 1m, 0, 0m)),
-                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(446u, 18m, 0m, 116.5m, 0, 0, 2m, 0, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0, 0m)),
-                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(254u, 15m, 0m, 102m, 0, 4, 0, 0m, 0, 0, 0, 5, 0m, 0m, 0m, 0m, 0, 0m)),
+                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(202u, 20m, 1m, 160m, 0, 0, 0m, 0m, 0, 0, 0, 0, 33m, 0m, 65m, 8m, 0m)),
+                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(1u, 19m, 0m, 152m, 0, 0, 0m, 0m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0m)),
+                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(201u, 19.5m, 0m, 156m, 0, 0, 0.5m, 0m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0m)),
+                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(214u, 18.5m, 1m, 148m, 0, 0, 1.5m, 0, 0, 0, 0, 0, 5.5m, 0m, 0m, 1m, 0m)),
+                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(446u, 18m, 0m, 116.5m, 0, 0, 2m, 0, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0m)),
+                WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(254u, 15m, 0m, 102m, 0, 4, 0, 0m, 0, 0, 0, 5, 0m, 0m, 0m, 0m, 0m)),
             };
             // IDを消して比較
             CollectionAssert.AreEquivalent(
@@ -57,7 +57,6 @@ namespace Wada.AttendanceCSV.Tests
                     x.LegalHolidayWorkedHour,
                     x.RegularHolidayWorkedHour,
                     x.AnomalyHour,
-                    x.LunchBoxOrderedTime,
                 }).ToList(),
                 actuals.Select(x => new
                 {
@@ -78,7 +77,6 @@ namespace Wada.AttendanceCSV.Tests
                     x.LegalHolidayWorkedHour,
                     x.RegularHolidayWorkedHour,
                     x.AnomalyHour,
-                    x.LunchBoxOrderedTime,
                 }).ToList());
         }
 
