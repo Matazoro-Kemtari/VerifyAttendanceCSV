@@ -146,10 +146,4 @@
 
         public DateTime Value { get; init; }
     }
-
-    public enum OrderedLunchBox
-    {
-        None,
-        Orderd,
-    }
 }

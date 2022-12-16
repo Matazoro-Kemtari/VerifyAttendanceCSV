@@ -19,7 +19,6 @@
     /// <param name="LegalHolidayWorkedHour"></param>
     /// <param name="LateNightWorkingHour"></param>
     /// <param name="RegularHolidayWorkedHour"></param>
-    /// <param name="LunchBoxOrderedTime"></param>
     /// <param name="AnomalyHour"></param>
     public record class EmployeeAttendance(
         uint AttendancePersonalCode,
@@ -38,6 +37,5 @@
         decimal LegalHolidayWorkedHour,
         decimal LateNightWorkingHour,
         decimal RegularHolidayWorkedHour,
-        int LunchBoxOrderedTime,
         decimal AnomalyHour);
 }

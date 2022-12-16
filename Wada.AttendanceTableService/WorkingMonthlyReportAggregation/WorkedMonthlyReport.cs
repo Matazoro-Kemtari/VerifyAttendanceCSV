@@ -25,8 +25,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
             decimal lateNightWorkingHour,
             decimal legalHolidayWorkedHour,
             decimal regularHolidayWorkedHour,
-            decimal anomalyHour,
-            int lunchBoxOrderedTime)
+            decimal anomalyHour)
         {
             ID = Ulid.NewUlid();
             AttendancePersonalCode = attendancePersonalCode;
@@ -46,7 +45,6 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
             LegalHolidayWorkedHour = legalHolidayWorkedHour;
             RegularHolidayWorkedHour = regularHolidayWorkedHour;
             AnomalyHour = anomalyHour;
-            LunchBoxOrderedTime = lunchBoxOrderedTime;
         }
 
         /// <summary>
@@ -73,7 +71,6 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
             decimal legalHolidayWorkedHour = CountLegalHolidayWorkedHour(attendanceTable);
             decimal regularHolidayWorkedHour = CountRegularHolidayWorkedHour(attendanceTable);
             decimal anomalyHour = CountAnomalyHour(attendanceTable);
-            int lunchBoxOrderedTime = CountLunchBoxOrderedTime(attendanceTable);
 
             return new(
                 convertParsonalCode(attendanceTable.EmployeeNumber),
@@ -92,8 +89,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
                 lateNightWorkingHour,
                 legalHolidayWorkedHour,
                 regularHolidayWorkedHour,
-                anomalyHour,
-                lunchBoxOrderedTime
+                anomalyHour
                 );
         }
 
@@ -117,20 +113,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
                 employeeAttendance.LateNightWorkingHour,
                 employeeAttendance.LegalHolidayWorkedHour,
                 employeeAttendance.RegularHolidayWorkedHour,
-                employeeAttendance.AnomalyHour,
-                employeeAttendance.LunchBoxOrderedTime);
-        }
-
-        /// <summary>
-        /// 弁当注文数を返す
-        /// </summary>
-        /// <param name="attendanceTable"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        private static int CountLunchBoxOrderedTime(AttendanceTable attendanceTable)
-        {
-            return attendanceTable.AttendanceRecords
-                .Count(x => x.OrderedLunchBox == OrderedLunchBox.Orderd);
+                employeeAttendance.AnomalyHour);
         }
 
         /// <summary>
@@ -436,91 +419,103 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
         /// <summary>
         /// 勤怠個人コード
         /// </summary>
+        [IgnoreDuringEquals]
         public uint AttendancePersonalCode { get; init; }
 
         /// <summary>
         /// 出勤日数
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal AttendanceDay { get; init; }
 
         /// <summary>
         /// 休日出勤数
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal HolidayWorkedDay { get; init; }
 
         /// <summary>
         /// 有休日数
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal PaidLeaveDay { get; init; }
 
         /// <summary>
         /// 欠勤日数
         /// </summary>
+        [IgnoreDuringEquals]
         public int AbsenceDay { get; init; }
 
         /// <summary>
         /// 振休出勤日数
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal TransferedAttendanceDay { get; init; }
 
         /// <summary>
         /// 有休特別休暇日数
         /// </summary>
+        [IgnoreDuringEquals]
         public int PaidSpecialLeaveDay { get; init; }
 
         /// <summary>
         /// 遅刻回数
         /// </summary>
+        [IgnoreDuringEquals]
         public int LatenessTime { get; init; }
 
         /// <summary>
         /// 早退回数
         /// </summary>
+        [IgnoreDuringEquals]
         public int EarlyLeaveTime { get; init; }
 
         /// <summary>
         /// 休業日数
         /// </summary>
+        [IgnoreDuringEquals]
         public int BusinessSuspensionDay { get; init; }
 
         /// <summary>
         /// 教育日数
         /// </summary>
+        [IgnoreDuringEquals]
         public int EducationDay { get; } = 0;
 
         /// <summary>
         /// 所定時間
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal RegularWorkedHour { get; init; }
 
         /// <summary>
         /// (早出)残業時間
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal OvertimeHour { get; init; }
 
         /// <summary>
         /// 深夜勤務時間
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal LateNightWorkingHour { get; init; }
 
         /// <summary>
         /// 法定休出勤時間
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal LegalHolidayWorkedHour { get; init; }
 
         /// <summary>
         /// 法定外休出勤時間
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal RegularHolidayWorkedHour { get; init; }
 
         /// <summary>
         /// 変則時間
         /// </summary>
+        [IgnoreDuringEquals]
         public decimal AnomalyHour { get; init; }
-
-        /// <summary>
-        /// 弁当注文数
-        /// </summary>
-        public int LunchBoxOrderedTime { get; init; }
     }
 }
