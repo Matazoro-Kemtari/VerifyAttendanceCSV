@@ -88,37 +88,37 @@ namespace DetermineDifferenceApplication.Tests
 
         internal static List<WorkedMonthlyReport> AttendanceCSVReturns(uint cd) => new()
         {
-            WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(4u, 16m, 0m, 128m, 0, 0, 2m, 1m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0, 0m)),
-            WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(cd, 16m, 0m, 128m, 0, 0, 2m, 1m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0, 0m)),
+            WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(4u, 16m, 0m, 128m, 0, 0, 2m, 1m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0m)),
+            WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(cd, 16m, 0m, 128m, 0, 0, 2m, 1m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0m)),
         };
         internal static List<WorkedMonthlyReport> LackAttendanceCSVReturns(uint cd) => new()
         {
-            WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(cd, 16m, 0m, 128m, 0, 0, 2m, 1m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0, 0m)),
+            WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(cd, 16m, 0m, 128m, 0, 0, 2m, 1m, 0, 0, 0, 0, 0m, 0m, 0m, 0m, 0m)),
         };
 
         private static ICollection<AttendanceRecord> CreateTestRecords()
         {
             ICollection<AttendanceRecord> records = new List<AttendanceRecord>
             {
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022),new AttendanceMonth(5),2),HolidayClassification.None,DayOffClassification.PaidLeave,null,null,null,OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 9), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/09 08:00")), new AttendanceTime(DateTime.Parse("2022/05/09 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 10), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/10 08:00")), new AttendanceTime(DateTime.Parse("2022/05/10 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 11), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/11 08:00")), new AttendanceTime(DateTime.Parse("2022/05/11 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 12), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/12 08:00")), new AttendanceTime(DateTime.Parse("2022/05/12 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 13), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/13 08:00")), new AttendanceTime(DateTime.Parse("2022/05/13 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 14), HolidayClassification.RegularHoliday, DayOffClassification.TransferedAttendance, new AttendanceTime(DateTime.Parse("2022/05/14 08:00")), new AttendanceTime(DateTime.Parse("2022/05/14 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 16), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/16 08:00")), new AttendanceTime(DateTime.Parse("2022/05/16 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 17), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/17 08:00")), new AttendanceTime(DateTime.Parse("2022/05/17 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 18), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/18 08:00")), new AttendanceTime(DateTime.Parse("2022/05/18 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 19), HolidayClassification.None, DayOffClassification.SubstitutedHoliday, null, null, null, OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 20), HolidayClassification.None, DayOffClassification.PaidLeave, null, null, null, OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 23), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/23 08:00")), new AttendanceTime(DateTime.Parse("2022/05/23 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 24), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/24 08:00")), new AttendanceTime(DateTime.Parse("2022/05/24 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 25), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/25 08:00")), new AttendanceTime(DateTime.Parse("2022/05/25 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 26), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/26 08:00")), new AttendanceTime(DateTime.Parse("2022/05/26 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 27), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/27 08:00")), new AttendanceTime(DateTime.Parse("2022/05/27 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 30), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/30 08:00")), new AttendanceTime(DateTime.Parse("2022/05/30 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
-                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 31), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/31 08:00")), new AttendanceTime(DateTime.Parse("2022/05/31 17:00")), new TimeSpan(1, 0, 0), OrderedLunchBox.None),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022),new AttendanceMonth(5),2),HolidayClassification.None,DayOffClassification.PaidLeave,null,null,null),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 9), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/09 08:00")), new AttendanceTime(DateTime.Parse("2022/05/09 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 10), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/10 08:00")), new AttendanceTime(DateTime.Parse("2022/05/10 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 11), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/11 08:00")), new AttendanceTime(DateTime.Parse("2022/05/11 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 12), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/12 08:00")), new AttendanceTime(DateTime.Parse("2022/05/12 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 13), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/13 08:00")), new AttendanceTime(DateTime.Parse("2022/05/13 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 14), HolidayClassification.RegularHoliday, DayOffClassification.TransferedAttendance, new AttendanceTime(DateTime.Parse("2022/05/14 08:00")), new AttendanceTime(DateTime.Parse("2022/05/14 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 16), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/16 08:00")), new AttendanceTime(DateTime.Parse("2022/05/16 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 17), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/17 08:00")), new AttendanceTime(DateTime.Parse("2022/05/17 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 18), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/18 08:00")), new AttendanceTime(DateTime.Parse("2022/05/18 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 19), HolidayClassification.None, DayOffClassification.SubstitutedHoliday, null, null, null),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 20), HolidayClassification.None, DayOffClassification.PaidLeave, null, null, null),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 23), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/23 08:00")), new AttendanceTime(DateTime.Parse("2022/05/23 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 24), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/24 08:00")), new AttendanceTime(DateTime.Parse("2022/05/24 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 25), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/25 08:00")), new AttendanceTime(DateTime.Parse("2022/05/25 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 26), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/26 08:00")), new AttendanceTime(DateTime.Parse("2022/05/26 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 27), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/27 08:00")), new AttendanceTime(DateTime.Parse("2022/05/27 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 30), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/30 08:00")), new AttendanceTime(DateTime.Parse("2022/05/30 17:00")), new TimeSpan(1, 0, 0)),
+                new AttendanceRecord(new AttendanceDay(new AttendanceYear(2022), new AttendanceMonth(5), 31), HolidayClassification.None, DayOffClassification.None, new AttendanceTime(DateTime.Parse("2022/05/31 08:00")), new AttendanceTime(DateTime.Parse("2022/05/31 17:00")), new TimeSpan(1, 0, 0)),
             };
             return records;
         }
@@ -192,7 +192,7 @@ namespace DetermineDifferenceApplication.Tests
 
             // then
             Assert.IsTrue(differntialMaps.Count == 1);
-            Assert.IsTrue(differntialMaps[4u].Count == 17);
+            Assert.IsTrue(differntialMaps[4u].Count == 16);
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
@@ -261,7 +261,7 @@ namespace DetermineDifferenceApplication.Tests
 
             // then
             Assert.IsTrue(differntialMaps.Count == 1);
-            Assert.IsTrue(differntialMaps[4u].Count == 17);
+            Assert.IsTrue(differntialMaps[4u].Count == 16);
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));

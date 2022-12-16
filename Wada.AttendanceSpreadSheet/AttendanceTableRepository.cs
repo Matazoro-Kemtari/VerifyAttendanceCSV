@@ -48,7 +48,6 @@ namespace Wada.AttendanceSpreadSheet
                 const string DayOffColumnLetter = "D";
                 const string DayColumnLetter = "B";
                 const string RestTimeColumnLetter = "O";
-                const string OrderedLunchBoxColumnLetter = "K";
 
                 if (row.Cell(DayOffColumnLetter).IsEmpty()
                     && row.Cell(StartedTimeColumnLetter).IsEmpty()
@@ -114,35 +113,19 @@ namespace Wada.AttendanceSpreadSheet
                     // 遅刻早退の判定
                     dayOff = DetermineLateEarly(startTime.Value, endTime.Value);
 
-                // 弁当列
-                if (!row.Cell(OrderedLunchBoxColumnLetter).TryGetValue(out string _orderedLunchBox))
-                {
-                    string msg = $"弁当が取得できません シート:{targetSheet.Name}, セル:{row.Cell(OrderedLunchBoxColumnLetter).Address}";
-                    throw new AttendanceTableServiceException(msg);
-                }
-                OrderedLunchBox orderedLunchBox = ConvertOrderedLunchBox(_orderedLunchBox);
-
-
                 AttendanceRecord attendanceRecord = new(
                     new AttendanceDay(attendanceYear, attendanceMonth, attendanceDay),
                     FindByDay(date),
                     dayOff,
                     startTime,
                     endTime,
-                    restTime,
-                    orderedLunchBox
+                    restTime
                     );
                 attendanceTable.AttendanceRecords.Add(attendanceRecord);
             }
 
             return attendanceTable;
         }
-
-        private OrderedLunchBox ConvertOrderedLunchBox(string orderedLunchBox) => orderedLunchBox switch
-        {
-            "注" => OrderedLunchBox.Orderd,
-            _ => OrderedLunchBox.None,
-        };
 
         private static DayOffClassification DetermineLateEarly(DateTime startTime, DateTime endTime)
         {
@@ -183,7 +166,7 @@ namespace Wada.AttendanceSpreadSheet
         /// <param name="targetSheet"></param>
         /// <returns></returns>
         /// <exception cref="AttendanceTableServiceException"></exception>
-        private (uint employeeNumber, AttendanceYear year, AttendanceMonth month) GetAttendanceTableBaseInfo(IXLWorksheet targetSheet)
+        private static (uint employeeNumber, AttendanceYear year, AttendanceMonth month) GetAttendanceTableBaseInfo(IXLWorksheet targetSheet)
         {
             if (!targetSheet.Cell("A1").TryGetValue(out DateTime yearMonth))
             {
@@ -202,7 +185,7 @@ namespace Wada.AttendanceSpreadSheet
             return (employeeNumber, year, month);
         }
 
-        private IXLWorksheet SearchMonthSheet(XLWorkbook xlBook, int month)
+        private static IXLWorksheet SearchMonthSheet(XLWorkbook xlBook, int month)
         {
             IXLWorksheet? targetSheet = null;
             string searchingSheetName = $"{month}月";

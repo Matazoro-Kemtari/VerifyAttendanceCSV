@@ -58,7 +58,6 @@ namespace Wada.AttendanceCSV.Models
             LegalHolidayWorkedHour,
             LateNightWorkingHour,
             RegularHolidayWorkedHour,
-            LunchBoxOrderedTime,
             AnomalyHour);
     }
 }
