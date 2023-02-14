@@ -3,6 +3,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="2.3.0" />
@@ -22,6 +24,7 @@
     <ProjectReference Include="..\Wada.AttendanceTableService\Wada.AttendanceTableService.csproj" />
     <ProjectReference Include="..\Wada.CommonDialogLib\Wada.CommonDialogLib.csproj" />
     <ProjectReference Include="..\Wada.DesignDepartmentDataBse\Wada.DesignDepartmentDataBse.csproj" />
+    <ProjectReference Include="..\Wada.OrderDataBase\Wada.OrderDataBase.csproj" />
     <ProjectReference Include="..\Wada.VerifyAttendanceCSV\Wada.VerifyAttendanceCSV.csproj" />
   </ItemGroup>
   <ItemGroup>

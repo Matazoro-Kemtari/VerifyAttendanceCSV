@@ -25,7 +25,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
             decimal lateNightWorkingHour,
             decimal legalHolidayWorkedHour,
             decimal regularHolidayWorkedHour,
-            decimal anomalyHour)
+            decimal? anomalyHour)
         {
             ID = Ulid.NewUlid();
             AttendancePersonalCode = attendancePersonalCode;
@@ -516,6 +516,6 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
         /// 変則時間
         /// </summary>
         [IgnoreDuringEquals]
-        public decimal AnomalyHour { get; init; }
+        public decimal? AnomalyHour { get; init; }
     }
 }

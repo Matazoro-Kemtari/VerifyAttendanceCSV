@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="RzdB1_ECVK01WcsdOi-J" name="sodo">
-        <mxGraphModel dx="1374" dy="785" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
+        <mxGraphModel dx="1386" dy="787" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -254,6 +254,15 @@
                 </mxCell>
                 <mxCell id="576" value="(社員番号対応表)&lt;br&gt;社員番号: 1201&lt;br&gt;勤怠個人コード:&amp;nbsp;201" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" parent="1" vertex="1">
                     <mxGeometry x="870" y="1680" width="150" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="577" value="&lt;u&gt;社員集約&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="25" y="1890" width="130" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="578" value="&lt;span style=&quot;&quot;&gt;&lt;u&gt;S社員&lt;br&gt;&lt;/u&gt;&lt;/span&gt;(&lt;span style=&quot;text-align: left;&quot;&gt;Employee&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;br style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;社員NO&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fontColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="35.620000000000005" y="1918" width="111.24" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="579" value="(S社員)&lt;br&gt;社員NO: 9999&lt;br&gt;氏名: 田中　一郎&lt;br&gt;部署ID: 1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;align=center;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="530" y="1918" width="110" height="62" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

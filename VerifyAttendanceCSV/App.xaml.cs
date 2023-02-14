@@ -12,6 +12,7 @@ using Wada.AttendanceSpreadSheet;
 using Wada.AttendanceTableService;
 using Wada.CommonDialogLib;
 using Wada.DesignDepartmentDataBse;
+using Wada.OrderDataBase;
 using Wada.VerifyAttendanceCSV;
 
 namespace VerifyAttendanceCSV
@@ -48,6 +49,7 @@ namespace VerifyAttendanceCSV
             _ = containerRegistry.Register<IFetchOwnCompanyHolidayMaxDateUseCase, FetchOwnCompanyHolidayMaxDateUseCase>();
 
             // 勤怠エクセルと給与システムCSVを同異判定するUseCase
+            _ = containerRegistry.Register<IEmployeeRepository, EmployeeRepository>();
             _ = containerRegistry.Register<IDetermineDifferenceUseCase, DetermineDifferenceUseCase>();
 
             // Presentation

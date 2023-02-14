@@ -37,5 +37,5 @@
         decimal LegalHolidayWorkedHour,
         decimal LateNightWorkingHour,
         decimal RegularHolidayWorkedHour,
-        decimal AnomalyHour);
+        decimal? AnomalyHour);
 }

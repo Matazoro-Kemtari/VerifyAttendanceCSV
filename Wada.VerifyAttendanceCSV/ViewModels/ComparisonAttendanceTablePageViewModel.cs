@@ -34,7 +34,7 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
 
             CSVPath = new ReactiveProperty<string>(_configuration["applicationConfiguration:CSVPath"]);
             XLSXPath = new ReactiveProperty<string>(_configuration.GetValue("applicationConfiguration:XLSXPath", string.Empty));
-            DateTime _date = DateTime.Now;
+            DateTime _date = DateTime.Now.AddMonths(-1);
             Year = new ReactiveProperty<uint>((uint)_date.Year);
             Month = new ReactiveProperty<uint>((uint)_date.Month);
 
@@ -43,9 +43,10 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
                 {
                     int csvCount, xlsxCount;
                     Dictionary<uint, List<string>> responce;
+                    DetermineDifferenceUseCaseDTO differenceDTP;
                     try
                     {
-                        (csvCount, xlsxCount, responce) = await _determineDifferenceUseCase.ExecuteAsync(CSVPath.Value, XLSXPath.Value.Split("\n"), (int)Year.Value, (int)Month.Value);
+                        differenceDTP = await _determineDifferenceUseCase.ExecuteAsync(CSVPath.Value, XLSXPath.Value.Split("\n"), (int)Year.Value, (int)Month.Value);
                     }
                     catch (EmployeeNumberNotFoundException ex)
                     {
@@ -55,10 +56,10 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
                         return;
                     }
                     string responceMsg =
-                        $"CSVファイル: {csvCount}件\n" +
-                        $"勤務表: {xlsxCount}件\n" +
-                        $"{responce.Count}件違います\n" +
-                        $"{string.Join("\n--\n", responce.Select(x => $"社員番号: {x.Key}; 項目: {String.Join("/", x.Value)}"))}";
+                        $"CSVファイル: {differenceDTP.CSVCount}件\n" +
+                        $"勤務表: {differenceDTP.XLSXCount}件\n" +
+                        $"{differenceDTP.DetermineDifferenceEmployeesDTOs.Count()}件違います\n" +
+                        $"{string.Join("\n--\n", differenceDTP.DetermineDifferenceEmployeesDTOs.Select(x => $"社員番号: {x.AttendancePersonalCode}, 氏名: {x.EmployeeName}, 項目: {String.Join("/", x.Differences)}"))}";
                     logger.Info(responceMsg);
                     _message.ShowInformationMessage(responceMsg, "勤怠表照合");
                 })
