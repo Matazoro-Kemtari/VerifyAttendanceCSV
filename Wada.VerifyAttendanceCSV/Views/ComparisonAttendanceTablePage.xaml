@@ -10,7 +10,8 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:Background="LightGray"
              d:DataContext="{d:DesignInstance Type=viewmodels:ComparisonAttendanceTablePageViewModel}"
-             prism:ViewModelLocator.AutoWireViewModel="True" >
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             FontSize="16">
     <DockPanel LastChildFill="True">
         <TextBlock DockPanel.Dock="Top"
                    Margin="5"
@@ -63,10 +64,12 @@
                 <TextBlock Margin="5"
                            Text="年"/>
                 <TextBox Margin="5"
+                         MinWidth="50"
                          Text="{Binding Year.Value}"/>
                 <TextBlock Margin="5"
                            Text="月"/>
                 <TextBox Margin="5"
+                         MinWidth="30"
                          Text="{Binding Month.Value}"/>
             </StackPanel>
             <StackPanel Grid.Row="5">

@@ -1,14 +1,15 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Wada.OrderDataBase.Models;
 
 namespace Wada.OrderDataBase
 {
-    internal class DbContext : Microsoft.EntityFrameworkCore.DbContext
+    internal class DBContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        private readonly DbConfig orderDbConfig;
+        private readonly DBConfig orderDbConfig;
 
-        public DbContext(DbConfig orderDbConfig)
+        public DBContext(DBConfig orderDbConfig)
         {
             this.orderDbConfig = orderDbConfig ?? throw new ArgumentNullException(nameof(orderDbConfig));
         }
@@ -32,6 +33,7 @@ namespace Wada.OrderDataBase
             optionsBuilder.UseSqlServer(connectionString);
         }
 
+        internal DbSet<Employee> Employees { get; set; }
     }
 
     /// <summary>
@@ -41,9 +43,9 @@ namespace Wada.OrderDataBase
     /// <param name="DataBase"></param>
     /// <param name="User"></param>
     /// <param name="Password"></param>
-    internal record class DbConfig
+    internal record class DBConfig
     {
-        internal DbConfig(IConfiguration configuration)
+        internal DBConfig(IConfiguration configuration)
         {
             Server = configuration.GetValue("DB_SERVER", string.Empty)!;
             DataBase = configuration.GetValue("ORDER_DB_NAME", string.Empty)!;

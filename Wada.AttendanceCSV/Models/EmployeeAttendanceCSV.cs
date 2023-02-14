@@ -39,7 +39,7 @@ namespace Wada.AttendanceCSV.Models
         [Index(16)]
         int LunchBoxOrderedTime,
         [Index(17)]
-        decimal AnomalyHour)
+        decimal? AnomalyHour)
     {
         internal EmployeeAttendance ToDomainEntity() => new(
             AttendancePersonalCode,

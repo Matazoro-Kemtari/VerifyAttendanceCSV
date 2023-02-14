@@ -10,45 +10,67 @@ namespace DetermineDifferenceApplication
 {
     public interface IDetermineDifferenceUseCase
     {
-        Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month);
+        Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month);
     }
+
+    public record class DetermineDifferenceUseCaseDTO(
+        int CSVCount,
+        int XLSXCount,
+        IEnumerable<DetermineDifferenceEmployeesDTO> DetermineDifferenceEmployeesDTOs);
+
+    public record class DetermineDifferenceEmployeesDTO(
+        uint EmployeeNumber,
+        uint AttendancePersonalCode,
+        string EmployeeName,
+        IEnumerable<string> Differences);
 
     public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
     {
-        private readonly ILogger logger;
-        private readonly IStreamReaderOpener streamReaderOpener;
-        private readonly IStreamOpener streamOpener;
-        private readonly IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository;
-        private readonly IEmployeeAttendanceRepository employeeAttendanceRepository;
-        private readonly IAttendanceTableRepository attendanceTableRepository;
+        private readonly ILogger _logger;
+        private readonly IStreamReaderOpener _streamReaderOpener;
+        private readonly IStreamOpener _streamOpener;
+        private readonly IMatchedEmployeeNumberRepository _matchedEmployeeNumberRepository;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IEmployeeAttendanceRepository _employeeAttendanceRepository;
+        private readonly IAttendanceTableRepository _attendanceTableRepository;
 
-        public DetermineDifferenceUseCase(ILogger logger, IStreamReaderOpener streamReaderOpener, IStreamOpener streamOpener, IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository, IEmployeeAttendanceRepository employeeAttendanceRepository, IAttendanceTableRepository attendanceTableRepository)
+        public DetermineDifferenceUseCase(ILogger logger,
+                                          IStreamReaderOpener streamReaderOpener,
+                                          IStreamOpener streamOpener,
+                                          IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository,
+                                          IEmployeeRepository employeeRepository,
+                                          IEmployeeAttendanceRepository employeeAttendanceRepository,
+                                          IAttendanceTableRepository attendanceTableRepository)
         {
-            this.logger = logger;
-            this.streamReaderOpener = streamReaderOpener;
-            this.streamOpener = streamOpener;
-            this.matchedEmployeeNumberRepository = matchedEmployeeNumberRepository;
-            this.employeeAttendanceRepository = employeeAttendanceRepository;
-            this.attendanceTableRepository = attendanceTableRepository;
+            _logger = logger;
+            _streamReaderOpener = streamReaderOpener;
+            _streamOpener = streamOpener;
+            _matchedEmployeeNumberRepository = matchedEmployeeNumberRepository;
+            _employeeRepository = employeeRepository;
+            _employeeAttendanceRepository = employeeAttendanceRepository;
+            _attendanceTableRepository = attendanceTableRepository;
         }
 
+        // 早期完成版だからと言って長すぎだ!
         [Logging]
-        public async Task<(int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps)> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
+        public async Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
         {
             // CSVを取得する
-            StreamReader reader = streamReaderOpener.Open(csvPath);
-            Task<IEnumerable<WorkedMonthlyReport>> taskCSV = Task.Run(() => employeeAttendanceRepository.ReadAll(reader));
+            StreamReader reader = _streamReaderOpener.Open(csvPath);
+            Task<IEnumerable<WorkedMonthlyReport>> taskCSV = Task.Run(() => _employeeAttendanceRepository.ReadAll(reader));
 
             // 社員番号対応表を取得する
-            var employees = matchedEmployeeNumberRepository.FindAll();
-            if (employees == null)
+            var employeeComparisons = await Task.Run(() => _matchedEmployeeNumberRepository.FindAll());
+            if (employeeComparisons == null)
+                // TODO: ちゃんとThrowする
                 throw new Exception();
+
             // メモリ上に展開しておいてから照合する関数
             uint mutchEmployee(uint id)
             {
                 try
                 {
-                    return employees!
+                    return employeeComparisons!
                         .Single(x => x.EmployeeNumber == id)
                         !.AttendancePersonalCode;
                 }
@@ -59,8 +81,13 @@ namespace DetermineDifferenceApplication
                 }
             }
 
+            // S社員を取得する
+            var taskEmployee = Task.Run(() => _employeeRepository.FetchAll());
+
+            // 年度にする
+            var fiscalYear = month <= 3 ? year - 1 : year;
             // 勤怠表を取得する
-            Regex spreadSheetName = new(@"(?<=\\)" + $"{year}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
+            Regex spreadSheetName = new(@"(?<=\\)" + $"{fiscalYear}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
             IEnumerable<Task<WorkedMonthlyReport>> taskXLSs = attendanceTableDirectory
                 .Where(x => Directory.Exists(x))
                 .Select(x => Directory.EnumerateFiles(x))
@@ -70,13 +97,14 @@ namespace DetermineDifferenceApplication
                 {
                     return Task.Run(() =>
                     {
-                        Stream stream = streamOpener.Open(y);
-                        var tbl = attendanceTableRepository.ReadByMonth(stream, month);
-                        logger.Trace($"ファイル読み込み完了 {y}, {tbl}");
+                        Stream stream = _streamOpener.Open(y);
+                        var tbl = _attendanceTableRepository.ReadByMonth(stream, month);
+                        _logger.Trace($"ファイル読み込み完了 {y}, {tbl}");
                         return WorkedMonthlyReport.CreateForAttendanceTable(tbl, mutchEmployee);
                     });
                 });
 
+            var employees = await taskEmployee;
             IEnumerable<WorkedMonthlyReport> csvReports = await taskCSV;
             IEnumerable<WorkedMonthlyReport> xlsReports = await Task.WhenAll(taskXLSs);
 
@@ -105,7 +133,7 @@ namespace DetermineDifferenceApplication
                     LateNightWorkingHour = outer.csv.LateNightWorkingHour == xlsx?.LateNightWorkingHour,
                     LegalHolidayWorkedHour = outer.csv.LegalHolidayWorkedHour == xlsx?.LegalHolidayWorkedHour,
                     RegularHolidayWorkedHour = outer.csv.RegularHolidayWorkedHour == xlsx?.RegularHolidayWorkedHour,
-                    AnomalyHour = outer.csv.AnomalyHour == xlsx?.AnomalyHour,
+                    AnomalyHour = (outer.csv.AnomalyHour == null ? 0 : outer.csv.AnomalyHour) == (xlsx?.AnomalyHour == null ? 0 : xlsx?.AnomalyHour),
                 });
             // 左右入れ替え
             var differentialXLSXReports = xlsReports
@@ -132,13 +160,90 @@ namespace DetermineDifferenceApplication
                     LateNightWorkingHour = outer.xlsx.LateNightWorkingHour == csv?.LateNightWorkingHour,
                     LegalHolidayWorkedHour = outer.xlsx.LegalHolidayWorkedHour == csv?.LegalHolidayWorkedHour,
                     RegularHolidayWorkedHour = outer.xlsx.RegularHolidayWorkedHour == csv?.RegularHolidayWorkedHour,
-                    AnomalyHour = outer.xlsx.AnomalyHour == csv?.AnomalyHour,
+                    AnomalyHour = (outer.xlsx.AnomalyHour == null ? 0 : outer.xlsx.AnomalyHour) == (csv?.AnomalyHour == null ? 0 : csv?.AnomalyHour),
                 });
             // 結果を集合
             var unionDifferentialReports = differentialCSVReports.Union(differentialXLSXReports);
 
-            Dictionary<uint, List<string>> differntialMaps = new();
-            foreach (var item in unionDifferentialReports)
+            // 氏名を付加
+            var differentialReportsWithName =
+                unionDifferentialReports
+                .Join(
+                    employeeComparisons,
+                    u => u.AttendancePersonalCode,
+                    c => c.AttendancePersonalCode,
+                    (u, c) => new
+                    {
+                        c.EmployeeNumber,
+                        u.AttendancePersonalCode,
+                        u.AttendanceDay,
+                        u.HolidayWorkedDay,
+                        u.PaidLeaveDay,
+                        u.AbsenceDay,
+                        u.TransferedAttendanceDay,
+                        u.PaidSpecialLeaveDay,
+                        u.LatenessTime,
+                        u.EarlyLeaveTime,
+                        u.BusinessSuspensionDay,
+                        u.EducationDay,
+                        u.RegularWorkedHour,
+                        u.OvertimeHour,
+                        u.LateNightWorkingHour,
+                        u.LegalHolidayWorkedHour,
+                        u.RegularHolidayWorkedHour,
+                        u.AnomalyHour,
+                    })
+                .GroupJoin(
+                    employees,
+                    u => u.EmployeeNumber,
+                    e => e.EmployeeNumber,
+                    (u, e) => new
+                    {
+                        u.EmployeeNumber,
+                        u.AttendancePersonalCode,
+                        Name = e.DefaultIfEmpty(),
+                        u.AttendanceDay,
+                        u.HolidayWorkedDay,
+                        u.PaidLeaveDay,
+                        u.AbsenceDay,
+                        u.TransferedAttendanceDay,
+                        u.PaidSpecialLeaveDay,
+                        u.LatenessTime,
+                        u.EarlyLeaveTime,
+                        u.BusinessSuspensionDay,
+                        u.EducationDay,
+                        u.RegularWorkedHour,
+                        u.OvertimeHour,
+                        u.LateNightWorkingHour,
+                        u.LegalHolidayWorkedHour,
+                        u.RegularHolidayWorkedHour,
+                        u.AnomalyHour,
+                    })
+                .SelectMany(x=> x.Name, (x,e)=>new
+                {
+                    x.EmployeeNumber,
+                    x.AttendancePersonalCode,
+                    Name = e?.Name ?? string.Empty,
+                    x.AttendanceDay,
+                    x.HolidayWorkedDay,
+                    x.PaidLeaveDay,
+                    x.AbsenceDay,
+                    x.TransferedAttendanceDay,
+                    x.PaidSpecialLeaveDay,
+                    x.LatenessTime,
+                    x.EarlyLeaveTime,
+                    x.BusinessSuspensionDay,
+                    x.EducationDay,
+                    x.RegularWorkedHour,
+                    x.OvertimeHour,
+                    x.LateNightWorkingHour,
+                    x.LegalHolidayWorkedHour,
+                    x.RegularHolidayWorkedHour,
+                    x.AnomalyHour,
+                });
+
+            List<DetermineDifferenceEmployeesDTO> differences = new();
+            foreach (var item in differentialReportsWithName)
             {
                 List<string> differentialMsgs = new();
                 if (!item.AttendanceDay)
@@ -159,8 +264,7 @@ namespace DetermineDifferenceApplication
                     differentialMsgs.Add("早退回数");
                 if (!item.BusinessSuspensionDay)
                     differentialMsgs.Add("休業日数");
-                if (!item.EducationDay)
-                    differentialMsgs.Add("教育日数");
+                // 教育日数の差分は無視する
                 if (!item.RegularWorkedHour)
                     differentialMsgs.Add("所定時間");
                 if (!item.OvertimeHour)
@@ -175,10 +279,16 @@ namespace DetermineDifferenceApplication
                     differentialMsgs.Add("変則時間");
 
                 if (differentialMsgs.Count > 0)
-                    differntialMaps.Add(item.AttendancePersonalCode, differentialMsgs);
+                {
+                    differences.Add(
+                        new(item.EmployeeNumber,
+                            item.AttendancePersonalCode,
+                            item.Name,
+                            differentialMsgs));
+                }
             }
 
-            return (csvReports.Count(), xlsReports.Count(), differntialMaps);
+            return new(csvReports.Count(), xlsReports.Count(), differences);
         }
     }
 }

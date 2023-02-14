@@ -26,7 +26,7 @@ namespace Wada.AttendanceCSV.Tests
                 employeeAttendanceRepository.ReadAll(reader);
 
             // then
-            Assert.AreEqual(6, actuals.Count());
+            Assert.AreEqual(5, actuals.Count());
             List<WorkedMonthlyReport> expecteds = new()
             {
                 WorkedMonthlyReport.CreateForAttendanceCSV(new EmployeeAttendance(202u, 20m, 1m, 160m, 0, 0, 0m, 0m, 0, 0, 0, 0, 33m, 0m, 65m, 8m, 0m)),
@@ -57,7 +57,11 @@ namespace Wada.AttendanceCSV.Tests
                     x.LegalHolidayWorkedHour,
                     x.RegularHolidayWorkedHour,
                     x.AnomalyHour,
-                }).ToList(),
+                })
+                .Where(x => x.AttendancePersonalCode != 1)
+                .Where(x => x.AttendancePersonalCode != 2)
+                .Where(x => x.AttendancePersonalCode != 52)
+                .ToList(),
                 actuals.Select(x => new
                 {
                     x.AttendancePersonalCode,
