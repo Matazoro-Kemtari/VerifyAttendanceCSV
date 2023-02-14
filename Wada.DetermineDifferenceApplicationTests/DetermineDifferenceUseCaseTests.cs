@@ -42,6 +42,9 @@ namespace DetermineDifferenceApplication.Tests
                     MatchedEmployeeNumber.ReConsttuct(employeeNumber, attendancePersonalCode),
                 });
 
+            // S社員モック
+            Mock<IEmployeeRepository> mock_employee = new();
+
             // CSVの読み込みモック
             Mock<IEmployeeAttendanceRepository> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
@@ -73,13 +76,15 @@ namespace DetermineDifferenceApplication.Tests
                 mock_stream_reader.Object,
                 mock_stream.Object,
                 mock_match_employee.Object,
+                mock_employee.Object,
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var (csvCount, xlsxCount, differntialMaps) = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
 
             // then
-            Assert.IsTrue(differntialMaps.Count == 0);
+            Assert.IsTrue(!differenceDTO.DetermineDifferenceEmployeesDTOs.Any());
+            mock_employee.Verify(x => x.FetchAll(), Times.Once);
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
@@ -153,6 +158,9 @@ namespace DetermineDifferenceApplication.Tests
                     MatchedEmployeeNumber.ReConsttuct(employeeNumber, attendancePersonalCode),
                 });
 
+            // S社員モック
+            Mock<IEmployeeRepository> mock_employee = new();
+
             // CSVの読み込みモック
             Mock<IEmployeeAttendanceRepository> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
@@ -184,15 +192,18 @@ namespace DetermineDifferenceApplication.Tests
                 mock_stream_reader.Object,
                 mock_stream.Object,
                 mock_match_employee.Object,
+                mock_employee.Object,
                 mock_csv.Object,
                 mock_spread.Object);
 
-            (int csvCount, int xlsxCount, Dictionary<uint, List<string>> differntialMaps) =
-                await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
 
             // then
-            Assert.IsTrue(differntialMaps.Count == 1);
-            Assert.IsTrue(differntialMaps[4u].Count == 16);
+            Assert.IsTrue(differenceDTO.DetermineDifferenceEmployeesDTOs.Count() == 1);
+            Assert.AreEqual(14,
+                differenceDTO.DetermineDifferenceEmployeesDTOs
+                .First(x => x.AttendancePersonalCode == 4u)
+                .Differences.Count());
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
@@ -229,6 +240,9 @@ namespace DetermineDifferenceApplication.Tests
                     MatchedEmployeeNumber.ReConsttuct(employeeNumber, attendancePersonalCode),
                 });
 
+            // S社員モック
+            Mock<IEmployeeRepository> mock_employee = new();
+
             // CSVの読み込みモック
             Mock<IEmployeeAttendanceRepository> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
@@ -254,14 +268,18 @@ namespace DetermineDifferenceApplication.Tests
                 mock_stream_reader.Object,
                 mock_stream.Object,
                 mock_match_employee.Object,
+                mock_employee.Object,
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var (csvCount, xlsxCount, differntialMaps) = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
 
             // then
-            Assert.IsTrue(differntialMaps.Count == 1);
-            Assert.IsTrue(differntialMaps[4u].Count == 16);
+            Assert.IsTrue(differenceDTO.DetermineDifferenceEmployeesDTOs.Count() == 1);
+            Assert.AreEqual(14,
+                differenceDTO.DetermineDifferenceEmployeesDTOs
+                .First(x => x.AttendancePersonalCode == 4u)
+                .Differences.Count());
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
@@ -297,6 +315,9 @@ namespace DetermineDifferenceApplication.Tests
                     MatchedEmployeeNumber.ReConsttuct(1004u, 4u),
                 });
 
+            // S社員モック
+            Mock<IEmployeeRepository> mock_employee = new();
+
             // CSVの読み込みモック
             Mock<IEmployeeAttendanceRepository> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
@@ -320,6 +341,7 @@ namespace DetermineDifferenceApplication.Tests
                 mock_stream_reader.Object,
                 mock_stream.Object,
                 mock_match_employee.Object,
+                mock_employee.Object,
                 mock_csv.Object,
                 mock_spread.Object);
 

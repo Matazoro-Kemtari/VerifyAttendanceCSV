@@ -15,10 +15,12 @@ namespace Wada.AttendanceCSV
         {
             var config = new CsvHelper.Configuration.CsvConfiguration(new CultureInfo("ja-JP", false))
             {
-                //ヘッダ無（デフォルトtrue）
+                // ヘッダ無（デフォルトtrue）
                 HasHeaderRecord = false,
+                // 列が不足していても無視
+                MissingFieldFound = _ => { },
             };
-            
+
             using CsvReader csv = new(streamReader, config);
             List<EmployeeAttendanceCSV> employeeAttendanceCSVs =
                 csv.GetRecords<EmployeeAttendanceCSV>().ToList();
@@ -28,7 +30,11 @@ namespace Wada.AttendanceCSV
                 throw new AttendanceTableServiceException(msg);
             }
 
-            return employeeAttendanceCSVs.Select(x => x.ToDomainEntity())
+            return employeeAttendanceCSVs
+                .Where(x => x.AttendancePersonalCode != 1)
+                .Where(x => x.AttendancePersonalCode != 2)
+                .Where(x => x.AttendancePersonalCode != 52)
+                .Select(x => x.ToDomainEntity())
                 .Select(x => WorkedMonthlyReport.CreateForAttendanceCSV(x));
         }
     }
