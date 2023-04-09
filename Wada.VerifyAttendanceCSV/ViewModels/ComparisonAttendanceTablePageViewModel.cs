@@ -1,17 +1,16 @@
-﻿using DetermineDifferenceApplication;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using NLog;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using RegisterOwnCompanyHolidayApplication;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using Wada.DetermineDifferenceApplication;
+using Wada.RegisterOwnCompanyHolidayApplication;
 
 namespace Wada.VerifyAttendanceCSV.ViewModels
 {
@@ -41,8 +40,6 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
             NextViewCommand = new AsyncReactiveCommand()
                 .WithSubscribe(async () =>
                 {
-                    int csvCount, xlsxCount;
-                    Dictionary<uint, List<string>> responce;
                     DetermineDifferenceUseCaseDTO differenceDTP;
                     try
                     {

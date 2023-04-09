@@ -1,7 +1,7 @@
 ﻿using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 
-namespace RegisterOwnCompanyHolidayApplication
+namespace Wada.RegisterOwnCompanyHolidayApplication
 {
     public interface IRegisterOwnCompanyHolidayUseCase
     {

@@ -7,7 +7,7 @@ using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
 using Wada.AttendanceTableService.ValueObjects;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
-namespace DetermineDifferenceApplication.Tests
+namespace Wada.DetermineDifferenceApplication.Tests
 {
     [TestClass()]
     public class DetermineDifferenceUseCaseTests

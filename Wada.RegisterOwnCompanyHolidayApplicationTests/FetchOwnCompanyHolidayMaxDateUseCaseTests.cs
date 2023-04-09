@@ -2,13 +2,13 @@
 using Moq;
 using Wada.AttendanceTableService;
 
-namespace RegisterOwnCompanyHolidayApplication.Tests
+namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
 {
     [TestClass()]
     public class FetchOwnCompanyHolidayMaxDateUseCaseTests
     {
         [TestMethod()]
-        public async Task 正常系_ユーズケースを実行するとリポジトリが実行されること()
+        public async Task 正常系_ユースケースを実行するとリポジトリが実行されること()
         {
             // given
             Mock<IOwnCompanyHolidayRepository> mock_holiday = new();

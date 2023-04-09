@@ -6,7 +6,7 @@ using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
 // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 [module: Logging] // <- これ重要
-namespace DetermineDifferenceApplication
+namespace Wada.DetermineDifferenceApplication
 {
     public interface IDetermineDifferenceUseCase
     {

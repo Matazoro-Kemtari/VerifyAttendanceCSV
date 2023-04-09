@@ -1,9 +1,7 @@
-﻿using DetermineDifferenceApplication;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using NLog;
 using Prism.Ioc;
 using Prism.Modularity;
-using RegisterOwnCompanyHolidayApplication;
 using System.IO;
 using System.Windows;
 using VerifyAttendanceCSV.Views;
@@ -12,7 +10,9 @@ using Wada.AttendanceSpreadSheet;
 using Wada.AttendanceTableService;
 using Wada.CommonDialogLib;
 using Wada.DesignDepartmentDataBse;
+using Wada.DetermineDifferenceApplication;
 using Wada.OrderDataBase;
+using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV;
 
 namespace VerifyAttendanceCSV

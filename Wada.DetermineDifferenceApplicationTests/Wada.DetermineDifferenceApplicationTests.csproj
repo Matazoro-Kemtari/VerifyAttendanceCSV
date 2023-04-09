@@ -18,7 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DetermineDifferenceApplication\DetermineDifferenceApplication.csproj" />
+    <ProjectReference Include="..\Wada.DesignDepartmentDataBse\Wada.DesignDepartmentDataBse.csproj" />
+    <ProjectReference Include="..\Wada.DetermineDifferenceApplication\Wada.DetermineDifferenceApplication.csproj" />
   </ItemGroup>
 
   <ItemGroup>
