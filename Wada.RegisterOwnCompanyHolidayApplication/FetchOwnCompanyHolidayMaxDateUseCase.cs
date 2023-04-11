@@ -2,6 +2,7 @@
 using System;
 using Wada.AOP.Logging;
 using Wada.Data.DesignDepartmentDataBase.Models;
+using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
 
 namespace Wada.RegisterOwnCompanyHolidayApplication
 {
@@ -43,11 +44,29 @@ namespace Wada.RegisterOwnCompanyHolidayApplication
 
             var today = _environment.ObtainCurrentDate();
 
-            var headHolidays = await _ownCompanyHolidayRepository.FindByAfterYearAsync(headOfficeCalendarGroupId, today.Year);
-            var matsuzakaHolidays = await _ownCompanyHolidayRepository.FindByAfterYearAsync(matsuzakaOfficeCalendarGroupId, today.Year);
+            IEnumerable<OwnCompanyHoliday> headHolidays, matsuzakaHolidays;
+            try
+            {
+                headHolidays = await _ownCompanyHolidayRepository.FindByAfterYearAsync(headOfficeCalendarGroupId, today.Year);
+            }
+            catch (OwnCompanyCalendarAggregationException)
+            {
+                headHolidays = Array.Empty<OwnCompanyHoliday>();
+            }
+            try
+            {
+                matsuzakaHolidays = await _ownCompanyHolidayRepository.FindByAfterYearAsync(matsuzakaOfficeCalendarGroupId, today.Year);
+            }
+            catch (OwnCompanyCalendarAggregationException)
+            {
+                matsuzakaHolidays = Array.Empty<OwnCompanyHoliday>();
+            }
 
-            var maxDate = headHolidays.Union(matsuzakaHolidays).Max(x => x.HolidayDate);
-            return maxDate;
+            return new[]
+            {
+                headHolidays.Max(x=>x.HolidayDate),
+                matsuzakaHolidays.Max(x => x.HolidayDate),
+            }.Min();
         }
 
         public void MimicEnvironment(IEnvironment environment) => _environment = environment;
