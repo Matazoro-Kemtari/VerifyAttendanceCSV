@@ -27,7 +27,6 @@ namespace Wada.AttendanceTableServiceTests.WorkingMonthlyReportAggregation
             Assert.AreEqual(1m, actual.PaidSpecialLeaveDay);
             Assert.AreEqual(1m, actual.LatenessTime);
             Assert.AreEqual(1m, actual.EarlyLeaveTime);
-            Assert.AreEqual(3, actual.BusinessSuspensionDay);
             Assert.AreEqual(0m, actual.EducationDay);
             Assert.AreEqual(111m, actual.RegularWorkedHour);
             Assert.AreEqual(15m, actual.OvertimeHour);

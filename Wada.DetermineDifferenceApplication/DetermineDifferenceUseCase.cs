@@ -3,14 +3,22 @@ using System.Text.RegularExpressions;
 using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
+using Wada.Data.DesignDepartmentDataBase.Models;
+using Wada.Data.OrderManagement.Models;
 
-// https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
-[module: Logging] // <- これ重要
 namespace Wada.DetermineDifferenceApplication
 {
     public interface IDetermineDifferenceUseCase
     {
-        Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month);
+        /// <summary>
+        /// 勤怠CSVと勤務表エクセルの差異を判断する
+        /// </summary>
+        /// <param name="csvPath"></param>
+        /// <param name="attendanceTableDirectories"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectories, int year, int month);
     }
 
     public record class DetermineDifferenceUseCaseDTO(
@@ -53,56 +61,20 @@ namespace Wada.DetermineDifferenceApplication
 
         // 早期完成版だからと言って長すぎだ!
         [Logging]
-        public async Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectory, int year, int month)
+        public async Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectories, int year, int month)
         {
             // CSVを取得する
-            StreamReader reader = _streamReaderOpener.Open(csvPath);
-            Task<IEnumerable<WorkedMonthlyReport>> taskCSV = Task.Run(() => _employeeAttendanceRepository.ReadAll(reader));
+            var taskCSV = ReadAllAttendanceCsvAsync(csvPath);
 
             // 社員番号対応表を取得する
-            var employeeComparisons = await Task.Run(() => _matchedEmployeeNumberRepository.FindAll());
-            if (employeeComparisons == null)
-                // TODO: ちゃんとThrowする
-                throw new Exception();
-
-            // メモリ上に展開しておいてから照合する関数
-            uint mutchEmployee(uint id)
-            {
-                try
-                {
-                    return employeeComparisons!
-                        .Single(x => x.EmployeeNumber == id)
-                        !.AttendancePersonalCode;
-                }
-                catch (InvalidOperationException ex)
-                {
-                    string msg = $"社員番号対応表に該当がありません 社員番号: {id}";
-                    throw new EmployeeNumberNotFoundException(msg, ex);
-                }
-            }
+            var employeeComparisons = await _matchedEmployeeNumberRepository.FindAllAsync()
+                ?? throw new UseCaseException("社員番号対応表が取得できませんでした システム担当まで連絡してください");
 
             // S社員を取得する
-            var taskEmployee = Task.Run(() => _employeeRepository.FetchAll());
+            var taskEmployee = _employeeRepository.FindAllAsync();
 
-            // 年度にする
-            var fiscalYear = month <= 3 ? year - 1 : year;
-            // 勤怠表を取得する
-            Regex spreadSheetName = new(@"(?<=\\)" + $"{fiscalYear}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
-            IEnumerable<Task<WorkedMonthlyReport>> taskXLSs = attendanceTableDirectory
-                .Where(x => Directory.Exists(x))
-                .Select(x => Directory.EnumerateFiles(x))
-                .SelectMany(x => x)
-                .Where(y => spreadSheetName.IsMatch(y))
-                .Select(y =>
-                {
-                    return Task.Run(() =>
-                    {
-                        Stream stream = _streamOpener.Open(y);
-                        var tbl = _attendanceTableRepository.ReadByMonth(stream, month);
-                        _logger.Trace($"ファイル読み込み完了 {y}, {tbl}");
-                        return WorkedMonthlyReport.CreateForAttendanceTable(tbl, mutchEmployee);
-                    });
-                });
+            // 勤務表を開く
+            var taskXLSs = ReadSpreadSheets(attendanceTableDirectories, year, month);
 
             var employees = await taskEmployee;
             IEnumerable<WorkedMonthlyReport> csvReports = await taskCSV;
@@ -219,7 +191,7 @@ namespace Wada.DetermineDifferenceApplication
                         u.RegularHolidayWorkedHour,
                         u.AnomalyHour,
                     })
-                .SelectMany(x=> x.Name, (x,e)=>new
+                .SelectMany(x => x.Name, (x, e) => new
                 {
                     x.EmployeeNumber,
                     x.AttendancePersonalCode,
@@ -289,6 +261,53 @@ namespace Wada.DetermineDifferenceApplication
             }
 
             return new(csvReports.Count(), xlsReports.Count(), differences);
+
+            // メモリ上に展開しておいてから照合する関数
+            uint mutchEmployee(uint id)
+            {
+                try
+                {
+                    return employeeComparisons!
+                        .Single(x => x.EmployeeNumber == id)
+                        !.AttendancePersonalCode;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    string msg = $"社員番号対応表に該当がありません 社員番号: {id}";
+                    throw new EmployeeNumberNotFoundException(msg, ex);
+                }
+            }
+
+            IEnumerable<Task<WorkedMonthlyReport>> ReadSpreadSheets(IEnumerable<string> attendanceTableDirectories, int year, int month)
+            {
+                // 年度にする
+                var fiscalYear = month <= 3 ? year - 1 : year;
+                // 勤怠表を取得する
+                Regex spreadSheetName = new(@"(?<=\\)" + $"{fiscalYear}" + @"年度_(勤務表|工数記録)_.+\.xls[xm]");
+                var taskXLSs = attendanceTableDirectories
+                    .Where(x => Directory.Exists(x))
+                    .Select(x => Directory.EnumerateFiles(x))
+                    .SelectMany(x => x)
+                    .Where(y => spreadSheetName.IsMatch(y))
+                    .Select(y =>
+                    {
+                        return Task.Run(() =>
+                        {
+                            Stream stream = _streamOpener.Open(y);
+                            var tbl = _attendanceTableRepository.ReadByMonth(stream, month);
+                            _logger.Trace($"ファイル読み込み完了 {y}, {tbl}");
+                            return WorkedMonthlyReport.CreateForAttendanceTable(tbl, mutchEmployee);
+                        });
+                    });
+                return taskXLSs;
+            }
+        }
+
+        private Task<IEnumerable<WorkedMonthlyReport>> ReadAllAttendanceCsvAsync(string csvPath)
+        {
+            StreamReader reader = _streamReaderOpener.Open(csvPath);
+            Task<IEnumerable<WorkedMonthlyReport>> taskCSV = Task.Run(() => _employeeAttendanceRepository.ReadAll(reader));
+            return taskCSV;
         }
     }
 }

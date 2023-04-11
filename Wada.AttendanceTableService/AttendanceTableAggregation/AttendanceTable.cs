@@ -1,4 +1,5 @@
 ﻿using Wada.AttendanceTableService.ValueObjects;
+using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
 
 namespace Wada.AttendanceTableService.AttendanceTableAggregation
 {
@@ -124,9 +125,9 @@ namespace Wada.AttendanceTableService.AttendanceTableAggregation
                 {12,DayOffClassification.None},
                 {13,DayOffClassification.Lateness},
                 {14,DayOffClassification.EarlyLeave},
-                {15,DayOffClassification.BusinessSuspension},
-                {16,DayOffClassification.BusinessSuspension},
-                {17,DayOffClassification.BusinessSuspension},
+                {15,DayOffClassification.None},
+                {16,DayOffClassification.None},
+                {17,DayOffClassification.None},
                 {18,DayOffClassification.None},
                 {19,DayOffClassification.None},
                 {20,DayOffClassification.None},

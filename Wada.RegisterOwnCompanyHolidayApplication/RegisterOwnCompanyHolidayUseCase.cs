@@ -1,11 +1,11 @@
 ﻿using Wada.AOP.Logging;
-using Wada.AttendanceTableService;
+using Wada.Data.DesignDepartmentDataBase.Models;
 
 namespace Wada.RegisterOwnCompanyHolidayApplication
 {
     public interface IRegisterOwnCompanyHolidayUseCase
     {
-        void Execute();
+        Task ExecuteAsync();
     }
 
     public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCase
@@ -18,7 +18,7 @@ namespace Wada.RegisterOwnCompanyHolidayApplication
         }
 
         [Logging]
-        public void Execute()
+        public Task ExecuteAsync()
         {
             throw new NotImplementedException();
         }

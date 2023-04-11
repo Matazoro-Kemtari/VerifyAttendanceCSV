@@ -9,7 +9,7 @@
             AttendancePersonalCode = attendancePersonalCode;
         }
 
-        public static MatchedEmployeeNumber ReConsttuct(uint employeeNumber, uint attendancePersonalCode) => new(employeeNumber, attendancePersonalCode);
+        public static MatchedEmployeeNumber Reconstruct(uint employeeNumber, uint attendancePersonalCode) => new(employeeNumber, attendancePersonalCode);
 
         /// <summary>
         /// 社員番号
