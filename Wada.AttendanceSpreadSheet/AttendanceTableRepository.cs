@@ -3,18 +3,23 @@ using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
 using Wada.AttendanceTableService.ValueObjects;
+using Wada.Data.DesignDepartmentDataBase.Models;
+using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
+using Wada.Data.OrderManagement.Models;
 
-[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace Wada.AttendanceSpreadSheet
 {
     public class AttendanceTableRepository : IAttendanceTableRepository
     {
-        //private readonly ILogger logger;
-        private readonly IOwnCompanyHolidayRepository ownCompanyHolidayRepository;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentCompanyHolidayRepository _departmentCompanyHolidayRepository;
+        private readonly IOwnCompanyHolidayRepository _ownCompanyHolidayRepository;
 
-        public AttendanceTableRepository(IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
+        public AttendanceTableRepository(IEmployeeRepository employeeRepository, IDepartmentCompanyHolidayRepository departmentCompanyHolidayRepository, IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
         {
-            this.ownCompanyHolidayRepository = ownCompanyHolidayRepository;
+            _employeeRepository = employeeRepository;
+            _departmentCompanyHolidayRepository = departmentCompanyHolidayRepository;
+            _ownCompanyHolidayRepository = ownCompanyHolidayRepository;
         }
 
         [Logging]
@@ -28,8 +33,16 @@ namespace Wada.AttendanceSpreadSheet
                 GetAttendanceTableBaseInfo(targetSheet);
             AttendanceTable attendanceTable = new(employeeNumber, attendanceYear, attendanceMonth);
 
+            // 社員番号→部署ID→カレンダーグループID
+            var emp = _employeeRepository.FindByEmployeeNumberAsync(employeeNumber).Result;
+            if (emp.DepartmentId == null)
+                throw new AttendanceTableServiceException(
+                    "受注管理上で所属部署が確認できません\n" +
+                    $"受注管理を確認してください 社員番号: {employeeNumber}");
+            var dep = _departmentCompanyHolidayRepository.FindByDepartmentIdAsync(emp.DepartmentId.Value).Result;
+
             // 自社カレンダーを取得
-            var calendar = ownCompanyHolidayRepository.FindByYearMonth(attendanceYear.Value, attendanceMonth.Value);
+            var calendar = _ownCompanyHolidayRepository.FindByYearMonthAsync(dep.CalendarGroupId, attendanceYear.Value, attendanceMonth.Value).Result;// TODO: Result使用は妥当?
             HolidayClassification FindByDay(DateTime day)
             {
                 var result = calendar?.SingleOrDefault(x => x.HolidayDate == day);
@@ -154,7 +167,6 @@ namespace Wada.AttendanceSpreadSheet
             "振出" => DayOffClassification.TransferedAttendance,
             "休出" => DayOffClassification.HolidayWorked,
             "欠勤" => DayOffClassification.Absence,
-            "休業" => DayOffClassification.BusinessSuspension,
             "特休有給" => DayOffClassification.PaidSpecialLeave,
             "特休無給" => DayOffClassification.UnpaidSpecialLeave,
             _ => DayOffClassification.None,

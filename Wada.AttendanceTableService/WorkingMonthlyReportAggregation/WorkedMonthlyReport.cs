@@ -1,8 +1,7 @@
 ﻿using Wada.AOP.Logging;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
-using Wada.AttendanceTableService.ValueObjects;
+using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
 
-[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
 {
     [Equals(DoNotAddEqualityOperators = true), ToString]
@@ -64,7 +63,6 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
             int paidSpecialLeaveDay = CountPaidSpecialLeaveDay(attendanceTable);
             int latenessTime = CountLatenessTime(attendanceTable);
             int earlyLeaveTime = CounTearlyLeaveTime(attendanceTable);
-            int businessSuspensionDay = CountBusinessSuspensionDay(attendanceTable);
             decimal regularWorkedHour = CountRegularWorkedHour(attendanceTable);
             decimal overtimeHour = CountOvertimeHour(attendanceTable);
             decimal lateNightWorkingHour = CountLateNightWorkingHour(attendanceTable);
@@ -82,7 +80,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
                 paidSpecialLeaveDay,
                 latenessTime,
                 earlyLeaveTime,
-                businessSuspensionDay,
+                0,// 休業日数は取得できないのでゼロ
                 0,// 教育日数は取得できないのでゼロ
                 regularWorkedHour,
                 overtimeHour,
@@ -290,18 +288,6 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
 
                     return t.TotalHours < 8d ? (decimal)t.TotalHours : 8m;
                 });
-        }
-
-        /// <summary>
-        /// 休業日数を返す
-        /// </summary>
-        /// <param name="attendanceTable"></param>
-        /// <returns></returns>
-        private static int CountBusinessSuspensionDay(AttendanceTable attendanceTable)
-        {
-            return attendanceTable.AttendanceRecords
-                .Count(x =>
-                x.DayOffClassification == DayOffClassification.BusinessSuspension);
         }
 
         /// <summary>

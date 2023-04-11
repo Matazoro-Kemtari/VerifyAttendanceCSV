@@ -1,28 +1,65 @@
-﻿using Wada.AOP.Logging;
-using Wada.AttendanceTableService;
+﻿using Microsoft.Extensions.Configuration;
+using System;
+using Wada.AOP.Logging;
+using Wada.Data.DesignDepartmentDataBase.Models;
 
-[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace Wada.RegisterOwnCompanyHolidayApplication
 {
     public interface IFetchOwnCompanyHolidayMaxDateUseCase
     {
         Task<DateTime> ExecuteAsyc();
+
+        /// <summary>
+        /// 環境情報を模倣する
+        /// </summary>
+        /// <param name="environment"></param>
+        void MimicEnvironment(IEnvironment environment);
     }
 
     public class FetchOwnCompanyHolidayMaxDateUseCase : IFetchOwnCompanyHolidayMaxDateUseCase
     {
-        private readonly IOwnCompanyHolidayRepository ownCompanyHolidayRepository;
+        private readonly IConfiguration _configuration;
+        private readonly IOwnCompanyHolidayRepository _ownCompanyHolidayRepository;
 
-        public FetchOwnCompanyHolidayMaxDateUseCase(IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
+        private IEnvironment _environment = new DefaultEnvironment();
+
+        public FetchOwnCompanyHolidayMaxDateUseCase(IConfiguration configuration, IOwnCompanyHolidayRepository ownCompanyHolidayRepository)
         {
-            this.ownCompanyHolidayRepository = ownCompanyHolidayRepository;
+            _configuration = configuration;
+            _ownCompanyHolidayRepository = ownCompanyHolidayRepository;
         }
 
         [Logging]
         public async Task<DateTime> ExecuteAsyc()
         {
-            DateTime maxDate = await Task.Run(() => ownCompanyHolidayRepository.MaxDate());
+            var headOfficeCalendarGroupId = _configuration["applicationConfiguration:HeadOfficeCalendarGroupId"]
+                ?? throw new UseCaseException(
+                    "設定情報が取得できませんでした システム担当まで連絡してしてください\n" +
+                    "applicationConfiguration:HeadOfficeCalendarGroupId");
+            var matsuzakaOfficeCalendarGroupId = _configuration["applicationConfiguration:MatsuzakaOfficeCalendarGroupId"]
+                ?? throw new UseCaseException(
+                    "設定情報が取得できませんでした システム担当まで連絡してしてください\n" +
+                    "applicationConfiguration:MatsuzakaOfficeCalendarGroupId");
+
+            var today = _environment.ObtainCurrentDate();
+
+            var headHolidays = await _ownCompanyHolidayRepository.FindByAfterYear(headOfficeCalendarGroupId, today.Year);
+            var matsuzakaHolidays = await _ownCompanyHolidayRepository.FindByAfterYear(matsuzakaOfficeCalendarGroupId, today.Year);
+
+            var maxDate = headHolidays.Union(matsuzakaHolidays).Max(x => x.HolidayDate);
             return maxDate;
         }
+
+        public void MimicEnvironment(IEnvironment environment) => _environment = environment;
+
+        private class DefaultEnvironment : IEnvironment
+        {
+            public DateTime ObtainCurrentDate() => DateTime.Now.Date;
+        }
+    }
+
+    public interface IEnvironment
+    {
+        public DateTime ObtainCurrentDate();
     }
 }

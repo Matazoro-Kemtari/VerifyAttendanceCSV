@@ -9,9 +9,11 @@ using Wada.AttendanceCSV;
 using Wada.AttendanceSpreadSheet;
 using Wada.AttendanceTableService;
 using Wada.CommonDialogLib;
-using Wada.DesignDepartmentDataBse;
+using Wada.Data.DesignDepartmentDataBase;
+using Wada.Data.DesignDepartmentDataBase.Models;
+using Wada.Data.OrderManagement;
+using Wada.Data.OrderManagement.Models;
 using Wada.DetermineDifferenceApplication;
-using Wada.OrderDataBase;
 using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV;
 
@@ -39,6 +41,7 @@ namespace VerifyAttendanceCSV
 
             // DI 勤怠表エクセル
             _ = containerRegistry.Register<IMatchedEmployeeNumberRepository, MatchedEmployeeNumberRepository>();
+            _ = containerRegistry.Register<IDepartmentCompanyHolidayRepository, DepartmentCompanyHolidayRepository>();
             _ = containerRegistry.Register<IOwnCompanyHolidayRepository, OwnCompanyHolidayRepository>();
             _ = containerRegistry.Register<IStreamOpener, StreamOpener>();
             _ = containerRegistry.Register<IAttendanceTableRepository, AttendanceTableRepository>();

@@ -5,7 +5,6 @@ using Wada.AttendanceCSV.Models;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
-[module: Logging] // https://stackoverflow.com/questions/49648179/how-to-use-methoddecorator-fody-decorator-in-another-project
 namespace Wada.AttendanceCSV
 {
     public class EmployeeAttendanceRepository : IEmployeeAttendanceRepository
