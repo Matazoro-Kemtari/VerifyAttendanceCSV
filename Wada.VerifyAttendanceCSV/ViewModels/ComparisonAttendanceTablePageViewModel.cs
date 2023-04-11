@@ -3,27 +3,32 @@ using NLog;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Regions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using Wada.DetermineDifferenceApplication;
 using Wada.RegisterOwnCompanyHolidayApplication;
+using Wada.VerifyAttendanceCSV.Views;
 
 namespace Wada.VerifyAttendanceCSV.ViewModels
 {
     public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructible
     {
+        private readonly IRegionManager _regionManager;
         private readonly ILogger _logger;
         private readonly IConfiguration _configuration;
         private readonly IMessageNotification _message;
         private readonly IDetermineDifferenceUseCase _determineDifferenceUseCase;
         private readonly IFetchOwnCompanyHolidayMaxDateUseCase _fetchOwnCompanyHolidayMaxDateUseCase;
 
-        public ComparisonAttendanceTablePageViewModel(ILogger logger, IConfiguration configuration, IMessageNotification message, IDetermineDifferenceUseCase determineDifferenceUseCase, IFetchOwnCompanyHolidayMaxDateUseCase fetchOwnCompanyHolidayMaxDateUseCase)
+        public ComparisonAttendanceTablePageViewModel(IRegionManager regionManager, ILogger logger, IConfiguration configuration, IMessageNotification message, IDetermineDifferenceUseCase determineDifferenceUseCase, IFetchOwnCompanyHolidayMaxDateUseCase fetchOwnCompanyHolidayMaxDateUseCase)
         {
+            _regionManager = regionManager;
             _logger = logger;
             _configuration = configuration;
             _message = message;
@@ -62,6 +67,11 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
                 })
                 .AddTo(Disposables);
 
+            EmployeeViewCommand = new ReactiveCommand()
+                .WithSubscribe(() => _regionManager.RequestNavigate("ContentRegion", nameof(MatchedEmployeeNumberMaintenancePage)))
+                .AddTo(Disposables);
+
+
             _ = Task.Run(async () =>
             {
                 var d = await _fetchOwnCompanyHolidayMaxDateUseCase.ExecuteAsyc();
@@ -83,6 +93,8 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
         private CompositeDisposable Disposables { get; } = new CompositeDisposable();
 
         public AsyncReactiveCommand NextViewCommand { get; }
+
+        public ReactiveCommand EmployeeViewCommand { get; }
 
         public DelegateCommand PreviousViewCommand { get; }
 

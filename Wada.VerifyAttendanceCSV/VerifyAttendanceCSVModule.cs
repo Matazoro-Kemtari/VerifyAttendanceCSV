@@ -12,12 +12,15 @@ namespace Wada.VerifyAttendanceCSV
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
 
-            regionManager?.RegisterViewWithRegion("ContentRegion", typeof(ComparisonAttendanceTablePage));
+            regionManager.RegisterViewWithRegion("NavigationRegion", typeof(NavigationPage));
+            regionManager.RegisterViewWithRegion("ContentRegion", typeof(ComparisonAttendanceTablePage));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             _ = containerRegistry.Register<IMessageNotification, MessageNotificationViaMessagebox>();
+            containerRegistry.RegisterForNavigation<MatchedEmployeeNumberMaintenancePage>();
+            containerRegistry.RegisterForNavigation<OwnCompanyHolidayMaintenancePage>();
         }
     }
 }
