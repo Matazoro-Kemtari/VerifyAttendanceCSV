@@ -47,7 +47,7 @@ namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation
         }
 
         /// <summary>
-        /// 勤怠表エクセルからのFactoryメソッド
+        /// 勤務表エクセルからのFactoryメソッド
         /// </summary>
         /// <param name="attendanceTable"></param>
         /// <param name="convertParsonalCode"></param>

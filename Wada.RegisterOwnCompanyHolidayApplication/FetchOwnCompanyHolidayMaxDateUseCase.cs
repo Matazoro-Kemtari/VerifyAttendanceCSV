@@ -43,8 +43,8 @@ namespace Wada.RegisterOwnCompanyHolidayApplication
 
             var today = _environment.ObtainCurrentDate();
 
-            var headHolidays = await _ownCompanyHolidayRepository.FindByAfterYear(headOfficeCalendarGroupId, today.Year);
-            var matsuzakaHolidays = await _ownCompanyHolidayRepository.FindByAfterYear(matsuzakaOfficeCalendarGroupId, today.Year);
+            var headHolidays = await _ownCompanyHolidayRepository.FindByAfterYearAsync(headOfficeCalendarGroupId, today.Year);
+            var matsuzakaHolidays = await _ownCompanyHolidayRepository.FindByAfterYearAsync(matsuzakaOfficeCalendarGroupId, today.Year);
 
             var maxDate = headHolidays.Union(matsuzakaHolidays).Max(x => x.HolidayDate);
             return maxDate;
