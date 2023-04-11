@@ -23,6 +23,7 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
                 .AddTo(Disposables);
 
             EntryCommand = CsvFileName.ObserveHasErrors
+                .Inverse()
                 .ToAsyncReactiveCommand()
                 .AddTo(Disposables);
         }

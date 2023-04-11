@@ -1,18 +1,16 @@
 ﻿using GongSolutions.Wpf.DragDrop;
-using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
-using Prism.Regions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reactive.Disposables;
-using System.Transactions;
-using System.Windows.Input;
-using System.Windows.Navigation;
+using System.Threading.Tasks;
+using System.Windows;
 using Wada.AOP.Logging;
 using Wada.VerifyAttendanceCSV.Models;
 
@@ -21,7 +19,7 @@ namespace Wada.VerifyAttendanceCSV.ViewModels;
 public class MatchedEmployeeNumberMaintenancePageViewModel : BindableBase, IDestructible, IDropTarget
 {
     private readonly MatchedEmployeeNumberMaintenancePageModel _model = new();
-    
+
     public MatchedEmployeeNumberMaintenancePageViewModel()
     {
         CsvFileName = _model.CsvFileName
@@ -30,7 +28,9 @@ public class MatchedEmployeeNumberMaintenancePageViewModel : BindableBase, IDest
             .AddTo(Disposables);
 
         EntryCommand = CsvFileName.ObserveHasErrors
+            .Inverse()
             .ToAsyncReactiveCommand()
+            .WithSubscribe(() => RegisterEmployeeNumberTableAsync())
             .AddTo(Disposables);
     }
 
@@ -39,10 +39,29 @@ public class MatchedEmployeeNumberMaintenancePageViewModel : BindableBase, IDest
 
     public void DragOver(IDropInfo dropInfo)
     {
-        throw new NotImplementedException();
+        var dragFiles = ((DataObject)dropInfo.Data).GetFileDropList().Cast<string>();
+        dropInfo.Effects = dragFiles.Any(x => Path.GetExtension(x) == ".csv")
+            ? DragDropEffects.Copy : DragDropEffects.None;
     }
 
+    [Logging]
     public void Drop(IDropInfo dropInfo)
+    {
+        var dragFiles = ((DataObject)dropInfo.Data).GetFileDropList().Cast<string>();
+        dropInfo.Effects = dragFiles.Any(x => Path.GetExtension(x) == ".csv")
+            ? DragDropEffects.Copy : DragDropEffects.None;
+
+        _model.CsvFileName.Value =
+            dragFiles.FirstOrDefault(x => Path.GetExtension(x) == ".csv") ?? string.Empty;
+    }
+
+    /// <summary>
+    /// 社員番号対応表を登録する
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    [Logging]
+    private Task RegisterEmployeeNumberTableAsync()
     {
         throw new NotImplementedException();
     }
