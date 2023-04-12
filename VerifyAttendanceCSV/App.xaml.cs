@@ -14,6 +14,7 @@ using Wada.Data.DesignDepartmentDataBase.Models;
 using Wada.Data.OrderManagement;
 using Wada.Data.OrderManagement.Models;
 using Wada.DetermineDifferenceApplication;
+using Wada.IO;
 using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV;
 
@@ -39,11 +40,14 @@ namespace VerifyAttendanceCSV
             // DI logger
             _ = containerRegistry.RegisterSingleton<ILogger>(_ => LogManager.GetCurrentClassLogger());
 
-            // DI 勤怠表エクセル
+            // DBライブラリ
             _ = containerRegistry.Register<IMatchedEmployeeNumberRepository, MatchedEmployeeNumberRepository>();
             _ = containerRegistry.Register<IDepartmentCompanyHolidayRepository, DepartmentCompanyHolidayRepository>();
             _ = containerRegistry.Register<IOwnCompanyHolidayRepository, OwnCompanyHolidayRepository>();
-            _ = containerRegistry.Register<IStreamOpener, StreamOpener>();
+            _ = containerRegistry.Register<IEmployeeRepository, EmployeeRepository>();
+
+            // DI 勤怠表エクセル
+            _ = containerRegistry.Register<IFileStreamOpener, FileStreamOpener>();
             _ = containerRegistry.Register<IAttendanceTableRepository, AttendanceTableRepository>();
             // DI 勤怠CSV
             _ = containerRegistry.Register<IStreamReaderOpener, StreamReaderOpener>();
@@ -52,7 +56,6 @@ namespace VerifyAttendanceCSV
             _ = containerRegistry.Register<IFetchOwnCompanyHolidayMaxDateUseCase, FetchOwnCompanyHolidayMaxDateUseCase>();
 
             // 勤怠エクセルと給与システムCSVを同異判定するUseCase
-            _ = containerRegistry.Register<IEmployeeRepository, EmployeeRepository>();
             _ = containerRegistry.Register<IDetermineDifferenceUseCase, DetermineDifferenceUseCase>();
 
             // Presentation

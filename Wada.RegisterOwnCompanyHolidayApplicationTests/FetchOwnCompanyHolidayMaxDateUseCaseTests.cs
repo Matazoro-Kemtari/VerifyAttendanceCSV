@@ -24,9 +24,10 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
 
             Mock<IOwnCompanyHolidayRepository> holidayMock = new();
             var year = 2023;
+            var minDate = new DateTime(year, 3, 1);
             holidayMock.Setup(x => x.FindByAfterYearAsync(headOfficeCalendarGroupId, It.IsAny<int>()))
-                .ReturnsAsync(new List<OwnCompanyHoliday> 
-                { TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(year, 3, 1)) });
+                .ReturnsAsync(new List<OwnCompanyHoliday>
+                { TestOwnCompanyHolidayFactory.Create(holidayDate: minDate) });
             var maxDate = new DateTime(year, 3, 25);
             holidayMock.Setup(x => x.FindByAfterYearAsync(matsuzakaOfficeCalendarGroupId, It.IsAny<int>()))
                 .ReturnsAsync(new List<OwnCompanyHoliday>
@@ -49,7 +50,7 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             envMock.Verify(x => x.ObtainCurrentDate(), Times.Once);
             holidayMock.Verify(x => x.FindByAfterYearAsync(headOfficeCalendarGroupId, year), Times.Once);
             holidayMock.Verify(x => x.FindByAfterYearAsync(matsuzakaOfficeCalendarGroupId, year), Times.Once);
-            Assert.AreEqual(maxDate, actual);
+            Assert.AreEqual(minDate, actual);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Wada.AttendanceCSV
             if (employeeAttendanceCSVs.Count == 0)
             {
                 string msg = "CSVファイルにデータがありません";
-                throw new AttendanceTableServiceException(msg);
+                throw new DomainException(msg);
             }
 
             return employeeAttendanceCSVs

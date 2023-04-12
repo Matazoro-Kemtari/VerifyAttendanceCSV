@@ -36,7 +36,7 @@ namespace Wada.DetermineDifferenceApplication
     {
         private readonly ILogger _logger;
         private readonly IStreamReaderOpener _streamReaderOpener;
-        private readonly IStreamOpener _streamOpener;
+        private readonly IFileStreamOpener _streamOpener;
         private readonly IMatchedEmployeeNumberRepository _matchedEmployeeNumberRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeAttendanceRepository _employeeAttendanceRepository;
@@ -44,7 +44,7 @@ namespace Wada.DetermineDifferenceApplication
 
         public DetermineDifferenceUseCase(ILogger logger,
                                           IStreamReaderOpener streamReaderOpener,
-                                          IStreamOpener streamOpener,
+                                          IFileStreamOpener streamOpener,
                                           IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository,
                                           IEmployeeRepository employeeRepository,
                                           IEmployeeAttendanceRepository employeeAttendanceRepository,
@@ -291,9 +291,9 @@ namespace Wada.DetermineDifferenceApplication
                     .Where(y => spreadSheetName.IsMatch(y))
                     .Select(y =>
                     {
-                        return Task.Run(() =>
+                        return Task.Run(async () =>
                         {
-                            Stream stream = _streamOpener.Open(y);
+                            Stream stream = await _streamOpener.OpenAsync(y);
                             var tbl = _attendanceTableRepository.ReadByMonth(stream, month);
                             _logger.Trace($"ファイル読み込み完了 {y}, {tbl}");
                             return WorkedMonthlyReport.CreateForAttendanceTable(tbl, mutchEmployee);

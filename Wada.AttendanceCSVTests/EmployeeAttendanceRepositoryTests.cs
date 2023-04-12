@@ -118,7 +118,7 @@ namespace Wada.AttendanceCSV.Tests
 
             // then
             var msg = "CSVファイルにデータがありません";
-            var ex = Assert.ThrowsException<AttendanceTableServiceException>(target);
+            var ex = Assert.ThrowsException<DomainException>(target);
             Assert.AreEqual(msg, ex.Message);
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace RegisterEmployeeNumberTableApplication;
+﻿using Wada.Data.DesignDepartmentDataBase.Models;
+
+namespace RegisterEmployeeNumberTableApplication;
 
 public interface IRegisterEmployeeNumberTableUseCase
 {
@@ -12,8 +14,16 @@ public interface IRegisterEmployeeNumberTableUseCase
 
 public class RegisterEmployeeNumberTableUseCase : IRegisterEmployeeNumberTableUseCase
 {
+    private readonly IMatchedEmployeeNumberRepository _matchedEmployeeNumberRepository;
+
+    public RegisterEmployeeNumberTableUseCase(IMatchedEmployeeNumberRepository matchedEmployeeNumberRepository)
+    {
+        _matchedEmployeeNumberRepository = matchedEmployeeNumberRepository;
+    }
+
     public async Task ExecuteAsync(string csvPath)
     {
-
+        throw new NotImplementedException();
+        //return await _matchedEmployeeNumberRepository.AddRangeAsync();
     }
 }

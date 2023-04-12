@@ -26,6 +26,7 @@
     <ProjectReference Include="..\Wada.AttendanceTableService\Wada.AttendanceTableService.csproj" />
     <ProjectReference Include="..\Wada.CommonDialogLib\Wada.CommonDialogLib.csproj" />
     <ProjectReference Include="..\Wada.DetermineDifferenceApplication\Wada.DetermineDifferenceApplication.csproj" />
+    <ProjectReference Include="..\Wada.IO\Wada.IO.csproj" />
     <ProjectReference Include="..\Wada.VerifyAttendanceCSV\Wada.VerifyAttendanceCSV.csproj" />
   </ItemGroup>
   <ItemGroup>
