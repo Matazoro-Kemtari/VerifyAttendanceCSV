@@ -7,7 +7,7 @@ using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
 namespace Wada.AttendanceCSV
 {
-    public class EmployeeAttendanceRepository : IEmployeeAttendanceRepository
+    public class EmployeeAttendanceCsvReader : IEmployeeAttendanceCsvReader
     {
         [Logging]
         public IEnumerable<WorkedMonthlyReport> ReadAll(StreamReader streamReader)

@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wada.AttendanceCSV\Wada.AttendanceCSV.csproj" />
+    <ProjectReference Include="..\Wada.AttendanceCSV\Wada.AttendanceCsv.csproj" />
   </ItemGroup>
 
 </Project>

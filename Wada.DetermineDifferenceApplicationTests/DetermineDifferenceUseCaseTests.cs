@@ -48,7 +48,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
                 .Returns(AttendanceCSVReturns(attendancePersonalCode));
 
@@ -164,7 +164,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
                 .Returns(LackAttendanceCSVReturns(attendancePersonalCode));
 
@@ -246,7 +246,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
                 .Returns(AttendanceCSVReturns(attendancePersonalCode));
 
@@ -321,7 +321,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
                 .Returns(AttendanceCSVReturns(attendancePersonalCode));
 

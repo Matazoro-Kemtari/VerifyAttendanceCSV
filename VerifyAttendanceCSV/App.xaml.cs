@@ -51,7 +51,7 @@ namespace VerifyAttendanceCSV
             _ = containerRegistry.Register<IAttendanceTableRepository, AttendanceTableRepository>();
             // DI 勤怠CSV
             _ = containerRegistry.Register<IStreamReaderOpener, StreamReaderOpener>();
-            _ = containerRegistry.Register<IEmployeeAttendanceRepository, EmployeeAttendanceRepository>();
+            _ = containerRegistry.Register<IEmployeeAttendanceCsvReader, EmployeeAttendanceCsvReader>();
             // 自社休日
             _ = containerRegistry.Register<IFetchOwnCompanyHolidayMaxDateUseCase, FetchOwnCompanyHolidayMaxDateUseCase>();
 

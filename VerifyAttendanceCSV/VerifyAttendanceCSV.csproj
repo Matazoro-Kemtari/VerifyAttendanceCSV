@@ -21,7 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wada.AOP.Logging\Wada.AOP.Logging.csproj" />
-    <ProjectReference Include="..\Wada.AttendanceCSV\Wada.AttendanceCSV.csproj" />
+    <ProjectReference Include="..\Wada.AttendanceCSV\Wada.AttendanceCsv.csproj" />
     <ProjectReference Include="..\Wada.AttendanceSpreadSheet\Wada.AttendanceSpreadSheet.csproj" />
     <ProjectReference Include="..\Wada.AttendanceTableService\Wada.AttendanceTableService.csproj" />
     <ProjectReference Include="..\Wada.CommonDialogLib\Wada.CommonDialogLib.csproj" />

@@ -2,7 +2,7 @@
 
 namespace Wada.AttendanceTableService
 {
-    public interface IEmployeeAttendanceRepository
+    public interface IEmployeeAttendanceCsvReader
     {
         /// <summary>
         /// 全ての就業月報を取得する

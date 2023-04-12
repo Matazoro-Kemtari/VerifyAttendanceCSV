@@ -20,8 +20,8 @@ namespace Wada.AttendanceCSV.Tests
                     "StreamReader作るときに失敗した");
 
             // when
-            IEmployeeAttendanceRepository employeeAttendanceRepository
-                = new EmployeeAttendanceRepository();
+            IEmployeeAttendanceCsvReader employeeAttendanceRepository
+                = new EmployeeAttendanceCsvReader();
             IEnumerable<WorkedMonthlyReport> actuals =
                 employeeAttendanceRepository.ReadAll(reader);
 
@@ -109,8 +109,8 @@ namespace Wada.AttendanceCSV.Tests
 #pragma warning restore CA2208 // 引数の例外を正しくインスタンス化します
 
             // when
-            IEmployeeAttendanceRepository employeeAttendanceRepository
-                = new EmployeeAttendanceRepository();
+            IEmployeeAttendanceCsvReader employeeAttendanceRepository
+                = new EmployeeAttendanceCsvReader();
             void target()
             {
                 _ = employeeAttendanceRepository.ReadAll(reader);
