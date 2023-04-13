@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.101.0" />
+    <PackageReference Include="MethodDecorator.Fody" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
