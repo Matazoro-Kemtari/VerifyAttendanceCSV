@@ -1,11 +1,11 @@
 ﻿using CsvHelper;
 using System.Globalization;
 using Wada.AOP.Logging;
-using Wada.AttendanceCSV.Models;
+using Wada.AttendanceCsv.Models;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
-namespace Wada.AttendanceCSV
+namespace Wada.AttendanceCsv
 {
     public class EmployeeAttendanceCsvReader : IEmployeeAttendanceCsvReader
     {
@@ -21,8 +21,8 @@ namespace Wada.AttendanceCSV
             };
 
             using CsvReader csv = new(streamReader, config);
-            List<EmployeeAttendanceCSV> employeeAttendanceCSVs =
-                csv.GetRecords<EmployeeAttendanceCSV>().ToList();
+            List<EmployeeAttendanceCsv> employeeAttendanceCSVs =
+                csv.GetRecords<EmployeeAttendanceCsv>().ToList();
             if (employeeAttendanceCSVs.Count == 0)
             {
                 string msg = "CSVファイルにデータがありません";

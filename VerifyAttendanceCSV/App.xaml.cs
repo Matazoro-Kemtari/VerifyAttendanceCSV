@@ -5,7 +5,7 @@ using Prism.Modularity;
 using System.IO;
 using System.Windows;
 using VerifyAttendanceCSV.Views;
-using Wada.AttendanceCSV;
+using Wada.AttendanceCsv;
 using Wada.AttendanceSpreadSheet;
 using Wada.AttendanceTableService;
 using Wada.CommonDialogLib;
@@ -46,17 +46,22 @@ namespace VerifyAttendanceCSV
             _ = containerRegistry.Register<IOwnCompanyHolidayRepository, OwnCompanyHolidayRepository>();
             _ = containerRegistry.Register<IEmployeeRepository, EmployeeRepository>();
 
-            // DI 勤怠表エクセル
+            // Wada.IO
             _ = containerRegistry.Register<IFileStreamOpener, FileStreamOpener>();
+            _ = containerRegistry.Register<IStreamReaderOpener, StreamReaderOpener>();
+
+            // DI 勤怠表エクセル
             _ = containerRegistry.Register<IAttendanceTableRepository, AttendanceTableRepository>();
             // DI 勤怠CSV
-            _ = containerRegistry.Register<IStreamReaderOpener, StreamReaderOpener>();
             _ = containerRegistry.Register<IEmployeeAttendanceCsvReader, EmployeeAttendanceCsvReader>();
             // 自社休日
             _ = containerRegistry.Register<IFetchOwnCompanyHolidayMaxDateUseCase, FetchOwnCompanyHolidayMaxDateUseCase>();
 
             // 勤怠エクセルと給与システムCSVを同異判定するUseCase
             _ = containerRegistry.Register<IDetermineDifferenceUseCase, DetermineDifferenceUseCase>();
+
+            // 社員番号対応表読込
+            _ = containerRegistry.Register<IMatchedEmployeeNumberListReader, MatchedEmployeeNumberCsvReader>();
 
             // Presentation
             _ = containerRegistry.Register<ICommonDialogSwitcher, CommonDialogSwitcher>();

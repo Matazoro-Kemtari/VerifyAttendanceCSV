@@ -3,7 +3,7 @@ using System.Text;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
-namespace Wada.AttendanceCSV.Tests
+namespace Wada.AttendanceCsv.Tests
 {
     [TestClass()]
     public class EmployeeAttendanceRepositoryTests
