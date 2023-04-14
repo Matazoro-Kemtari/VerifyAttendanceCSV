@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wada.DetermineDifferenceApplication\Wada.DetermineDifferenceApplication.csproj" />
+    <ProjectReference Include="..\Wada.RegisterEmployeeNumberTableApplication\Wada.RegisterEmployeeNumberTableApplication.csproj" />
     <ProjectReference Include="..\Wada.RegisterOwnCompanyHolidayApplication\Wada.RegisterOwnCompanyHolidayApplication.csproj" />
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.Data.DesignDepartmentDataBase.Models;
+using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
 
 namespace Wada.RegisterEmployeeNumberTableApplication;
 
@@ -38,15 +39,29 @@ public class RegisterEmployeeNumberTableUseCase : IRegisterEmployeeNumberTableUs
         {
             // データファイルを読み込む
             var stream = await _fileStreamOpener.OpenAsync(csvPath);
-            var matchedEmployeeNumbers = await _matchedEmployeeNumberListReader.ReadAllAsync(stream);
+            var additionalEmployeeNumbers = await _matchedEmployeeNumberListReader.ReadAllAsync(stream);
+
+            // 削除するか判断するため全て取得
+            var allMatchedEmployeeNumbers = await _matchedEmployeeNumberRepository.FindAllAsync();
+
+            // 消すべきレコードを求める
+            var deletable = allMatchedEmployeeNumbers.Join(
+                additionalEmployeeNumbers,
+                all => all.EmployeeNumber,
+                add => add.EmployeeNumber,
+                (all, add) => MatchedEmployeeNumber.Create(all.EmployeeNumber, all.AttendancePersonalCode));
+
+            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            if (deletable.Any())
+                // 一旦消す
+                await _matchedEmployeeNumberRepository.RemoveRangeAsync(deletable);
 
             // データベースに登録する
-            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             await _matchedEmployeeNumberRepository.AddRangeAsync(
-                matchedEmployeeNumbers.Select(x => x.Convert()));
+                additionalEmployeeNumbers);
             scope.Complete();
         }
-        catch (DomainException ex)
+        catch (Exception ex) when (ex is DomainException or MatchedEmployeeNumberAggregationException)
         {
             throw new UseCaseException(ex.Message, ex);
         }

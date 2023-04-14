@@ -1,4 +1,4 @@
-﻿using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
+﻿using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
 
 namespace Wada.AttendanceTableService;
 

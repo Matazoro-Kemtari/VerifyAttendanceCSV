@@ -1,7 +1,7 @@
 ﻿using ClosedXML.Excel;
 using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
-using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
+using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
 
 namespace Wada.MatchedEmployeeNumberSpreadSheet;
 
@@ -28,14 +28,14 @@ public class MatchedEmployeeNumberSpreadSheetReader : IMatchedEmployeeNumberList
         }
         catch (FormatException ex)
         {
-            throw new MatchedEmployeeNumberException(
+            throw new MatchedEmployeeNumberAggregationException(
                 "取込可能なファイル形式ではありません\nファイルが壊れている可能性があります", ex);
         }
 
         if (table.Select(x => x.Length).First() < 2)
         {
             // 列数が2未満の場合はデータ異常
-            throw new MatchedEmployeeNumberException(
+            throw new MatchedEmployeeNumberAggregationException(
                 "取込可能なデータ形式ではありません\n" +
                 "フォーマットを確認してください");
         }
@@ -46,14 +46,14 @@ public class MatchedEmployeeNumberSpreadSheetReader : IMatchedEmployeeNumberList
                         .Where(x => x[0] != null)
                         .Where(x => x[1] != null)
                         .Cast<string[]>()
-                        .Select(x => new MatchedEmployeeNumber(
+                        .Select(x => MatchedEmployeeNumber.Create(
                             uint.Parse(x[0]),
                             uint.Parse(x[1])))
                         .ToList();
         }
         catch (FormatException ex)
         {
-            throw new MatchedEmployeeNumberException(
+            throw new MatchedEmployeeNumberAggregationException(
                 "データ中に数字以外の文字があります 数字のみにしてください", ex);
         }
     }

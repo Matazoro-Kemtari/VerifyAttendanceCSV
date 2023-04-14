@@ -12,11 +12,23 @@
              d:Background="LightGray"
              d:DataContext="{d:DesignInstance Type=viewmodels:MatchedEmployeeNumberMaintenancePageViewModel}"
              prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
              FontSize="16">
     <UserControl.Resources>
         <!-- BooleanをVisibility列挙型に変換するコンバータ 組み込みコンバータ -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <l:InteractionMessageTrigger MessageKey="Info" Messenger="{Binding Messenger}">
+            <l:InformationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger MessageKey="Confirm" Messenger="{Binding Messenger}">
+            <l:ConfirmationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+    </i:Interaction.Triggers>
+    
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="登録(_R)"

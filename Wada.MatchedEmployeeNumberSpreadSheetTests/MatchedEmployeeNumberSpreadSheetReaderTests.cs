@@ -1,7 +1,7 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wada.AttendanceTableService;
-using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
+using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
 
 namespace Wada.MatchedEmployeeNumberSpreadSheet.Tests
 {
@@ -21,7 +21,7 @@ namespace Wada.MatchedEmployeeNumberSpreadSheet.Tests
             var actual = await reader.ReadAllAsync(stream);
 
             CollectionAssert.AreEqual(
-                正常系テストデータ.Select(x => new MatchedEmployeeNumber((uint)x[0], (uint)x[1])).ToList(),
+                正常系テストデータ.Select(x => MatchedEmployeeNumber.Reconstruct((uint)x[0], (uint)x[1])).ToList(),
                 actual.ToList());
         }
 
@@ -36,7 +36,7 @@ namespace Wada.MatchedEmployeeNumberSpreadSheet.Tests
             IMatchedEmployeeNumberListReader reader = new MatchedEmployeeNumberSpreadSheetReader();
             Task target() => _ = reader.ReadAllAsync(stream!);
 
-            var ex = await Assert.ThrowsExceptionAsync<MatchedEmployeeNumberException>(target);
+            var ex = await Assert.ThrowsExceptionAsync<MatchedEmployeeNumberAggregationException>(target);
             var message = "取込可能なファイル形式ではありません\nファイルが壊れている可能性があります";
             Assert.AreEqual(message, ex.Message);
         }
@@ -53,7 +53,7 @@ namespace Wada.MatchedEmployeeNumberSpreadSheet.Tests
             IMatchedEmployeeNumberListReader reader = new MatchedEmployeeNumberSpreadSheetReader();
             Task target() => _ = reader.ReadAllAsync(stream!);
 
-            var ex = await Assert.ThrowsExceptionAsync<MatchedEmployeeNumberException>(target);
+            var ex = await Assert.ThrowsExceptionAsync<MatchedEmployeeNumberAggregationException>(target);
             var message = "データ中に数字以外の文字があります 数字のみにしてください";
             Assert.AreEqual(message, ex.Message);
         }
