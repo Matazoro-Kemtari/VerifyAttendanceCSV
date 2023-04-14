@@ -21,11 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.AttendanceSpreadSheet"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.AttendanceSpreadSheetTests", "Wada.AttendanceSpreadSheetTests\Wada.AttendanceSpreadSheetTests.csproj", "{8D61C5E9-8323-4023-8388-8147AE5069F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.AttendanceCSV", "Wada.AttendanceCSV\Wada.AttendanceCSV.csproj", "{F8C0B4C3-2769-4A8F-8E74-A5BE6811CA83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.AttendanceCsv", "Wada.AttendanceCsv\Wada.AttendanceCsv.csproj", "{F8C0B4C3-2769-4A8F-8E74-A5BE6811CA83}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.DetermineDifferenceApplication", "Wada.DetermineDifferenceApplication\Wada.DetermineDifferenceApplication.csproj", "{CEF632F3-95F2-48A2-9436-3387E0A8F050}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.AttendanceCSVTests", "Wada.AttendanceCSVTests\Wada.AttendanceCSVTests.csproj", "{D3B284C4-5E49-4109-AC02-3440FC9B7A1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.AttendanceCsvTests", "Wada.AttendanceCsvTests\Wada.AttendanceCsvTests.csproj", "{D3B284C4-5E49-4109-AC02-3440FC9B7A1F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.RegisterEmployeeNumberTableApplication", "Wada.RegisterEmployeeNumberTableApplication\Wada.RegisterEmployeeNumberTableApplication.csproj", "{EFADF3B0-F50A-4546-A591-44CCB417A72D}"
 EndProject
@@ -42,6 +42,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.AOP.Logging", "Wada.AOP.Logging\Wada.AOP.Logging.csproj", "{383B072D-7C1C-4BC8-AD7A-D7A2D1B01E9B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.RegisterOwnCompanyHolidayApplication", "Wada.RegisterOwnCompanyHolidayApplication\Wada.RegisterOwnCompanyHolidayApplication.csproj", "{34F6C779-D57B-41BB-9642-6E24FDBC726F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.IO", "Wada.IO\Wada.IO.csproj", "{547CCCBE-2A5F-4F75-923D-0113A0A71C8D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.IOTests", "Wada.IOTests\Wada.IOTests.csproj", "{9DEF6273-BBF3-42F3-8875-15537E063070}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.MatchedEmployeeNumberSpreadSheet", "Wada.MatchedEmployeeNumberSpreadSheet\Wada.MatchedEmployeeNumberSpreadSheet.csproj", "{AABCF799-353A-40FD-9A67-B4052303AA2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.MatchedEmployeeNumberSpreadSheetTests", "Wada.MatchedEmployeeNumberSpreadSheetTests\Wada.MatchedEmployeeNumberSpreadSheetTests.csproj", "{8B888DF2-D543-4077-9502-AEB586E8A571}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.RegisterEmployeeNumberTableApplicationTests", "Wada.RegisterEmployeeNumberTableApplicationTests\Wada.RegisterEmployeeNumberTableApplicationTests.csproj", "{02568EA2-88E6-4707-A4FC-300ED743A6B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +119,26 @@ Global
 		{34F6C779-D57B-41BB-9642-6E24FDBC726F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34F6C779-D57B-41BB-9642-6E24FDBC726F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34F6C779-D57B-41BB-9642-6E24FDBC726F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{547CCCBE-2A5F-4F75-923D-0113A0A71C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{547CCCBE-2A5F-4F75-923D-0113A0A71C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{547CCCBE-2A5F-4F75-923D-0113A0A71C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{547CCCBE-2A5F-4F75-923D-0113A0A71C8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DEF6273-BBF3-42F3-8875-15537E063070}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DEF6273-BBF3-42F3-8875-15537E063070}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DEF6273-BBF3-42F3-8875-15537E063070}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DEF6273-BBF3-42F3-8875-15537E063070}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AABCF799-353A-40FD-9A67-B4052303AA2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AABCF799-353A-40FD-9A67-B4052303AA2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AABCF799-353A-40FD-9A67-B4052303AA2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AABCF799-353A-40FD-9A67-B4052303AA2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B888DF2-D543-4077-9502-AEB586E8A571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B888DF2-D543-4077-9502-AEB586E8A571}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B888DF2-D543-4077-9502-AEB586E8A571}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B888DF2-D543-4077-9502-AEB586E8A571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +158,11 @@ Global
 		{0C3A686D-B6CB-4C38-878C-D93F0EEEE727} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
 		{383B072D-7C1C-4BC8-AD7A-D7A2D1B01E9B} = {85DB9661-AB4B-4840-BC9A-A6E7E18FC217}
 		{34F6C779-D57B-41BB-9642-6E24FDBC726F} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
+		{547CCCBE-2A5F-4F75-923D-0113A0A71C8D} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{9DEF6273-BBF3-42F3-8875-15537E063070} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{AABCF799-353A-40FD-9A67-B4052303AA2C} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{8B888DF2-D543-4077-9502-AEB586E8A571} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6BBC0BD-A5F6-44C4-B7A6-7FAD6289890C}

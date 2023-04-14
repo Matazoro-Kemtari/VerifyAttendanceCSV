@@ -6,10 +6,10 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetEnv" Version="2.5.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="Moq" Version="4.18.4" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
@@ -21,14 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wada.AttendanceSpreadSheet\Wada.AttendanceSpreadSheet.csproj" />
-    <ProjectReference Include="..\Wada.IO\Wada.IO.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update=".env">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\Wada.RegisterEmployeeNumberTableApplication\Wada.RegisterEmployeeNumberTableApplication.csproj" />
   </ItemGroup>
 
 </Project>

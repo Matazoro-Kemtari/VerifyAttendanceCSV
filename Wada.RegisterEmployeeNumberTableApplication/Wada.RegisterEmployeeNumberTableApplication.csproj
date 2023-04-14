@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="MethodDecorator.Fody" Version="1.1.1" />
+    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.11" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Wada.AOP.Logging\Wada.AOP.Logging.csproj" />
+    <ProjectReference Include="..\Wada.AttendanceTableService\Wada.AttendanceTableService.csproj" />
   </ItemGroup>
 
 </Project>

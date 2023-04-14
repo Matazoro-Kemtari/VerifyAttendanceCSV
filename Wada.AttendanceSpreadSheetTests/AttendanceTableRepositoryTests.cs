@@ -9,6 +9,7 @@ using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
 using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
 using Wada.Data.OrderManagement.Models;
 using Wada.Data.OrderManagement.Models.EmployeeAggregation;
+using Wada.IO;
 
 namespace Wada.AttendanceSpreadSheet.Tests
 {
@@ -16,20 +17,20 @@ namespace Wada.AttendanceSpreadSheet.Tests
     public class AttendanceTableRepositoryTests
     {
         [TestMethod()]
-        public void 正常系_勤怠表が読み込めること()
+        public async Task 正常系_勤怠表が読み込めること()
         {
             // given
             DotNetEnv.Env.Load(".env");
 
-            IStreamOpener streamOpener = new StreamOpener();
+            IFileStreamOpener streamOpener = new FileStreamOpener();
             string path = DotNetEnv.Env.GetString("TEST_XLS_PATH");
-            using Stream xlsStream = streamOpener.Open(path);
+            using Stream xlsStream = await streamOpener.OpenAsync(path);
 
             Mock<IEmployeeRepository> employeeMock = new();
             employeeMock.Setup(x => x.FindByEmployeeNumberAsync(It.IsAny<uint>()))
                 .ReturnsAsync(TestEmployeeFactory.Create());
 
-            Mock< IDepartmentCompanyHolidayRepository> departHoliMock = new();
+            Mock<IDepartmentCompanyHolidayRepository> departHoliMock = new();
             var groupId = "__DUMMY__";
             departHoliMock.Setup(x => x.FindByDepartmentIdAsync(It.IsAny<uint>()))
                 .ReturnsAsync(TestDepartmentCompanyHolidayFactory.Create(calendarGroupId: groupId));

@@ -1,12 +1,12 @@
 ﻿namespace Wada.AttendanceTableService
 {
-    public interface IStreamOpener
+    public interface IFileStreamOpener
     {
         /// <summary>
         /// ストリームを開く
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        Stream Open(string path);
+        Task<Stream> OpenAsync(string path);
     }
 }

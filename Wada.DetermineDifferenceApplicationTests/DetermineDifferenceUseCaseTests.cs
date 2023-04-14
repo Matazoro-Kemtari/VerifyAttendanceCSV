@@ -3,7 +3,6 @@ using Moq;
 using NLog;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
-using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
 using Wada.AttendanceTableService.ValueObjects;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 using Wada.Data.DesignDepartmentDataBase.Models;
@@ -31,7 +30,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
             // ストリームモック
-            Mock<IStreamOpener> mock_stream = new();
+            Mock<IFileStreamOpener> mock_stream = new();
 
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
@@ -49,7 +48,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
                 .Returns(AttendanceCSVReturns(attendancePersonalCode));
 
@@ -90,7 +89,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             mock_employee.Verify(x => x.FindAllAsync(), Times.Once);
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
-            mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
+            mock_stream.Verify(x => x.OpenAsync(It.IsAny<string>()), Times.Exactly(2));
             mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
@@ -147,7 +146,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
             // ストリームモック
-            Mock<IStreamOpener> mock_stream = new();
+            Mock<IFileStreamOpener> mock_stream = new();
 
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
@@ -165,7 +164,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
                 .Returns(LackAttendanceCSVReturns(attendancePersonalCode));
 
@@ -209,7 +208,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
                 .Differences.Count());
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
-            mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
+            mock_stream.Verify(x => x.OpenAsync(It.IsAny<string>()), Times.Exactly(2));
             mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
@@ -229,7 +228,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
             // ストリームモック
-            Mock<IStreamOpener> mock_stream = new();
+            Mock<IFileStreamOpener> mock_stream = new();
 
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
@@ -247,7 +246,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
                 .Returns(AttendanceCSVReturns(attendancePersonalCode));
 
@@ -285,7 +284,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
                 .Differences.Count());
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
-            mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
+            mock_stream.Verify(x => x.OpenAsync(It.IsAny<string>()), Times.Exactly(2));
             mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
@@ -305,7 +304,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
             // ストリームモック
-            Mock<IStreamOpener> mock_stream = new();
+            Mock<IFileStreamOpener> mock_stream = new();
 
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
@@ -322,7 +321,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
             mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
                 .Returns(AttendanceCSVReturns(attendancePersonalCode));
 

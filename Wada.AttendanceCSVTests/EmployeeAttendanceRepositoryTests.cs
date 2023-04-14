@@ -3,7 +3,7 @@ using System.Text;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
-namespace Wada.AttendanceCSV.Tests
+namespace Wada.AttendanceCsv.Tests
 {
     [TestClass()]
     public class EmployeeAttendanceRepositoryTests
@@ -20,8 +20,8 @@ namespace Wada.AttendanceCSV.Tests
                     "StreamReader作るときに失敗した");
 
             // when
-            IEmployeeAttendanceRepository employeeAttendanceRepository
-                = new EmployeeAttendanceRepository();
+            IEmployeeAttendanceCsvReader employeeAttendanceRepository
+                = new EmployeeAttendanceCsvReader();
             IEnumerable<WorkedMonthlyReport> actuals =
                 employeeAttendanceRepository.ReadAll(reader);
 
@@ -109,8 +109,8 @@ namespace Wada.AttendanceCSV.Tests
 #pragma warning restore CA2208 // 引数の例外を正しくインスタンス化します
 
             // when
-            IEmployeeAttendanceRepository employeeAttendanceRepository
-                = new EmployeeAttendanceRepository();
+            IEmployeeAttendanceCsvReader employeeAttendanceRepository
+                = new EmployeeAttendanceCsvReader();
             void target()
             {
                 _ = employeeAttendanceRepository.ReadAll(reader);
@@ -118,7 +118,7 @@ namespace Wada.AttendanceCSV.Tests
 
             // then
             var msg = "CSVファイルにデータがありません";
-            var ex = Assert.ThrowsException<AttendanceTableServiceException>(target);
+            var ex = Assert.ThrowsException<DomainException>(target);
             Assert.AreEqual(msg, ex.Message);
         }
     }

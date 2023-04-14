@@ -36,7 +36,7 @@ namespace Wada.AttendanceSpreadSheet
             // 社員番号→部署ID→カレンダーグループID
             var emp = _employeeRepository.FindByEmployeeNumberAsync(employeeNumber).Result;
             if (emp.DepartmentId == null)
-                throw new AttendanceTableServiceException(
+                throw new DomainException(
                     "受注管理上で所属部署が確認できません\n" +
                     $"受注管理を確認してください 社員番号: {employeeNumber}");
             var dep = _departmentCompanyHolidayRepository.FindByDepartmentIdAsync(emp.DepartmentId.Value).Result;
@@ -71,7 +71,7 @@ namespace Wada.AttendanceSpreadSheet
                 if (!row.Cell(DayColumnLetter).TryGetValue(out int attendanceDay))
                 {
                     string msg = $"日付が取得できません シート:{targetSheet.Name}, セル:{row.Cell(DayColumnLetter).Address}";
-                    throw new AttendanceTableServiceException(msg);
+                    throw new DomainException(msg);
                 }
 
                 // 日付の有効性判定
@@ -79,7 +79,7 @@ namespace Wada.AttendanceSpreadSheet
                 if (date.Year != attendanceYear.Value || date.Month != attendanceMonth.Value)
                 {
                     string msg = $"日付の値が範囲を超えています シート:{targetSheet.Name}, セル:{row.Cell(DayColumnLetter).Address}";
-                    throw new AttendanceTableServiceException(msg);
+                    throw new DomainException(msg);
                 }
 
                 AttendanceTime? startTime = null;
@@ -92,7 +92,7 @@ namespace Wada.AttendanceSpreadSheet
                     if (!row.Cell(StartedTimeColumnLetter).TryGetValue(out DateTime _startTime))
                     {
                         string msg = $"始業時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell(StartedTimeColumnLetter).Address}";
-                        throw new AttendanceTableServiceException(msg);
+                        throw new DomainException(msg);
                     }
                     startTime = new AttendanceTime(date + _startTime.TimeOfDay);
 
@@ -100,7 +100,7 @@ namespace Wada.AttendanceSpreadSheet
                     if (!row.Cell(EndedTimeColumnLetter).TryGetValue(out DateTime _endTime))
                     {
                         string msg = $"終業時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell(EndedTimeColumnLetter).Address}";
-                        throw new AttendanceTableServiceException(msg);
+                        throw new DomainException(msg);
                     }
                     if (_startTime.TimeOfDay > _endTime.TimeOfDay)
                         _endTime.Add(new TimeSpan(1, 0, 0, 0));
@@ -110,7 +110,7 @@ namespace Wada.AttendanceSpreadSheet
                     if (!row.Cell(RestTimeColumnLetter).TryGetValue(out DateTime _restTime))
                     {
                         string msg = $"休憩時間が取得できません シート:{targetSheet.Name}, セル:{row.Cell(RestTimeColumnLetter).Address}";
-                        throw new AttendanceTableServiceException(msg);
+                        throw new DomainException(msg);
                     }
                     restTime = _restTime.TimeOfDay;
                 }
@@ -119,7 +119,7 @@ namespace Wada.AttendanceSpreadSheet
                 if (!row.Cell(DayOffColumnLetter).TryGetValue(out string _dayOffValue))
                 {
                     string msg = $"勤務が取得できません シート:{targetSheet.Name}, セル:{row.Cell(DayOffColumnLetter).Address}";
-                    throw new AttendanceTableServiceException(msg);
+                    throw new DomainException(msg);
                 }
                 DayOffClassification dayOff = ConvertDayOffClassification(_dayOffValue);
                 if (dayOff == DayOffClassification.None && startTime != null && endTime != null)
@@ -177,13 +177,13 @@ namespace Wada.AttendanceSpreadSheet
         /// </summary>
         /// <param name="targetSheet"></param>
         /// <returns></returns>
-        /// <exception cref="AttendanceTableServiceException"></exception>
+        /// <exception cref="DomainException"></exception>
         private static (uint employeeNumber, AttendanceYear year, AttendanceMonth month) GetAttendanceTableBaseInfo(IXLWorksheet targetSheet)
         {
             if (!targetSheet.Cell("A1").TryGetValue(out DateTime yearMonth))
             {
                 string msg = $"年月が取得できません シート:{targetSheet.Name}, セル:A1";
-                throw new AttendanceTableServiceException(msg);
+                throw new DomainException(msg);
             }
             AttendanceYear year = new(yearMonth.Year);
             AttendanceMonth month = new(yearMonth.Month);
@@ -191,7 +191,7 @@ namespace Wada.AttendanceSpreadSheet
             if (!targetSheet.Cell("G2").TryGetValue(out uint employeeNumber))
             {
                 string msg = $"社員番号が取得できません シート:{targetSheet.Name}, セル:G2";
-                throw new AttendanceTableServiceException(msg);
+                throw new DomainException(msg);
             }
 
             return (employeeNumber, year, month);
@@ -212,7 +212,7 @@ namespace Wada.AttendanceSpreadSheet
             if (targetSheet == null)
             {
                 string msg = $"{month}月のシートが見つかりません";
-                throw new AttendanceTableServiceException(msg);
+                throw new DomainException(msg);
             }
 
             return targetSheet;
