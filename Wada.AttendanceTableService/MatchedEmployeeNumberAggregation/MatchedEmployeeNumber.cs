@@ -5,7 +5,13 @@
 /// </summary>
 /// <param name="EmployeeNumbers"></param>
 /// <param name="AttendancePersonalCode"></param>
-public record class MatchedEmployeeNumber(uint EmployeeNumbers, uint AttendancePersonalCode);
+public record class MatchedEmployeeNumber(uint EmployeeNumbers, uint AttendancePersonalCode)
+{
+    public Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber Convert()
+        => Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Create(
+            EmployeeNumbers,
+            AttendancePersonalCode);
+}
 
 public class TestMatchedEmployeeNumberFactory
 {

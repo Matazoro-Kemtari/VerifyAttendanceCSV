@@ -15,9 +15,9 @@
     <PackageReference Include="NLog" Version="5.1.3" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Wada.Data.DesignDepartmentDataBase" Version="1.0.6" />
-    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.9" />
+    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.10" />
     <PackageReference Include="Wada.Data.OrderManagement" Version="1.0.0" />
-    <PackageReference Include="Wada.Data.OrderManagement.Models" Version="1.0.1" />
+    <PackageReference Include="Wada.Data.OrderManagement.Models" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wada.AOP.Logging\Wada.AOP.Logging.csproj" />
@@ -27,7 +27,7 @@
     <ProjectReference Include="..\Wada.CommonDialogLib\Wada.CommonDialogLib.csproj" />
     <ProjectReference Include="..\Wada.DetermineDifferenceApplication\Wada.DetermineDifferenceApplication.csproj" />
     <ProjectReference Include="..\Wada.IO\Wada.IO.csproj" />
-    <ProjectReference Include="..\Wada.MatchedEmployeeNumberCsv\Wada.MatchedEmployeeNumberSpreadSheet.csproj" />
+    <ProjectReference Include="..\Wada.MatchedEmployeeNumberSpreadSheet\Wada.MatchedEmployeeNumberSpreadSheet.csproj" />
     <ProjectReference Include="..\Wada.VerifyAttendanceCSV\Wada.VerifyAttendanceCSV.csproj" />
   </ItemGroup>
   <ItemGroup>

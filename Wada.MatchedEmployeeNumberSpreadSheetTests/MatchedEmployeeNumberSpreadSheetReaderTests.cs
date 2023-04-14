@@ -25,6 +25,22 @@ namespace Wada.MatchedEmployeeNumberSpreadSheet.Tests
                 actual.ToList());
         }
 
+        [TestMethod]
+        public async Task 異常系_空のファイルを渡すと例外を返すこと()
+        {
+            // given
+            // テスト用ブックを作る
+            using var stream = new MemoryStream();
+
+            // when
+            IMatchedEmployeeNumberListReader reader = new MatchedEmployeeNumberSpreadSheetReader();
+            Task target() => _ = reader.ReadAllAsync(stream!);
+
+            var ex = await Assert.ThrowsExceptionAsync<MatchedEmployeeNumberException>(target);
+            var message = "取込可能なファイル形式ではありません\nファイルが壊れている可能性があります";
+            Assert.AreEqual(message, ex.Message);
+        }
+
         [TestMethod()]
         public async Task 異常系_テストデータに文字列が混ざっているとき例外を返すこと()
         {

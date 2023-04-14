@@ -10,18 +10,27 @@ public class MatchedEmployeeNumberSpreadSheetReader : IMatchedEmployeeNumberList
     [Logging]
     public async Task<IEnumerable<MatchedEmployeeNumber>> ReadAllAsync(Stream stream)
     {
-        using var xlBook = new XLWorkbook(stream);
-        var sheet = xlBook.Worksheet(1);
+        string?[][] table;
+        try
+        {
+            using var xlBook = new XLWorkbook(stream);
+            var sheet = xlBook.Worksheet(1);
 
-        var range = sheet.RangeUsed();
+            var range = sheet.RangeUsed();
 
-        // Rangeをジャグ配列にする
-        var table = await Task.WhenAll(
-            range.Rows()
-                 .Select(async r => await Task.WhenAll(
-                     r.Cells()
-                      .Select(async c => await Task.Run(
-                          () => c.IsEmpty() ? null : c.Value.ToString())))));
+            // Rangeをジャグ配列にする
+            table = await Task.WhenAll(
+                range.Rows()
+                     .Select(async r => await Task.WhenAll(
+                         r.Cells()
+                          .Select(async c => await Task.Run(
+                              () => c.IsEmpty() ? null : c.Value.ToString())))));
+        }
+        catch (FormatException ex)
+        {
+            throw new MatchedEmployeeNumberException(
+                "取込可能なファイル形式ではありません\nファイルが壊れている可能性があります", ex);
+        }
 
         if (table.Select(x => x.Length).First() < 2)
         {

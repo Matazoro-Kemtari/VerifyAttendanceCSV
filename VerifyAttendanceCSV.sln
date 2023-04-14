@@ -51,6 +51,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.MatchedEmployeeNumberS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.MatchedEmployeeNumberSpreadSheetTests", "Wada.MatchedEmployeeNumberSpreadSheetTests\Wada.MatchedEmployeeNumberSpreadSheetTests.csproj", "{8B888DF2-D543-4077-9502-AEB586E8A571}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.RegisterEmployeeNumberTableApplicationTests", "Wada.RegisterEmployeeNumberTableApplicationTests\Wada.RegisterEmployeeNumberTableApplicationTests.csproj", "{02568EA2-88E6-4707-A4FC-300ED743A6B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{8B888DF2-D543-4077-9502-AEB586E8A571}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B888DF2-D543-4077-9502-AEB586E8A571}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B888DF2-D543-4077-9502-AEB586E8A571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,6 +162,7 @@ Global
 		{9DEF6273-BBF3-42F3-8875-15537E063070} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 		{AABCF799-353A-40FD-9A67-B4052303AA2C} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 		{8B888DF2-D543-4077-9502-AEB586E8A571} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{02568EA2-88E6-4707-A4FC-300ED743A6B2} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6BBC0BD-A5F6-44C4-B7A6-7FAD6289890C}

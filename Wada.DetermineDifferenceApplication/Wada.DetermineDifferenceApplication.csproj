@@ -12,8 +12,8 @@
     <PackageReference Include="MethodDecorator.Fody" Version="1.1.1">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
-    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.9" />
-    <PackageReference Include="Wada.Data.OrderManagement.Models" Version="1.0.1" />
+    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.10" />
+    <PackageReference Include="Wada.Data.OrderManagement.Models" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>

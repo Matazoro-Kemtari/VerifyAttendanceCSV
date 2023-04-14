@@ -15,6 +15,7 @@ using Wada.Data.OrderManagement;
 using Wada.Data.OrderManagement.Models;
 using Wada.DetermineDifferenceApplication;
 using Wada.IO;
+using Wada.MatchedEmployeeNumberSpreadSheet;
 using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV;
 
@@ -61,7 +62,7 @@ namespace VerifyAttendanceCSV
             _ = containerRegistry.Register<IDetermineDifferenceUseCase, DetermineDifferenceUseCase>();
 
             // 社員番号対応表読込
-            _ = containerRegistry.Register<IMatchedEmployeeNumberListReader, MatchedEmployeeNumberCsvReader>();
+            _ = containerRegistry.Register<IMatchedEmployeeNumberListReader, MatchedEmployeeNumberSpreadSheetReader>();
 
             // Presentation
             _ = containerRegistry.Register<ICommonDialogSwitcher, CommonDialogSwitcher>();
