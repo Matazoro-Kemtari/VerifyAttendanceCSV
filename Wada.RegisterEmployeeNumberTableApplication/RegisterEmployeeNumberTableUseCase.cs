@@ -11,9 +11,9 @@ public interface IRegisterEmployeeNumberTableUseCase
     /// <summary>
     /// 社員番号対応表を登録する
     /// </summary>
-    /// <param name="csvPath"></param>
+    /// <param name="filePath"></param>
     /// <returns></returns>
-    Task ExecuteAsync(string csvPath);
+    Task ExecuteAsync(string filePath);
 }
 
 public class RegisterEmployeeNumberTableUseCase : IRegisterEmployeeNumberTableUseCase
@@ -33,12 +33,12 @@ public class RegisterEmployeeNumberTableUseCase : IRegisterEmployeeNumberTableUs
     }
 
     [Logging]
-    public async Task ExecuteAsync(string csvPath)
+    public async Task ExecuteAsync(string filePath)
     {
         try
         {
             // データファイルを読み込む
-            var stream = await _fileStreamOpener.OpenAsync(csvPath);
+            var stream = await _fileStreamOpener.OpenAsync(filePath);
             var additionalEmployeeNumbers = await _matchedEmployeeNumberListReader.ReadAllAsync(stream);
 
             // 削除するか判断するため全て取得

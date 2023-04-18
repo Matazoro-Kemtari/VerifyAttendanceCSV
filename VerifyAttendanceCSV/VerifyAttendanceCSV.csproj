@@ -14,8 +14,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="NLog" Version="5.1.3" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
-    <PackageReference Include="Wada.Data.DesignDepartmentDataBase" Version="1.0.7" />
-    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.11" />
+    <PackageReference Include="Wada.Data.DesignDepartmentDataBase" Version="1.0.10" />
+    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.14" />
     <PackageReference Include="Wada.Data.OrderManagement" Version="1.0.0" />
     <PackageReference Include="Wada.Data.OrderManagement.Models" Version="1.0.2" />
   </ItemGroup>
@@ -28,6 +28,7 @@
     <ProjectReference Include="..\Wada.DetermineDifferenceApplication\Wada.DetermineDifferenceApplication.csproj" />
     <ProjectReference Include="..\Wada.IO\Wada.IO.csproj" />
     <ProjectReference Include="..\Wada.MatchedEmployeeNumberSpreadSheet\Wada.MatchedEmployeeNumberSpreadSheet.csproj" />
+    <ProjectReference Include="..\Wada.OwnCompanyHolidaySpreadSheet\Wada.OwnCompanyHolidaySpreadSheet.csproj" />
     <ProjectReference Include="..\Wada.VerifyAttendanceCSV\Wada.VerifyAttendanceCSV.csproj" />
   </ItemGroup>
   <ItemGroup>

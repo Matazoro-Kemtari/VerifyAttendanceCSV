@@ -9,17 +9,8 @@ namespace Wada.OwnCompanyHolidaySpreadSheet;
 public class OwnCompanyHolidayListReader : IOwnCompanyHolidayListReader
 {
     [Logging]
-    public async Task<IEnumerable<OwnCompanyHoliday>> ReadAllAsync(Stream stream, string calendarGroupName)
+    public async Task<IEnumerable<OwnCompanyHoliday>> ReadAllAsync(Stream stream, string calendarGroupId)
     {
-        var calendarGroupId = calendarGroupName switch
-        {
-            "本社" => "01GW8E3ENDPWX0FXW0788VR63J",
-            "松阪" => "01GW8Y1FA5XFHY027KZY4WX6KW",
-            _ => throw new AggregateException(
-                $"引数calendarGroupNameに{calendarGroupName}が渡されました\n" +
-                $"本社か松阪以外は無効です")
-        };
-
         string?[][] table;
         try
         {

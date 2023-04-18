@@ -5,7 +5,11 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
+using System.Windows;
 using Wada.AOP.Logging;
 using Wada.VerifyAttendanceCSV.Models;
 
@@ -17,15 +21,25 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
 
         public OwnCompanyHolidayMaintenancePageViewModel()
         {
-            CsvFileName = _model.CsvFileName
+            XlsxFilePath = _model.XlsxFileName
                 .ToReactivePropertyAsSynchronized(x => x.Value)
-                .SetValidateAttribute(() => CsvFileName)
+                .SetValidateAttribute(() => XlsxFilePath)
                 .AddTo(Disposables);
 
-            EntryCommand = CsvFileName.ObserveHasErrors
-                .Inverse()
-                .ToAsyncReactiveCommand()
+            CalendarGroupClass = _model.CalendarGroupClass
+                .ToReactivePropertyAsSynchronized(x => x.Value)
+                .SetValidateAttribute(() => CalendarGroupClass)
                 .AddTo(Disposables);
+
+            EntryCommand = new[]
+            {
+                XlsxFilePath.ObserveHasErrors,
+                CalendarGroupClass.ObserveHasErrors,
+            }
+            .CombineLatestValuesAreAllFalse()
+            .ToAsyncReactiveCommand()
+            .WithSubscribe(() => RegisterOwnCompanyHolidayTableAsync())
+            .AddTo(Disposables);
         }
 
         [Logging]
@@ -33,10 +47,28 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
 
         public void DragOver(IDropInfo dropInfo)
         {
-            throw new NotImplementedException();
+            var dragFiles = ((DataObject)dropInfo.Data).GetFileDropList().Cast<string>();
+            dropInfo.Effects = dragFiles.Any(x => Path.GetExtension(x).ToLower() == ".xlsx")
+                ? DragDropEffects.Copy : DragDropEffects.None;
         }
 
         public void Drop(IDropInfo dropInfo)
+        {
+            var dragFiles = ((DataObject)dropInfo.Data).GetFileDropList().Cast<string>();
+            dropInfo.Effects = dragFiles.Any(x => Path.GetExtension(x).ToLower() == ".xlsx")
+                ? DragDropEffects.Copy : DragDropEffects.None;
+
+            _model.XlsxFileName.Value =
+                dragFiles.FirstOrDefault(x => Path.GetExtension(x).ToLower() == ".xlsx") ?? string.Empty;
+        }
+
+        /// <summary>
+        /// 休日カレンダーを登録する
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [Logging]
+        private Task RegisterOwnCompanyHolidayTableAsync()
         {
             throw new NotImplementedException();
         }
@@ -47,11 +79,18 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
         private CompositeDisposable Disposables { get; } = new CompositeDisposable();
 
         /// <summary>
-        /// 休日カレンダーCSVファイルパス
+        /// 休日カレンダーXLSXファイルパス
         /// </summary>
-        [Display(Name = "休日カレンダーCSVファイル")]
+        [Display(Name = "休日カレンダーエクセルファイル")]
         [Required(ErrorMessage = "{0}をドラッグアンドドロップしてください")]
-        public ReactiveProperty<string> CsvFileName { get; }
+        public ReactiveProperty<string> XlsxFilePath { get; }
+
+        /// <summary>
+        /// カレンダーグループ
+        /// </summary>
+        [Display(Name = "カレンダーグループ")]
+        [Required(ErrorMessage = "{0}を選択してください")]
+        public ReactiveProperty<CalendarGroup> CalendarGroupClass { get; }
 
         public AsyncReactiveCommand EntryCommand { get; }
     }

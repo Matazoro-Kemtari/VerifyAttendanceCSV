@@ -16,6 +16,7 @@ using Wada.Data.OrderManagement.Models;
 using Wada.DetermineDifferenceApplication;
 using Wada.IO;
 using Wada.MatchedEmployeeNumberSpreadSheet;
+using Wada.OwnCompanyHolidaySpreadSheet;
 using Wada.RegisterEmployeeNumberTableApplication;
 using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV;
@@ -57,6 +58,7 @@ namespace VerifyAttendanceCSV
             // DI 勤怠CSV
             _ = containerRegistry.Register<IEmployeeAttendanceCsvReader, EmployeeAttendanceCsvReader>();
             // 自社休日
+            _ = containerRegistry.Register<IOwnCompanyHolidayListReader, OwnCompanyHolidayListReader>();
             _ = containerRegistry.Register<IFetchOwnCompanyHolidayMaxDateUseCase, FetchOwnCompanyHolidayMaxDateUseCase>();
 
             // 勤怠エクセルと給与システムCSVを同異判定するUseCase
