@@ -7,12 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MethodDecorator.Fody" Version="1.1.1" />
-    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.15" />
+    <PackageReference Include="ClosedXML" Version="0.101.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wada.AOP.Logging\Wada.AOP.Logging.csproj" />
     <ProjectReference Include="..\Wada.AttendanceTableService\Wada.AttendanceTableService.csproj" />
   </ItemGroup>
 

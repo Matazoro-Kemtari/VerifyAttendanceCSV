@@ -11,7 +11,6 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Input;
 using Wada.AOP.Logging;
 using Wada.RegisterEmployeeNumberTableApplication;
@@ -26,12 +25,12 @@ public class MatchedEmployeeNumberMaintenancePageViewModel : BindableBase, IDest
 
     private MatchedEmployeeNumberMaintenancePageViewModel()
     {
-        CsvFileName = _model.CsvFileName
+        XlsxFilePath = _model.XlsxFileName
             .ToReactivePropertyAsSynchronized(x => x.Value)
-            .SetValidateAttribute(() => CsvFileName)
+            .SetValidateAttribute(() => XlsxFilePath)
             .AddTo(Disposables);
 
-        EntryCommand = CsvFileName.ObserveHasErrors
+        EntryCommand = XlsxFilePath.ObserveHasErrors
             .Inverse()
             .ToAsyncReactiveCommand()
             .WithSubscribe(() => RegisterEmployeeNumberTableAsync())
@@ -61,7 +60,7 @@ public class MatchedEmployeeNumberMaintenancePageViewModel : BindableBase, IDest
         dropInfo.Effects = dragFiles.Any(x => Path.GetExtension(x).ToLower() == ".xlsx")
             ? DragDropEffects.Copy : DragDropEffects.None;
 
-        _model.CsvFileName.Value =
+        _model.XlsxFileName.Value =
             dragFiles.FirstOrDefault(x => Path.GetExtension(x).ToLower() == ".xlsx") ?? string.Empty;
     }
 
@@ -83,7 +82,7 @@ public class MatchedEmployeeNumberMaintenancePageViewModel : BindableBase, IDest
         try
         {
             Mouse.OverrideCursor = Cursors.Wait;
-            await _registerEmployeeNumberTableUseCase.ExecuteAsync(CsvFileName.Value);
+            await _registerEmployeeNumberTableUseCase.ExecuteAsync(XlsxFilePath.Value);
         }
         catch (UseCaseException ex)
         {
@@ -111,11 +110,11 @@ public class MatchedEmployeeNumberMaintenancePageViewModel : BindableBase, IDest
     public InteractionMessenger Messenger { get; } = new InteractionMessenger();
 
     /// <summary>
-    /// 社員番号対応CSVファイルパス
+    /// 社員番号対応XLSXファイルパス
     /// </summary>
-    [Display(Name = "社員番号対応CSVファイル")]
+    [Display(Name = "社員番号対応エクセルファイル")]
     [Required(ErrorMessage = "{0}をドラッグアンドドロップしてください")]
-    public ReactiveProperty<string> CsvFileName { get; }
+    public ReactiveProperty<string> XlsxFilePath { get; }
 
     public AsyncReactiveCommand EntryCommand { get; }
 }

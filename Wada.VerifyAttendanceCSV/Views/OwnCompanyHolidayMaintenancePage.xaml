@@ -6,25 +6,61 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             xmlns:dd="urn:gong-wpf-dragdrop"
              d:DesignHeight="300" d:DesignWidth="300"
              d:Background="LightGray"
              d:DataContext="{d:DesignInstance Type=viewmodels:OwnCompanyHolidayMaintenancePageViewModel}"
              xmlns:prism="http://prismlibrary.com/"             
              prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
              FontSize="16">
     <UserControl.Resources>
         <!-- BooleanをVisibility列挙型に変換するコンバータ 組み込みコンバータ -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <!-- enumをbooleanに変換するコンバーター -->
+        <local:EnumToBooleanConverter x:Key="EnumToBoolean"/>
     </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <l:InteractionMessageTrigger MessageKey="Info" Messenger="{Binding Messenger}">
+            <l:InformationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger MessageKey="Confirm" Messenger="{Binding Messenger}">
+            <l:ConfirmationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+    </i:Interaction.Triggers>
+
     <DockPanel LastChildFill="True">
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="登録(_R)"
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <RadioButton Margin="5"
+                             Content="本社"
+                             IsChecked="{Binding CalendarGroupClass.Value,
+                                        Mode=TwoWay,
+                                        Converter={StaticResource EnumToBoolean},
+                                        ConverterParameter=HeadOffice,
+                                        UpdateSourceTrigger=PropertyChanged}"/>
+                <RadioButton Margin="5"
+                             Content="松阪"
+                             IsChecked="{Binding CalendarGroupClass.Value,
+                                        Mode=TwoWay,
+                                        Converter={StaticResource EnumToBoolean},
+                                        ConverterParameter=MatsuzakaOffice,
+                                        UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <Button Grid.Column="1"
+                    Content="登録(_R)"
                     MinWidth="70"
                     Margin="5"
                     Padding="5"
-                    Command="{Binding EntryCommand}"/>
-        </StackPanel>
+                    Command="{Binding EntryCommand}" CommandParameter=""
+                    VerticalAlignment="Bottom"/>
+        </Grid>
         <Grid>
             <Rectangle Grid.Row="0"
                        Margin="5"
@@ -38,9 +74,9 @@
                        dd:DragDrop.IsDropTarget="True"
                        dd:DragDrop.DropHandler="{Binding}"/>
             <TextBlock Grid.Row="0"
-                       x:Name="CsvFileName"
+                       x:Name="XlsxFilePath"
                        Margin="20"
-                       Text="{Binding CsvFileName.Value}"
+                       Text="{Binding XlsxFilePath.Value}"
                        TextWrapping="Wrap"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center">
@@ -51,11 +87,11 @@
             </TextBlock>
             <TextBlock Grid.Row="0"
                        Margin="20"
-                       Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=CsvFileName}"
+                       Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=XlsxFilePath}"
                        Foreground="Red"
                        FontWeight="Bold"
                        TextWrapping="Wrap"
-                       Visibility="{Binding (Validation.HasError), ElementName=CsvFileName, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       Visibility="{Binding (Validation.HasError), ElementName=XlsxFilePath, Converter={StaticResource BooleanToVisibilityConverter}}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
         </Grid>

@@ -43,11 +43,12 @@ namespace Wada.RegisterOwnCompanyHolidayApplication
                     "applicationConfiguration:MatsuzakaOfficeCalendarGroupId");
 
             var today = _environment.ObtainCurrentDate();
+            var firstDayOfToday = today.AddDays(-(today.Day-1));
 
             IEnumerable<OwnCompanyHoliday> headHolidays, matsuzakaHolidays;
             try
             {
-                headHolidays = await _ownCompanyHolidayRepository.FindByAfterYearAsync(headOfficeCalendarGroupId, today.Year);
+                headHolidays = await _ownCompanyHolidayRepository.FindByAfterDateAsync(headOfficeCalendarGroupId, firstDayOfToday);
             }
             catch (OwnCompanyCalendarAggregationException)
             {
@@ -55,7 +56,7 @@ namespace Wada.RegisterOwnCompanyHolidayApplication
             }
             try
             {
-                matsuzakaHolidays = await _ownCompanyHolidayRepository.FindByAfterYearAsync(matsuzakaOfficeCalendarGroupId, today.Year);
+                matsuzakaHolidays = await _ownCompanyHolidayRepository.FindByAfterDateAsync(matsuzakaOfficeCalendarGroupId, firstDayOfToday);
             }
             catch (OwnCompanyCalendarAggregationException)
             {

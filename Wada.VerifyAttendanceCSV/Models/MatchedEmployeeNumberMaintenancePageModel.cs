@@ -6,7 +6,7 @@ namespace Wada.VerifyAttendanceCSV.Models;
 internal record class MatchedEmployeeNumberMaintenancePageModel
 {
     [Logging]
-    internal void Clear() => CsvFileName.Value = string.Empty;
+    internal void Clear() => XlsxFileName.Value = string.Empty;
 
-    public ReactivePropertySlim<string> CsvFileName { get; } = new();
+    public ReactivePropertySlim<string> XlsxFileName { get; } = new();
 }
