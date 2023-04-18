@@ -11,6 +11,7 @@ using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using System.Windows;
 using Wada.AOP.Logging;
+using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV.Models;
 
 namespace Wada.VerifyAttendanceCSV.ViewModels
@@ -90,7 +91,7 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
         /// </summary>
         [Display(Name = "カレンダーグループ")]
         [Required(ErrorMessage = "{0}を選択してください")]
-        public ReactiveProperty<CalendarGroup> CalendarGroupClass { get; }
+        public ReactiveProperty<CalendarGroupAttempt> CalendarGroupClass { get; }
 
         public AsyncReactiveCommand EntryCommand { get; }
     }

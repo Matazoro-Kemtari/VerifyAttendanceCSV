@@ -4,6 +4,7 @@ using Wada.AttendanceTableService;
 using Wada.Data.DesignDepartmentDataBase.Models;
 using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
 using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
+using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
 
 namespace Wada.RegisterOwnCompanyHolidayApplication;
 
@@ -13,9 +14,9 @@ public interface IRegisterOwnCompanyHolidayUseCase
     /// 自社カレンダーを登録する
     /// </summary>
     /// <param name="filePath"></param>
-    /// <param name="calendarGroupName"></param>
+    /// <param name="calendarGroupClass"></param>
     /// <returns></returns>
-    Task ExecuteAsync(string filePath, string calendarGroupName);
+    Task ExecuteAsync(string filePath, CalendarGroupAttempt calendarGroupClass);
 }
 
 public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCase
@@ -35,11 +36,11 @@ public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCas
     }
 
     [Logging]
-    public async Task ExecuteAsync(string filePath, string calendarGroupName)
+    public async Task ExecuteAsync(string filePath, CalendarGroupAttempt calendarGroupClass)
     {
         try
         {
-            var calendarGroupId = await _ownCompanyHolidayRepository.ExtractCalendarGroupIdAsync(calendarGroupName);
+            var calendarGroupId = await _ownCompanyHolidayRepository.FindCalendarGroupIdAsync((CalendarGroupClassification)calendarGroupClass);
 
             // データファイルを読み込む
             var stream = await _fileStreamOpener.OpenAsync(filePath);
@@ -70,4 +71,13 @@ public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCas
             throw new UseCaseException(ex.Message, ex);
         }
     }
+}
+
+/// <summary>
+/// 会社カレンダー グループ
+/// </summary>
+public enum CalendarGroupAttempt
+{
+    HeadOffice,
+    MatsuzakaOffice,
 }

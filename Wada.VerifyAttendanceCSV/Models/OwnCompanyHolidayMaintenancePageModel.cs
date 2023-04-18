@@ -1,5 +1,6 @@
 ﻿using Reactive.Bindings;
 using Wada.AOP.Logging;
+using Wada.RegisterOwnCompanyHolidayApplication;
 
 namespace Wada.VerifyAttendanceCSV.Models;
 
@@ -9,14 +10,5 @@ internal record class OwnCompanyHolidayMaintenancePageModel
     internal void Clear() => XlsxFileName.Value = string.Empty;
 
     public ReactivePropertySlim<string> XlsxFileName { get; } = new();
-    public ReactivePropertySlim<CalendarGroup> CalendarGroupClass { get; } = new();
-}
-
-/// <summary>
-/// 会社カレンダー グループ
-/// </summary>
-public enum CalendarGroup
-{
-    HeadOffice,
-    MatsuzakaOffice,
+    public ReactivePropertySlim<CalendarGroupAttempt> CalendarGroupClass { get; } = new();
 }
