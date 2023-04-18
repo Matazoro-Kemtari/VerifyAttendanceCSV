@@ -59,6 +59,7 @@ namespace VerifyAttendanceCSV
             _ = containerRegistry.Register<IEmployeeAttendanceCsvReader, EmployeeAttendanceCsvReader>();
             // 自社休日
             _ = containerRegistry.Register<IOwnCompanyHolidayListReader, OwnCompanyHolidayListReader>();
+            _ = containerRegistry.Register<IRegisterOwnCompanyHolidayUseCase, RegisterOwnCompanyHolidayUseCase>();
             _ = containerRegistry.Register<IFetchOwnCompanyHolidayMaxDateUseCase, FetchOwnCompanyHolidayMaxDateUseCase>();
 
             // 勤怠エクセルと給与システムCSVを同異判定するUseCase

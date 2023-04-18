@@ -1,4 +1,5 @@
 ﻿using GongSolutions.Wpf.DragDrop;
+using Livet.Messaging;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Reactive.Bindings;
@@ -10,7 +11,9 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Wada.AOP.Logging;
+using Wada.Extensions;
 using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV.Models;
 
@@ -19,8 +22,9 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
     public class OwnCompanyHolidayMaintenancePageViewModel : BindableBase, IDestructible, IDropTarget
     {
         private readonly OwnCompanyHolidayMaintenancePageModel _model = new();
+        private readonly IRegisterOwnCompanyHolidayUseCase _registerOwnCompanyHolidayUseCase;
 
-        public OwnCompanyHolidayMaintenancePageViewModel()
+        private OwnCompanyHolidayMaintenancePageViewModel()
         {
             XlsxFilePath = _model.XlsxFileName
                 .ToReactivePropertyAsSynchronized(x => x.Value)
@@ -41,6 +45,12 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
             .ToAsyncReactiveCommand()
             .WithSubscribe(() => RegisterOwnCompanyHolidayTableAsync())
             .AddTo(Disposables);
+        }
+
+        public OwnCompanyHolidayMaintenancePageViewModel(IRegisterOwnCompanyHolidayUseCase registerOwnCompanyHolidayUseCase)
+            :this()
+        {
+            _registerOwnCompanyHolidayUseCase = registerOwnCompanyHolidayUseCase;
         }
 
         [Logging]
@@ -69,15 +79,45 @@ namespace Wada.VerifyAttendanceCSV.ViewModels
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [Logging]
-        private Task RegisterOwnCompanyHolidayTableAsync()
+        private async Task RegisterOwnCompanyHolidayTableAsync()
         {
-            throw new NotImplementedException();
+            // 確認
+            var confirmMessage = MessageNotificationViaLivet.MakeQuestionMessage(
+                $"{CalendarGroupClass.Value.GetEnumDisplayName()}の" +
+                $"会社カレンダーを追加します よろしいですか");
+            await Messenger.RaiseAsync(confirmMessage);
+            if (!(confirmMessage.Response ?? false))
+                return;
+
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                await _registerOwnCompanyHolidayUseCase.ExecuteAsync(XlsxFilePath.Value, CalendarGroupClass.Value);
+            }
+            catch (UseCaseException ex)
+            {
+                // エラーメッセージ
+                var message = MessageNotificationViaLivet.MakeErrorMessage(ex.Message);
+                await Messenger.RaiseAsync(message);
+                return;
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
+
+            // 終わり
+            var finishMessage = MessageNotificationViaLivet.MakeInformationMessage("終了しました");
+            await Messenger.RaiseAsync(finishMessage);
+            _model.Clear();
         }
 
         /// <summary>
         /// Disposeが必要なReactivePropertyやReactiveCommandを集約させるための仕掛け
         /// </summary>
         private CompositeDisposable Disposables { get; } = new CompositeDisposable();
+
+        public InteractionMessenger Messenger { get; } = new InteractionMessenger();
 
         /// <summary>
         /// 休日カレンダーXLSXファイルパス

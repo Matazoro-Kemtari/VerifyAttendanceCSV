@@ -2,9 +2,9 @@
 using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
 using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
 using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
+using Wada.Extensions;
 
 namespace Wada.RegisterOwnCompanyHolidayApplication;
 
@@ -78,6 +78,9 @@ public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCas
 /// </summary>
 public enum CalendarGroupAttempt
 {
+    [EnumDisplayName("本社")]
     HeadOffice,
+
+    [EnumDisplayName("松阪")]
     MatsuzakaOffice,
 }

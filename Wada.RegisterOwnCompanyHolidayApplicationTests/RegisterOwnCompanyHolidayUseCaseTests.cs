@@ -54,7 +54,7 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             readerMock.Setup(x => x.ReadAllAsync(stream, additionalHolidays[0].CalendarGroupId)).ReturnsAsync(additionalHolidays);
 
             Mock<IOwnCompanyHolidayRepository> repositoryMock = new();
-            repositoryMock.Setup(x => x.ExtractCalendarGroupIdAsync(It.IsAny<string>())).ReturnsAsync(additionalHolidays[0].CalendarGroupId);
+            repositoryMock.Setup(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>())).ReturnsAsync(additionalHolidays[0].CalendarGroupId);
             repositoryMock.Setup(x => x.FindByAfterDateAsync(allHolidays[0].CalendarGroupId, DateTime.Parse("2023/1/1"))).ReturnsAsync(allHolidays);
 
             // when
@@ -62,10 +62,10 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
                 streamMock.Object,
                 readerMock.Object,
                 repositoryMock.Object);
-            await useCase.ExecuteAsync(filePath, "本社");
+            await useCase.ExecuteAsync(filePath, CalendarGroupAttempt.HeadOffice);
 
             // then
-            repositoryMock.Verify(x => x.ExtractCalendarGroupIdAsync(It.IsAny<string>()), Times.Once);
+            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(stream, allHolidays[0].CalendarGroupId), Times.Once);
             repositoryMock.Verify(
@@ -112,7 +112,7 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             readerMock.Setup(x => x.ReadAllAsync(stream, additionalHolidays[0].CalendarGroupId)).ReturnsAsync(additionalHolidays);
 
             Mock<IOwnCompanyHolidayRepository> repositoryMock = new();
-            repositoryMock.Setup(x => x.ExtractCalendarGroupIdAsync(It.IsAny<string>())).ReturnsAsync(additionalHolidays[0].CalendarGroupId);
+            repositoryMock.Setup(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>())).ReturnsAsync(additionalHolidays[0].CalendarGroupId);
             repositoryMock.Setup(x => x.FindByAfterDateAsync(allHolidays[0].CalendarGroupId, DateTime.Parse("2023/1/1")))
                 .ReturnsAsync(Array.Empty<OwnCompanyHoliday>());
 
@@ -121,10 +121,10 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
                 streamMock.Object,
                 readerMock.Object,
                 repositoryMock.Object);
-            await useCase.ExecuteAsync(filePath, "本社");
+            await useCase.ExecuteAsync(filePath, CalendarGroupAttempt.HeadOffice);
 
             // then
-            repositoryMock.Verify(x => x.ExtractCalendarGroupIdAsync(It.IsAny<string>()), Times.Once);
+            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(stream, additionalHolidays[0].CalendarGroupId), Times.Once);
             repositoryMock.Verify(
@@ -156,11 +156,11 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
                 streamMock.Object,
                 readerMock.Object,
                 repositoryMock.Object);
-            Task target() => useCase.ExecuteAsync(filePath, "本社");
+            Task target() => useCase.ExecuteAsync(filePath, CalendarGroupAttempt.HeadOffice);
 
             // then
             _ = await Assert.ThrowsExceptionAsync<UseCaseException>(target);
-            repositoryMock.Verify(x => x.ExtractCalendarGroupIdAsync(It.IsAny<string>()), Times.Once);
+            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(It.IsAny<Stream>(), It.IsAny<string>()), Times.Never);
             repositoryMock.Verify(
@@ -195,11 +195,11 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
                 streamMock.Object,
                 readerMock.Object,
                 repositoryMock.Object);
-            Task target() => useCase.ExecuteAsync(filePath, "本社");
+            Task target() => useCase.ExecuteAsync(filePath, CalendarGroupAttempt.HeadOffice);
 
             // then
             _ = await Assert.ThrowsExceptionAsync<UseCaseException>(target);
-            repositoryMock.Verify(x => x.ExtractCalendarGroupIdAsync(It.IsAny<string>()), Times.Once);
+            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(It.IsAny<Stream>(), It.IsAny<string>()), Times.Once);
             repositoryMock.Verify(
@@ -246,11 +246,11 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
                 streamMock.Object,
                 readerMock.Object,
                 repositoryMock.Object);
-            Task target() => useCase.ExecuteAsync(filePath, "本社");
+            Task target() => useCase.ExecuteAsync(filePath, CalendarGroupAttempt.HeadOffice);
 
             // then
             _ = await Assert.ThrowsExceptionAsync<UseCaseException>(target);
-            repositoryMock.Verify(x => x.ExtractCalendarGroupIdAsync(It.IsAny<string>()), Times.Once);
+            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(It.IsAny<Stream>(), It.IsAny<string>()), Times.Once);
             repositoryMock.Verify(x => x.FindByAfterDateAsync(It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once);
@@ -297,11 +297,11 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
                 streamMock.Object,
                 readerMock.Object,
                 repositoryMock.Object);
-            Task target() => useCase.ExecuteAsync(filePath, "本社");
+            Task target() => useCase.ExecuteAsync(filePath, CalendarGroupAttempt.HeadOffice);
 
             // then
             _ = await Assert.ThrowsExceptionAsync<UseCaseException>(target);
-            repositoryMock.Verify(x => x.ExtractCalendarGroupIdAsync(It.IsAny<string>()), Times.Once);
+            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(It.IsAny<Stream>(), It.IsAny<string>()), Times.Once);
             repositoryMock.Verify(x => x.FindByAfterDateAsync(It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once);
