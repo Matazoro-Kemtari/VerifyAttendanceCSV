@@ -306,7 +306,6 @@ public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
     private Task<IEnumerable<WorkedMonthlyReport>> ReadAllAttendanceCsvAsync(string csvPath)
     {
         StreamReader reader = _streamReaderOpener.Open(csvPath);
-        Task<IEnumerable<WorkedMonthlyReport>> taskCSV = Task.Run(() => _employeeAttendanceCsvReader.ReadAll(reader));
-        return taskCSV;
+        return _employeeAttendanceCsvReader.ReadAllAsync(reader);
     }
 }

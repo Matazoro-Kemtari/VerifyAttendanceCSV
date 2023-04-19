@@ -10,7 +10,7 @@ namespace Wada.AttendanceCsv;
 public class EmployeeAttendanceCsvReader : IEmployeeAttendanceCsvReader
 {
     [Logging]
-    public IEnumerable<WorkedMonthlyReport> ReadAll(StreamReader streamReader)
+    public async Task<IEnumerable<WorkedMonthlyReport>> ReadAllAsync(StreamReader streamReader)
     {
         var config = new CsvHelper.Configuration.CsvConfiguration(new CultureInfo("ja-JP", false))
         {
@@ -21,15 +21,19 @@ public class EmployeeAttendanceCsvReader : IEmployeeAttendanceCsvReader
         };
 
         using CsvReader csv = new(streamReader, config);
-        List<EmployeeAttendanceCsv> employeeAttendanceCSVs =
-            csv.GetRecords<EmployeeAttendanceCsv>().ToList();
-        if (employeeAttendanceCSVs.Count == 0)
+        List<EmployeeAttendanceCsv> employeeAttendanceCsvs = new();
+        await foreach (var employeeAttendance in csv.GetRecordsAsync<EmployeeAttendanceCsv>())
+        {
+            employeeAttendanceCsvs.Add(employeeAttendance);
+        }
+        
+        if (employeeAttendanceCsvs.Count == 0)
         {
             string msg = "CSVファイルにデータがありません";
             throw new DomainException(msg);
         }
 
-        return employeeAttendanceCSVs
+        return employeeAttendanceCsvs
             .Where(x => x.AttendancePersonalCode != 1)
             .Where(x => x.AttendancePersonalCode != 2)
             .Where(x => x.AttendancePersonalCode != 52)
