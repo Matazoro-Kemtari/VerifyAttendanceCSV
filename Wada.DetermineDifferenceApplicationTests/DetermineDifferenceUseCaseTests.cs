@@ -82,7 +82,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, new DateTime(2022, 5, 1));
 
             // then
             Assert.IsTrue(!differenceDTO.DetermineDifferenceEmployeesDTOs.Any());
@@ -198,7 +198,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, new DateTime(2022, 5, 1));
 
             // then
             Assert.IsTrue(differenceDTO.DetermineDifferenceEmployeesDTOs.Count() == 1);
@@ -274,7 +274,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, new DateTime(2022, 5, 1));
 
             // then
             Assert.IsTrue(differenceDTO.DetermineDifferenceEmployeesDTOs.Count() == 1);
@@ -349,7 +349,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
 
             async Task target()
             {
-                await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+                await determineDifference.ExecuteAsync("dummy", paths, new DateTime(2022, 5, 1));
             }
 
             // then

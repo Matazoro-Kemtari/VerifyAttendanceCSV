@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections;
 using Wada.Data.DesignDepartmentDataBase.Models;
 using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
 
@@ -34,7 +33,7 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
                 { TestOwnCompanyHolidayFactory.Create(holidayDate: maxDate) });
 
             Mock<IEnvironment> envMock = new();
-            envMock.Setup(x => x.ObtainCurrentDate()).Returns(new DateTime(year, 1, 1));
+            envMock.Setup(x => x.ObtainCurrentDate()).Returns(new DateTime(year, 1, 10));
 
             // when
             IFetchOwnCompanyHolidayMaxDateUseCase useCase =
@@ -48,8 +47,8 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             // then
             configMock.Verify(x => x[It.IsAny<string>()], Times.Exactly(2));
             envMock.Verify(x => x.ObtainCurrentDate(), Times.Once);
-            holidayMock.Verify(x => x.FindByAfterDateAsync(headOfficeCalendarGroupId, minDate), Times.Once);
-            holidayMock.Verify(x => x.FindByAfterDateAsync(matsuzakaOfficeCalendarGroupId, minDate), Times.Once);
+            holidayMock.Verify(x => x.FindByAfterDateAsync(headOfficeCalendarGroupId, new DateTime(year, 1, 1)), Times.Once);
+            holidayMock.Verify(x => x.FindByAfterDateAsync(matsuzakaOfficeCalendarGroupId, new DateTime(year, 1, 1)), Times.Once);
             Assert.AreEqual(minDate, actual);
         }
     }

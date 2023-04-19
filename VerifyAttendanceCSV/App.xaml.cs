@@ -8,7 +8,6 @@ using VerifyAttendanceCSV.Views;
 using Wada.AttendanceCsv;
 using Wada.AttendanceSpreadSheet;
 using Wada.AttendanceTableService;
-using Wada.CommonDialogLib;
 using Wada.Data.DesignDepartmentDataBase;
 using Wada.Data.DesignDepartmentDataBase.Models;
 using Wada.Data.OrderManagement;
@@ -68,9 +67,6 @@ namespace VerifyAttendanceCSV
             // 社員番号対応表読込
             _ = containerRegistry.Register<IMatchedEmployeeNumberListReader, MatchedEmployeeNumberSpreadSheetReader>();
             _ = containerRegistry.Register<IRegisterEmployeeNumberTableUseCase, RegisterEmployeeNumberTableUseCase>();
-
-            // Presentation
-            _ = containerRegistry.Register<ICommonDialogSwitcher, CommonDialogSwitcher>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
