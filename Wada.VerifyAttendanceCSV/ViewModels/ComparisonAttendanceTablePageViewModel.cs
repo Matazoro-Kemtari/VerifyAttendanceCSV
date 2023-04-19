@@ -1,37 +1,27 @@
 ﻿using GongSolutions.Wpf.DragDrop;
+using Livet.Messaging;
 using Microsoft.Extensions.Configuration;
-using NLog;
-using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
-using Prism.Regions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Navigation;
 using Wada.DetermineDifferenceApplication;
 using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV.Models;
-using Wada.VerifyAttendanceCSV.Views;
 
 namespace Wada.VerifyAttendanceCSV.ViewModels;
 
 public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructible
 {
     private readonly ComparisonAttendanceTablePageModel _model = new();
-    private readonly IRegionManager _regionManager;
-    private readonly ILogger _logger;
     private readonly IConfiguration _configuration;
-    private readonly IMessageNotification _message;
     private readonly IDetermineDifferenceUseCase _determineDifferenceUseCase;
     private readonly IFetchOwnCompanyHolidayMaxDateUseCase _fetchOwnCompanyHolidayMaxDateUseCase;
 
@@ -78,13 +68,13 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
             .AddTo(Disposables);
     }
 
-    public ComparisonAttendanceTablePageViewModel(IRegionManager regionManager, ILogger logger, IConfiguration configuration, IMessageNotification message, IDetermineDifferenceUseCase determineDifferenceUseCase, IFetchOwnCompanyHolidayMaxDateUseCase fetchOwnCompanyHolidayMaxDateUseCase)
+    public ComparisonAttendanceTablePageViewModel(
+        IConfiguration configuration,
+        IDetermineDifferenceUseCase determineDifferenceUseCase,
+        IFetchOwnCompanyHolidayMaxDateUseCase fetchOwnCompanyHolidayMaxDateUseCase)
         : this()
     {
-        _regionManager = regionManager;
-        _logger = logger;
         _configuration = configuration;
-        _message = message;
         _determineDifferenceUseCase = determineDifferenceUseCase;
         _fetchOwnCompanyHolidayMaxDateUseCase = fetchOwnCompanyHolidayMaxDateUseCase;
 
@@ -92,12 +82,13 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
         _model.XlsxPaths.AddRangeOnScheduler(
             _configuration.GetSection("applicationConfiguration:XLSXPaths").Get<string[]>());
 
-        _ = Task.Run(async () =>
-        {
-            var d = await _fetchOwnCompanyHolidayMaxDateUseCase.ExecuteAsyc();
-            maxDate.Value = d;
-        });
-        LastedHolidayDate = maxDate.ToReactivePropertySlimAsSynchronized(x => x.Value)
+        _fetchOwnCompanyHolidayMaxDateUseCase.ExecuteAsyc()
+                                             // 正常終了した場合に継続する
+                                             .ContinueWith(x => _model.LastedHolidayDate.Value = x.Result,
+                                                           TaskContinuationOptions.OnlyOnRanToCompletion);
+
+        LastedHolidayDate = _model.LastedHolidayDate
+            .ToReactivePropertySlimAsSynchronized(x => x.Value)
             .AddTo(Disposables);
     }
 
@@ -113,18 +104,17 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
         }
         catch (EmployeeNumberNotFoundException ex)
         {
-            string msg = $"{ex.Message}\n今は登録機能がないので 平野まで連絡ください";
-            _logger.Error(msg, ex);
-            _message.ShowExclamationMessage(msg, "注意");
+            var errorMessage = MessageNotificationViaLivet.MakeExclamationMessage(
+                $"{ex.Message}\n今は登録機能がないので 平野まで連絡ください");
+            await Messenger.RaiseAsync(errorMessage);
             return;
         }
-        string responceMsg =
+        var infoMessage = MessageNotificationViaLivet.MakeInformationMessage(
             $"CSVファイル: {differenceDTP.CSVCount}件\n" +
             $"勤務表: {differenceDTP.XLSXCount}件\n" +
             $"{differenceDTP.DetermineDifferenceEmployeesDTOs.Count()}件違います\n" +
-            $"{string.Join("\n--\n", differenceDTP.DetermineDifferenceEmployeesDTOs.Select(x => $"社員番号: {x.AttendancePersonalCode}, 氏名: {x.EmployeeName}, 項目: {String.Join("/", x.Differences)}"))}";
-        _logger.Info(responceMsg);
-        _message.ShowInformationMessage(responceMsg, "勤怠表照合");
+            $"{string.Join("\n--\n", differenceDTP.DetermineDifferenceEmployeesDTOs.Select(x => $"社員番号: {x.AttendancePersonalCode}, 氏名: {x.EmployeeName}, 項目: {String.Join("/", x.Differences)}"))}");
+        await Messenger.RaiseAsync(infoMessage);
     }
 
     /// <summary>
@@ -137,15 +127,14 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
             _model.XlsxPaths.RemoveAtOnScheduler(XlsxListSelectedIndex.Value);
     });
 
-    // TODO:正式ではMODEL作る
-    private readonly ReactivePropertySlim<DateTime> maxDate = new();
-
     public void Destroy() => Disposables.Dispose();
 
     /// <summary>
     /// Disposeが必要なReactivePropertyやReactiveCommandを集約させるための仕掛け
     /// </summary>
     private CompositeDisposable Disposables { get; } = new CompositeDisposable();
+
+    public InteractionMessenger Messenger { get; } = new InteractionMessenger();
 
     public AsyncReactiveCommand NextViewCommand { get; }
 
@@ -194,6 +183,9 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
     public ReactivePropertySlim<DateTime> LastedHolidayDate { get; }
 }
 
+/// <summary>
+/// 勤怠CSVファイルのDrop Handler
+/// </summary>
 public class CsvDropHandler : IDropTarget
 {
     private readonly ComparisonAttendanceTablePageModel _model;
@@ -223,6 +215,9 @@ public class CsvDropHandler : IDropTarget
     }
 }
 
+/// <summary>
+/// 勤務表ディレクトリのDrop Handler
+/// </summary>
 public class XlsxDirectoryDropHandler : IDropTarget
 {
     private readonly ComparisonAttendanceTablePageModel _model;

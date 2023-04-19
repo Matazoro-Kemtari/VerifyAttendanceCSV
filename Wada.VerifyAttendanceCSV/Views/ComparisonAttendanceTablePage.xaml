@@ -2,22 +2,33 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Wada.VerifyAttendanceCSV.Views"
+             xmlns:viewmodels="clr-namespace:Wada.VerifyAttendanceCSV.ViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:viewmodels="clr-namespace:Wada.VerifyAttendanceCSV.ViewModels"
              d:DesignHeight="600" d:DesignWidth="500"
              d:Background="LightGray"
              d:DataContext="{d:DesignInstance Type=viewmodels:ComparisonAttendanceTablePageViewModel}"
              prism:ViewModelLocator.AutoWireViewModel="True"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
              FontSize="16"
              xml:lang="ja-JP">
     <UserControl.Resources>
         <!-- BooleanをVisibility列挙型に変換するコンバータ 組み込みコンバータ -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <l:InteractionMessageTrigger MessageKey="Info" Messenger="{Binding Messenger}">
+            <l:InformationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger MessageKey="Confirm" Messenger="{Binding Messenger}">
+            <l:ConfirmationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+    </i:Interaction.Triggers>
 
     <DockPanel LastChildFill="True">
         <TextBlock DockPanel.Dock="Top"

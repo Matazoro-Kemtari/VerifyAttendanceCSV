@@ -1,7 +1,6 @@
 ﻿using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using Wada.VerifyAttendanceCSV.ViewModels;
 using Wada.VerifyAttendanceCSV.Views;
 
 namespace Wada.VerifyAttendanceCSV
@@ -18,7 +17,6 @@ namespace Wada.VerifyAttendanceCSV
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            _ = containerRegistry.Register<IMessageNotification, MessageNotificationViaMessagebox>();
             containerRegistry.RegisterForNavigation<MatchedEmployeeNumberMaintenancePage>();
             containerRegistry.RegisterForNavigation<OwnCompanyHolidayMaintenancePage>();
         }
