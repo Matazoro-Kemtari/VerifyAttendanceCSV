@@ -18,7 +18,7 @@ namespace Wada.DetermineDifferenceApplication
         /// <param name="year"></param>
         /// <param name="month"></param>
         /// <returns></returns>
-        Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectories, int year, int month);
+        Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectories, DateTime targetDate);
     }
 
     public record class DetermineDifferenceUseCaseDTO(
@@ -61,7 +61,7 @@ namespace Wada.DetermineDifferenceApplication
 
         // 早期完成版だからと言って長すぎだ!
         [Logging]
-        public async Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectories, int year, int month)
+        public async Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectories, DateTime targetDate)
         {
             // CSVを取得する
             var taskCSV = ReadAllAttendanceCsvAsync(csvPath);
@@ -74,7 +74,7 @@ namespace Wada.DetermineDifferenceApplication
             var taskEmployee = _employeeRepository.FindAllAsync();
 
             // 勤務表を開く
-            var taskXLSs = ReadSpreadSheets(attendanceTableDirectories, year, month);
+            var taskXLSs = ReadSpreadSheets(attendanceTableDirectories, targetDate.Year, targetDate.Month);
 
             var employees = await taskEmployee;
             IEnumerable<WorkedMonthlyReport> csvReports = await taskCSV;
