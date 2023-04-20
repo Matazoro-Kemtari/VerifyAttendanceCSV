@@ -3,6 +3,7 @@ using Livet.Messaging;
 using Microsoft.Extensions.Configuration;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
@@ -15,12 +16,14 @@ using System.Windows;
 using Wada.DetermineDifferenceApplication;
 using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV.Models;
+using Wada.VerifyAttendanceCSV.Views;
 
 namespace Wada.VerifyAttendanceCSV.ViewModels;
 
 public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructible
 {
     private readonly ComparisonAttendanceTablePageModel _model = new();
+    private readonly IDialogService _dialogService;
     private readonly IConfiguration _configuration;
     private readonly IDetermineDifferenceUseCase _determineDifferenceUseCase;
     private readonly IFetchOwnCompanyHolidayMaxDateUseCase _fetchOwnCompanyHolidayMaxDateUseCase;
@@ -69,11 +72,13 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
     }
 
     public ComparisonAttendanceTablePageViewModel(
+        IDialogService dialogService,
         IConfiguration configuration,
         IDetermineDifferenceUseCase determineDifferenceUseCase,
         IFetchOwnCompanyHolidayMaxDateUseCase fetchOwnCompanyHolidayMaxDateUseCase)
         : this()
     {
+        _dialogService = dialogService;
         _configuration = configuration;
         _determineDifferenceUseCase = determineDifferenceUseCase;
         _fetchOwnCompanyHolidayMaxDateUseCase = fetchOwnCompanyHolidayMaxDateUseCase;
@@ -109,12 +114,27 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
             await Messenger.RaiseAsync(errorMessage);
             return;
         }
-        var infoMessage = MessageNotificationViaLivet.MakeInformationMessage(
-            $"CSVファイル: {differenceDTP.CSVCount}件\n" +
-            $"勤務表: {differenceDTP.XLSXCount}件\n" +
-            $"{differenceDTP.DetermineDifferenceEmployeesDTOs.Count()}件違います\n" +
-            $"{string.Join("\n--\n", differenceDTP.DetermineDifferenceEmployeesDTOs.Select(x => $"社員番号: {x.AttendancePersonalCode}, 氏名: {x.EmployeeName}, 項目: {String.Join("/", x.Differences)}"))}");
-        await Messenger.RaiseAsync(infoMessage);
+
+        // データクラスの詰め替え
+        var request = new VerificationResultRequest(
+            differenceDTP.CSVCount,
+            differenceDTP.XLSXCount,
+            differenceDTP.DetermineDifferenceEmployeesDTOs.Count(),
+            differenceDTP.DetermineDifferenceEmployeesDTOs.Select(
+                x => new DifferencialDetailRequest(
+                    x.EmployeeNumber,
+                    x.EmployeeName,
+                    x.Differences)));
+
+        // ダイアログのパラメータにセット
+        var parameters = new DialogParameters
+        {
+            { nameof(VerificationResultRequest), request }
+        };
+
+        // ダイアログ表示
+        IDialogResult dialogResult;
+        _dialogService.ShowDialog(nameof(VerificationResultDialog), parameters, res => dialogResult = res);
     }
 
     /// <summary>

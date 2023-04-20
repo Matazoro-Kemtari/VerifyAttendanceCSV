@@ -16,7 +16,7 @@
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Wada.Data.DesignDepartmentDataBase" Version="1.0.11" />
     <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.15" />
-    <PackageReference Include="Wada.Data.OrderManagement" Version="1.0.0" />
+    <PackageReference Include="Wada.Data.OrderManagement" Version="1.0.1" />
     <PackageReference Include="Wada.Data.OrderManagement.Models" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>

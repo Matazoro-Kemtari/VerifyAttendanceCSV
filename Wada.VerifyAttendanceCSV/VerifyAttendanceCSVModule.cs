@@ -19,5 +19,6 @@ public class VerifyAttendanceCSVModule : IModule
     {
         containerRegistry.RegisterForNavigation<MatchedEmployeeNumberMaintenancePage>();
         containerRegistry.RegisterForNavigation<OwnCompanyHolidayMaintenancePage>();
+        containerRegistry.RegisterDialog<VerificationResultDialog>();
     }
 }

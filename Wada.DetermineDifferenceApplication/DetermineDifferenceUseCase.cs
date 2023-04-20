@@ -64,21 +64,18 @@ public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
     public async Task<DetermineDifferenceUseCaseDTO> ExecuteAsync(string csvPath, IEnumerable<string> attendanceTableDirectories, DateTime targetDate)
     {
         // CSVを取得する
-        var taskCSV = ReadAllAttendanceCsvAsync(csvPath);
+        var csvReports = await ReadAllAttendanceCsvAsync(csvPath);
 
         // 社員番号対応表を取得する
         var employeeComparisons = await _matchedEmployeeNumberRepository.FindAllAsync()
             ?? throw new UseCaseException("社員番号対応表が取得できませんでした システム担当まで連絡してください");
 
         // S社員を取得する
-        var taskEmployee = _employeeRepository.FindAllAsync();
+        var employees = await _employeeRepository.FindAllAsync();
 
         // 勤務表を開く
-        var taskXLSs = ReadSpreadSheets(attendanceTableDirectories, targetDate.Year, targetDate.Month);
-
-        var employees = await taskEmployee;
-        IEnumerable<WorkedMonthlyReport> csvReports = await taskCSV;
-        IEnumerable<WorkedMonthlyReport> xlsReports = await Task.WhenAll(taskXLSs);
+        var xlsReports = await Task.WhenAll(
+            ReadSpreadSheetsAsync(attendanceTableDirectories, targetDate.Year, targetDate.Month));
 
         // 差分確認
         var differentialCSVReports = csvReports
@@ -278,7 +275,7 @@ public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
             }
         }
 
-        IEnumerable<Task<WorkedMonthlyReport>> ReadSpreadSheets(IEnumerable<string> attendanceTableDirectories, int year, int month)
+        IEnumerable<Task<WorkedMonthlyReport>> ReadSpreadSheetsAsync(IEnumerable<string> attendanceTableDirectories, int year, int month)
         {
             // 年度にする
             var fiscalYear = month <= 3 ? year - 1 : year;
