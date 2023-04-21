@@ -23,6 +23,7 @@ public class OwnCompanyHolidayMaintenancePageViewModel : BindableBase, IDestruct
 {
     private readonly OwnCompanyHolidayMaintenancePageModel _model = new();
     private readonly IRegisterOwnCompanyHolidayUseCase _registerOwnCompanyHolidayUseCase;
+    private readonly IFetchOwnCompanyHolidayMaxDateUseCase _fetchOwnCompanyHolidayMaxDateUseCase;
 
     private OwnCompanyHolidayMaintenancePageViewModel()
     {
@@ -36,6 +37,14 @@ public class OwnCompanyHolidayMaintenancePageViewModel : BindableBase, IDestruct
             .SetValidateAttribute(() => CalendarGroupClass)
             .AddTo(Disposables);
 
+        LastedHeadOfficeHoliday = _model.LastedHeadOfficeHoliday
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Disposables);
+
+        LastedKuwanaOfficeHoliday = _model.LastedKuwanaOfficeHoliday
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Disposables);
+
         EntryCommand = new[]
         {
             XlsxFilePath.ObserveHasErrors,
@@ -47,10 +56,21 @@ public class OwnCompanyHolidayMaintenancePageViewModel : BindableBase, IDestruct
         .AddTo(Disposables);
     }
 
-    public OwnCompanyHolidayMaintenancePageViewModel(IRegisterOwnCompanyHolidayUseCase registerOwnCompanyHolidayUseCase)
-        :this()
+    public OwnCompanyHolidayMaintenancePageViewModel(IRegisterOwnCompanyHolidayUseCase registerOwnCompanyHolidayUseCase, IFetchOwnCompanyHolidayMaxDateUseCase fetchOwnCompanyHolidayMaxDateUseCase)
+        : this()
     {
         _registerOwnCompanyHolidayUseCase = registerOwnCompanyHolidayUseCase;
+        _fetchOwnCompanyHolidayMaxDateUseCase = fetchOwnCompanyHolidayMaxDateUseCase;
+
+        _fetchOwnCompanyHolidayMaxDateUseCase
+        .ExecuteAsyc()
+        // 正常終了した場合に継続する
+        .ContinueWith(x =>
+        {
+            _model.LastedHeadOfficeHoliday.Value = x.Result.HeadOffice;
+            _model.LastedKuwanaOfficeHoliday.Value = x.Result.KuwanaOffice;
+        },
+        TaskContinuationOptions.OnlyOnRanToCompletion);
     }
 
     [Logging]
@@ -132,6 +152,16 @@ public class OwnCompanyHolidayMaintenancePageViewModel : BindableBase, IDestruct
     [Display(Name = "カレンダーグループ")]
     [Required(ErrorMessage = "{0}を選択してください")]
     public ReactiveProperty<CalendarGroupAttempt> CalendarGroupClass { get; }
+
+    /// <summary>
+    /// 休日カレンダー最終日 本社
+    /// </summary>
+    public ReadOnlyReactivePropertySlim<DateTime> LastedHeadOfficeHoliday { get; }
+
+    /// <summary>
+    /// 休日カレンダー最終日 桑名
+    /// </summary>
+    public ReadOnlyReactivePropertySlim<DateTime> LastedKuwanaOfficeHoliday { get; }
 
     public AsyncReactiveCommand EntryCommand { get; }
 }

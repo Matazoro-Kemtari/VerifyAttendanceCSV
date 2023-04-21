@@ -14,7 +14,8 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
-             FontSize="16">
+             FontSize="16"
+             xml:lang="ja-JP">
     <UserControl.Resources>
         <!-- BooleanをVisibility列挙型に変換するコンバータ 組み込みコンバータ -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -37,7 +38,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
+            <StackPanel Grid.Column="0" HorizontalAlignment="Right">
                 <RadioButton Margin="5"
                              Content="本社"
                              IsChecked="{Binding CalendarGroupClass.Value,
@@ -62,7 +63,39 @@
                     VerticalAlignment="Bottom"/>
         </Grid>
         <Grid>
-            <Rectangle Grid.Row="0"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="1" Content="本社" HorizontalAlignment="Center"/>
+                <Label Grid.Column="2" Content="桑名" HorizontalAlignment="Center"/>
+                <Label Grid.Row="1" Content="最終日付"/>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Margin="5"
+                           Text="{Binding LastedHeadOfficeHoliday.Value, StringFormat={}{0:yyyy年M月d日(ddd)}}"
+                           d:Text="2099年12月31日(日)"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Grid.Column="2"
+                           Margin="5"
+                           Text="{Binding LastedKuwanaOfficeHoliday.Value, StringFormat={}{0:yyyy年M月d日(ddd)}}"
+                           d:Text="2099年12月31日(日)"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Grid>
+            <Rectangle Grid.Row="1"
                        Margin="5"
                        Fill="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
                        Stroke="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"
@@ -73,7 +106,7 @@
                        StrokeEndLineCap="Round"
                        dd:DragDrop.IsDropTarget="True"
                        dd:DragDrop.DropHandler="{Binding}"/>
-            <TextBlock Grid.Row="0"
+            <TextBlock Grid.Row="1"
                        x:Name="XlsxFilePath"
                        Margin="20"
                        Text="{Binding XlsxFilePath.Value}"
@@ -85,7 +118,7 @@
                     <ControlTemplate/>
                 </Validation.ErrorTemplate>
             </TextBlock>
-            <TextBlock Grid.Row="0"
+            <TextBlock Grid.Row="1"
                        Margin="20"
                        Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=XlsxFilePath}"
                        Foreground="Red"

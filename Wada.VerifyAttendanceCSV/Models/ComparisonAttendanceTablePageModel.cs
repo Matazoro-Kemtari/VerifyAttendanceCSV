@@ -16,5 +16,5 @@ public record class ComparisonAttendanceTablePageModel
     public ReactivePropertySlim<string> CSVPath { get; } = new();
     public ReactiveCollection<string> XlsxPaths { get; } = new();
     public ReactivePropertySlim<DateTime> TargetDate { get; } = new();
-    public ReactivePropertySlim<DateTime> LastedHolidayDate { get; } = new();
+    public ReactivePropertySlim<DateTime> LastedHoliday { get; } = new();
 }

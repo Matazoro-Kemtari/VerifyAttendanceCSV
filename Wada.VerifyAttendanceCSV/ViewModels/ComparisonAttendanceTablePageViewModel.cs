@@ -89,10 +89,10 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
 
         _fetchOwnCompanyHolidayMaxDateUseCase.ExecuteAsyc()
                                              // 正常終了した場合に継続する
-                                             .ContinueWith(x => _model.LastedHolidayDate.Value = x.Result,
+                                             .ContinueWith(x => _model.LastedHoliday.Value = x.Result.Min(),
                                                            TaskContinuationOptions.OnlyOnRanToCompletion);
 
-        LastedHolidayDate = _model.LastedHolidayDate
+        LastedHoliday = _model.LastedHoliday
             .ToReactivePropertySlimAsSynchronized(x => x.Value)
             .AddTo(Disposables);
     }
@@ -200,7 +200,7 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
     /// <summary>
     /// 休日カレンダー最終日
     /// </summary>
-    public ReactivePropertySlim<DateTime> LastedHolidayDate { get; }
+    public ReactivePropertySlim<DateTime> LastedHoliday { get; }
 }
 
 /// <summary>

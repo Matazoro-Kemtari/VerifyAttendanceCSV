@@ -1,4 +1,5 @@
 ﻿using Reactive.Bindings;
+using System;
 using Wada.AOP.Logging;
 using Wada.RegisterOwnCompanyHolidayApplication;
 
@@ -11,4 +12,6 @@ internal record class OwnCompanyHolidayMaintenancePageModel
 
     public ReactivePropertySlim<string> XlsxFileName { get; } = new();
     public ReactivePropertySlim<CalendarGroupAttempt> CalendarGroupClass { get; } = new();
+    public ReactivePropertySlim<DateTime> LastedHeadOfficeHoliday { get; } = new();
+    public ReactivePropertySlim<DateTime> LastedKuwanaOfficeHoliday { get; } = new();
 }

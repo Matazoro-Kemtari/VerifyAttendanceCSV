@@ -7,7 +7,7 @@ namespace Wada.RegisterOwnCompanyHolidayApplication;
 
 public interface IFetchOwnCompanyHolidayMaxDateUseCase
 {
-    Task<DateTime> ExecuteAsyc();
+    Task<LastedHoliday> ExecuteAsyc();
 
     /// <summary>
     /// 環境情報を模倣する
@@ -30,7 +30,7 @@ public class FetchOwnCompanyHolidayMaxDateUseCase : IFetchOwnCompanyHolidayMaxDa
     }
 
     [Logging]
-    public async Task<DateTime> ExecuteAsyc()
+    public async Task<LastedHoliday> ExecuteAsyc()
     {
         var headOfficeCalendarGroupId = _configuration["applicationConfiguration:HeadOfficeCalendarGroupId"]
             ?? throw new UseCaseException(
@@ -42,7 +42,7 @@ public class FetchOwnCompanyHolidayMaxDateUseCase : IFetchOwnCompanyHolidayMaxDa
                 "applicationConfiguration:MatsuzakaOfficeCalendarGroupId");
 
         var today = _environment.ObtainCurrentDate();
-        var firstDayOfToday = today.AddDays(-(today.Day-1));
+        var firstDayOfToday = today.AddDays(-(today.Day - 1));
 
         IEnumerable<OwnCompanyHoliday> headHolidays, matsuzakaHolidays;
         try
@@ -62,11 +62,9 @@ public class FetchOwnCompanyHolidayMaxDateUseCase : IFetchOwnCompanyHolidayMaxDa
             matsuzakaHolidays = Array.Empty<OwnCompanyHoliday>();
         }
 
-        return new[]
-        {
-            headHolidays.Max(x=>x.HolidayDate),
-            matsuzakaHolidays.Max(x => x.HolidayDate),
-        }.Min();
+        return new LastedHoliday(
+            headHolidays.Max(x => x.HolidayDate),
+            matsuzakaHolidays.Max(x => x.HolidayDate));
     }
 
     public void MimicEnvironment(IEnvironment environment) => _environment = environment;
@@ -80,4 +78,9 @@ public class FetchOwnCompanyHolidayMaxDateUseCase : IFetchOwnCompanyHolidayMaxDa
 public interface IEnvironment
 {
     public DateTime ObtainCurrentDate();
+}
+
+public record class LastedHoliday(DateTime HeadOffice, DateTime KuwanaOffice)
+{
+    public DateTime Min() => new[] { HeadOffice, KuwanaOffice }.Min();
 }

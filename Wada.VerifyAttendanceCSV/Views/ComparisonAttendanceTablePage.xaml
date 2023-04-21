@@ -120,7 +120,7 @@
                     <TextBlock Margin="5"
                                 Text="自社休日カレンダー最終日付"/>
                     <TextBlock Margin="5"
-                               Text="{Binding LastedHolidayDate.Value, StringFormat={}{0:yyyy年M月d日(ddd)}}"/>
+                               Text="{Binding LastedHoliday.Value, StringFormat={}{0:yyyy年M月d日(ddd)}}"/>
                 </StackPanel>
                 <TextBlock Margin="20,5,5,5"
                            TextWrapping="Wrap"
