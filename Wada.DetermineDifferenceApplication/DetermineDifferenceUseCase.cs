@@ -159,8 +159,8 @@ public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
             .Where(y => spreadSheetName.IsMatch(y))
             .Select(async y =>
             {
-                Stream stream = await _streamOpener.OpenAsync(y);
-                var tbl = _attendanceTableRepository.ReadByMonth(stream, date.Month);
+                using Stream stream = await _streamOpener.OpenAsync(y);
+                var tbl = await _attendanceTableRepository.ReadByMonthAsync(stream, date.Month);
                 _logger.Trace($"ファイル読み込み完了 {y}, {tbl}");
                 return WorkedMonthlyReport.CreateForAttendanceTable(tbl, id => MutchEmployeeCode(id, employeeComparisons));
             });

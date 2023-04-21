@@ -67,9 +67,9 @@ namespace Wada.DetermineDifferenceApplication.Tests
                     CreateTestRecords()),
             };
             Mock<IAttendanceTableRepository> mock_spread = new();
-            mock_spread.SetupSequence(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()))
-                .Returns(spreads[0])
-                .Returns(spreads[1]);
+            mock_spread.SetupSequence(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()))
+                .ReturnsAsync(spreads[0])
+                .ReturnsAsync(spreads[1]);
 
             // when
             IDetermineDifferenceUseCase determineDifference =
@@ -90,7 +90,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAllAsync(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.OpenAsync(It.IsAny<string>()), Times.Exactly(2));
-            mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
+            mock_spread.Verify(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         internal static List<WorkedMonthlyReport> AttendanceCSVReturns(uint cd) => new()
@@ -183,9 +183,9 @@ namespace Wada.DetermineDifferenceApplication.Tests
                     CreateTestRecords()),
             };
             Mock<IAttendanceTableRepository> mock_spread = new();
-            mock_spread.SetupSequence(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()))
-                .Returns(spreads[0])
-                .Returns(spreads[1]);
+            mock_spread.SetupSequence(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()))
+                .ReturnsAsync(spreads[0])
+                .ReturnsAsync(spreads[1]);
 
             // when
             IDetermineDifferenceUseCase determineDifference =
@@ -209,7 +209,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAllAsync(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.OpenAsync(It.IsAny<string>()), Times.Exactly(2));
-            mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
+            mock_spread.Verify(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         [TestMethod()]
@@ -260,8 +260,8 @@ namespace Wada.DetermineDifferenceApplication.Tests
                     CreateTestRecords()),
             };
             Mock<IAttendanceTableRepository> mock_spread = new();
-            mock_spread.Setup(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()))
-                .Returns(spreads[0]);
+            mock_spread.Setup(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()))
+                .ReturnsAsync(spreads[0]);
 
             // when
             IDetermineDifferenceUseCase determineDifference =
@@ -285,7 +285,7 @@ namespace Wada.DetermineDifferenceApplication.Tests
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
             mock_csv.Verify(x => x.ReadAllAsync(It.IsAny<StreamReader>()), Times.Once);
             mock_stream.Verify(x => x.OpenAsync(It.IsAny<string>()), Times.Exactly(2));
-            mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
+            mock_spread.Verify(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -333,8 +333,8 @@ namespace Wada.DetermineDifferenceApplication.Tests
                     new AttendanceMonth(5),
                     CreateTestRecords());
             Mock<IAttendanceTableRepository> mock_spread = new();
-            mock_spread.Setup(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()))
-                .Returns(spreads);
+            mock_spread.Setup(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()))
+                .ReturnsAsync(spreads);
 
             // when
             IDetermineDifferenceUseCase determineDifference =
