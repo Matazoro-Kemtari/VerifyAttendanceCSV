@@ -8,7 +8,6 @@ namespace Wada.OwnCompanyHolidaySpreadSheet.Tests
     [TestClass()]
     public class OwnCompanyHolidayListReaderTests
     {
-        private readonly string _calendarGroupName = "本社";
         private readonly string _calendarGroupID = "01GW8E3ENDPWX0FXW0788VR63J";
 
         [TestMethod()]
@@ -21,7 +20,7 @@ namespace Wada.OwnCompanyHolidaySpreadSheet.Tests
 
             // when
             var reader = new OwnCompanyHolidayListReader();
-            var actual = await reader.ReadAllAsync(stream, _calendarGroupName);
+            var actual = await reader.ReadAllAsync(stream, _calendarGroupID);
 
             CollectionAssert.AreEqual(
                 正常系テストデータ.Select(x => OwnCompanyHoliday.Reconstruct(
@@ -47,7 +46,7 @@ namespace Wada.OwnCompanyHolidaySpreadSheet.Tests
 
             // when
             var reader = new OwnCompanyHolidayListReader();
-            Task target() => _ = reader.ReadAllAsync(stream, _calendarGroupName);
+            Task target() => _ = reader.ReadAllAsync(stream, _calendarGroupID);
 
             var ex = await Assert.ThrowsExceptionAsync<OwnCompanyCalendarAggregationException>(target);
             var message = "取込可能なファイル形式ではありません\nファイルが壊れている可能性があります";
@@ -64,7 +63,7 @@ namespace Wada.OwnCompanyHolidaySpreadSheet.Tests
 
             // when
             var reader = new OwnCompanyHolidayListReader();
-            Task target() => _ = reader.ReadAllAsync(stream, _calendarGroupName);
+            Task target() => _ = reader.ReadAllAsync(stream, _calendarGroupID);
 
             var ex = await Assert.ThrowsExceptionAsync<OwnCompanyCalendarAggregationException>(target);
             var message = "データ中に日付または数字以外の文字があります 日付と数字にしてください";

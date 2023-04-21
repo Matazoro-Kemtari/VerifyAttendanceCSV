@@ -16,7 +16,7 @@
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Wada.Data.DesignDepartmentDataBase" Version="1.0.11" />
     <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.15" />
-    <PackageReference Include="Wada.Data.OrderManagement" Version="1.0.0" />
+    <PackageReference Include="Wada.Data.OrderManagement" Version="1.0.1" />
     <PackageReference Include="Wada.Data.OrderManagement.Models" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>
@@ -24,7 +24,6 @@
     <ProjectReference Include="..\Wada.AttendanceCSV\Wada.AttendanceCsv.csproj" />
     <ProjectReference Include="..\Wada.AttendanceSpreadSheet\Wada.AttendanceSpreadSheet.csproj" />
     <ProjectReference Include="..\Wada.AttendanceTableService\Wada.AttendanceTableService.csproj" />
-    <ProjectReference Include="..\Wada.CommonDialogLib\Wada.CommonDialogLib.csproj" />
     <ProjectReference Include="..\Wada.DetermineDifferenceApplication\Wada.DetermineDifferenceApplication.csproj" />
     <ProjectReference Include="..\Wada.IO\Wada.IO.csproj" />
     <ProjectReference Include="..\Wada.MatchedEmployeeNumberSpreadSheet\Wada.MatchedEmployeeNumberSpreadSheet.csproj" />

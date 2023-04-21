@@ -9,7 +9,7 @@ namespace Wada.AttendanceCsv.Tests
     public class EmployeeAttendanceRepositoryTests
     {
         [TestMethod()]
-        public void 正常系_勤怠CSVファイルが読み込めること()
+        public async Task 正常系_勤怠CSVファイルが読み込めること()
         {
             // given
             // テストデータを読み込む
@@ -23,7 +23,7 @@ namespace Wada.AttendanceCsv.Tests
             IEmployeeAttendanceCsvReader employeeAttendanceRepository
                 = new EmployeeAttendanceCsvReader();
             IEnumerable<WorkedMonthlyReport> actuals =
-                employeeAttendanceRepository.ReadAll(reader);
+                await employeeAttendanceRepository.ReadAllAsync(reader);
 
             // then
             Assert.AreEqual(5, actuals.Count());
@@ -96,7 +96,7 @@ namespace Wada.AttendanceCsv.Tests
         [DataTestMethod]
         [DataRow("")]
         [DataRow("\n")]
-        public void 異常系_勤怠CSVファイルが0行の時例外を返すこと(string text)
+        public async Task 異常系_勤怠CSVファイルが0行の時例外を返すこと(string text)
         {
             // given
             // テストデータを読み込む
@@ -111,14 +111,12 @@ namespace Wada.AttendanceCsv.Tests
             // when
             IEmployeeAttendanceCsvReader employeeAttendanceRepository
                 = new EmployeeAttendanceCsvReader();
-            void target()
-            {
-                _ = employeeAttendanceRepository.ReadAll(reader);
-            }
+            Task targetAsync()
+                => employeeAttendanceRepository.ReadAllAsync(reader);
 
             // then
             var msg = "CSVファイルにデータがありません";
-            var ex = Assert.ThrowsException<DomainException>(target);
+            var ex = await Assert.ThrowsExceptionAsync<DomainException>(targetAsync);
             Assert.AreEqual(msg, ex.Message);
         }
     }

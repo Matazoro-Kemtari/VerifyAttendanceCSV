@@ -9,5 +9,5 @@ public interface IEmployeeAttendanceCsvReader
     /// </summary>
     /// <param name="streamReader"></param>
     /// <returns></returns>
-    IEnumerable<WorkedMonthlyReport> ReadAll(StreamReader streamReader);
+    Task<IEnumerable<WorkedMonthlyReport>> ReadAllAsync(StreamReader streamReader);
 }

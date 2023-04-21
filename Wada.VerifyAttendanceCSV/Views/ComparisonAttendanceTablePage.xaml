@@ -2,20 +2,38 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Wada.VerifyAttendanceCSV.Views"
+             xmlns:viewmodels="clr-namespace:Wada.VerifyAttendanceCSV.ViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:viewmodels="clr-namespace:Wada.VerifyAttendanceCSV.ViewModels"
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="600" d:DesignWidth="500"
              d:Background="LightGray"
              d:DataContext="{d:DesignInstance Type=viewmodels:ComparisonAttendanceTablePageViewModel}"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             FontSize="16">
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+             FontSize="16"
+             xml:lang="ja-JP">
+    <UserControl.Resources>
+        <!-- BooleanをVisibility列挙型に変換するコンバータ 組み込みコンバータ -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <l:InteractionMessageTrigger MessageKey="Info" Messenger="{Binding Messenger}">
+            <l:InformationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger MessageKey="Confirm" Messenger="{Binding Messenger}">
+            <l:ConfirmationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+    </i:Interaction.Triggers>
+
     <DockPanel LastChildFill="True">
         <TextBlock DockPanel.Dock="Top"
                    Margin="5"
-                   Text="勤務表を指定してください"/>
+                   Text="勤怠CSVファイルと勤務表の比較"/>
 
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="進む(_N)"
@@ -27,54 +45,90 @@
 
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition />
-                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
+            <Rectangle Grid.Row="0"
                        Margin="5"
-                       Text="CSVファイル" />
-            <TextBox Grid.Row="1"
-                     Margin="5"
-                     Text="{Binding CSVPath.Value, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                     InputMethod.PreferredImeState="Off"/>
-            <TextBlock Grid.Row="2"
+                       ToolTip="勤怠CSVファイルをドロップしてください"
+                       Fill="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                       Stroke="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"
+                       StrokeThickness="3"
+                       StrokeDashArray="2"
+                       SnapsToDevicePixels="True"
+                       StrokeStartLineCap="Round"
+                       StrokeEndLineCap="Round"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DropHandler="{Binding AttendanceCsvDropHandler}"/>
+            <TextBlock Grid.Row="0"
+                       x:Name="CsvFilePath"
+                       Margin="20"
+                       Text="{Binding CSVPath.Value}"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+                <Validation.ErrorTemplate>
+                    <!-- エラー時に赤枠を表示させない -->
+                    <ControlTemplate/>
+                </Validation.ErrorTemplate>
+            </TextBlock>
+            <TextBlock Grid.Row="0"
+                       Margin="20"
+                       Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=CsvFilePath}"
+                       Foreground="Red"
+                       FontWeight="Bold"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding (Validation.HasError), ElementName=CsvFilePath, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="1"
                        Margin="5"
                        Text="勤務表エクセルのフォルダ" />
-            <TextBox Grid.Row="3"
+            <ListBox Grid.Row="2"
                      Margin="5"
-                     Text="{Binding XLSXPath.Value, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                     AcceptsReturn="True"
-                     VerticalScrollBarVisibility="Auto"
-                     HorizontalScrollBarVisibility="Auto"
-                     InputMethod.PreferredImeState="Off"
-                     TextWrapping="Wrap" />
-            <StackPanel Grid.Row="4"
-                        Orientation="Horizontal">
-                <TextBlock Margin="5"
-                           Text="年"/>
-                <TextBox Margin="5"
-                         MinWidth="50"
-                         Text="{Binding Year.Value}"/>
-                <TextBlock Margin="5"
-                           Text="月"/>
-                <TextBox Margin="5"
-                         MinWidth="30"
-                         Text="{Binding Month.Value}"/>
+                     ItemsSource="{Binding XlsxPaths}"
+                     SelectedIndex="{Binding XlsxListSelectedIndex.Value}"
+                     ToolTip="勤務表エクセルのあるフォルダをドロップしてください"
+                     d:ItemsSource="{d:SampleData}"
+                     dd:DragDrop.IsDropTarget="True"
+                     dd:DragDrop.UseDefaultDragAdorner="True"
+                     dd:DragDrop.DropHandler="{Binding XlsxDirectoryDropHandler}">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="削除" Command="{Binding RemoveDirectoryItemCommand}"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                <TextBlock Margin="5" Text="処理対象日"/>
+                <ComboBox Margin="5"
+                          ItemsSource="{Binding TargetDates}"
+                          SelectedIndex="1"
+                          SelectedItem="{Binding TargetDate.Value, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding {}, StringFormat={}{0:yyyy年M月}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </StackPanel>
-            <StackPanel Grid.Row="5">
+            <StackPanel Grid.Row="4">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="5"
-                               Text="自社休日カレンダー最終日付"/>
+                                Text="自社休日カレンダー最終日付"/>
                     <TextBlock Margin="5"
-                           Text="{Binding HolidayMaxDate.Value, StringFormat={}{0:yyyy年M月d日}}"/>
+                               Text="{Binding LastedHoliday.Value, StringFormat={}{0:yyyy年M月d日(ddd)}}"/>
                 </StackPanel>
-                <TextBlock Margin="5"
+                <TextBlock Margin="20,5,5,5"
                            TextWrapping="Wrap"
-                           Text="この日以降照合できません CSVで登録機能は予定しています"/>
+                           Text="この日以降は 比較前に休日カレンダーを登録してください"/>
+                <TextBlock Margin="20,0,5,5"
+                           TextWrapping="Wrap"
+                           Text="また 工数記録システムでも使用するので 従業員が工数記録する前に登録してください"
+                       />
             </StackPanel>
         </Grid>
     </DockPanel>
