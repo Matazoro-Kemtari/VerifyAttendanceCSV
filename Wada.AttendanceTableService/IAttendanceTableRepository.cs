@@ -11,5 +11,5 @@ public interface IAttendanceTableRepository
     /// <param name="calendarGroupId"></param>
     /// <param name="month"></param>
     /// <returns></returns>
-    AttendanceTable ReadByMonth(Stream stream, int month);
+    Task<AttendanceTable> ReadByMonthAsync(Stream stream, int month);
 }

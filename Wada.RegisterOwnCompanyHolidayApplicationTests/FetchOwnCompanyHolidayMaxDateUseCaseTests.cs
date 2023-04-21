@@ -49,7 +49,7 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             envMock.Verify(x => x.ObtainCurrentDate(), Times.Once);
             holidayMock.Verify(x => x.FindByAfterDateAsync(headOfficeCalendarGroupId, new DateTime(year, 1, 1)), Times.Once);
             holidayMock.Verify(x => x.FindByAfterDateAsync(matsuzakaOfficeCalendarGroupId, new DateTime(year, 1, 1)), Times.Once);
-            Assert.AreEqual(minDate, actual);
+            Assert.AreEqual(minDate, actual.Min());
         }
     }
 }

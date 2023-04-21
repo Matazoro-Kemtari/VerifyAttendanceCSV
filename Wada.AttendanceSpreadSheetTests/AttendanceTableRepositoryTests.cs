@@ -59,7 +59,7 @@ namespace Wada.AttendanceSpreadSheet.Tests
                                               departHoliMock.Object,
                                               mock_holiday.Object);
             int month = 5;
-            var actual = attendanceTableRepository.ReadByMonth(xlsStream, month);
+            var actual = await attendanceTableRepository.ReadByMonthAsync(xlsStream, month);
 
             // then
             uint employeeNumber = (uint)DotNetEnv.Env.GetInt("EMPLOYEE_NUMBER");
