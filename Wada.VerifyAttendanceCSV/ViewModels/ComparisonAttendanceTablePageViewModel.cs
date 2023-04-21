@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Wada.DetermineDifferenceApplication;
 using Wada.RegisterOwnCompanyHolidayApplication;
 using Wada.VerifyAttendanceCSV.Models;
@@ -102,7 +103,10 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
         DetermineDifferenceUseCaseDTO differenceDTP;
         try
         {
+            Mouse.OverrideCursor = Cursors.Wait;
+
             differenceDTP = await _determineDifferenceUseCase.ExecuteAsync(
+
                 CSVPath.Value,
                 XlsxPaths,
                 TargetDate.Value);
@@ -114,23 +118,27 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
             await Messenger.RaiseAsync(errorMessage);
             return;
         }
+        finally
+        {
+            Mouse.OverrideCursor = null;
+        }
 
         // データクラスの詰め替え
         var request = new VerificationResultRequest(
-            differenceDTP.CSVCount,
-            differenceDTP.XLSXCount,
-            differenceDTP.DetermineDifferenceEmployeesDTOs.Count(),
-            differenceDTP.DetermineDifferenceEmployeesDTOs.Select(
-                x => new DifferencialDetailRequest(
-                    x.EmployeeNumber,
-                    x.EmployeeName,
-                    x.Differences)));
+                differenceDTP.CSVCount,
+                differenceDTP.XLSXCount,
+                differenceDTP.DetermineDifferenceEmployeesDTOs.Count(),
+                differenceDTP.DetermineDifferenceEmployeesDTOs.Select(
+                    x => new DifferencialDetailRequest(
+                        x.EmployeeNumber,
+                        x.EmployeeName,
+                        x.Differences)));
 
         // ダイアログのパラメータにセット
         var parameters = new DialogParameters
-        {
-            { nameof(VerificationResultRequest), request }
-        };
+            {
+                { nameof(VerificationResultRequest), request }
+            };
 
         // ダイアログ表示
         IDialogResult dialogResult;
