@@ -6,6 +6,7 @@ using Prism.Navigation;
 using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using Reactive.Bindings.TinyLinq;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -63,9 +64,16 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
             .ToReactivePropertyAsSynchronized(x => x.Value)
             .AddTo(Disposables);
 
-        NextViewCommand = new AsyncReactiveCommand()
-            .WithSubscribe(() => VerifyAttendance())
-            .AddTo(Disposables);
+        NextViewCommand = new[]
+        {
+            CSVPath.ObserveHasErrors,
+            XlsxPaths.ObserveProperty(x => x.Count)
+                     .Select(c=>c<=0),
+        }
+        .CombineLatestValuesAreAllFalse()
+        .ToAsyncReactiveCommand()
+        .WithSubscribe(() => VerifyAttendance())
+        .AddTo(Disposables);
 
         RemoveDirectoryItemCommand = new AsyncReactiveCommand()
             .WithSubscribe(() => RemoveDirectoryItem())
