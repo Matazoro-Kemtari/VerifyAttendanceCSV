@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="Wada.VerifyAttendanceCSV.Views.NavigationPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Wada.VerifyAttendanceCSV.Views"
+             xmlns:viewmodels="clr-namespace:Wada.VerifyAttendanceCSV.ViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="150"
+             d:Background="LightGray"
+             d:DataContext="{d:DesignInstance Type=viewmodels:NavigationPageViewModel}"
+             xmlns:prism="http://prismlibrary.com/"             
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             FontSize="16">
+    <StackPanel Orientation="Vertical">
+        <Button Content="CSV照合(_V)"
+                MinWidth="70"
+                Margin="5"
+                Padding="5"
+                Command="{Binding ComparisonViewCommand}"/>
+        <Button Content="社員番号登録(_E)"
+                MinWidth="70"
+                Margin="5"
+                Padding="5"
+                Command="{Binding EmployeeViewCommand}"/>
+        <Button Content="カレンダー登録(_C)"
+                MinWidth="70"
+                Margin="5"
+                Padding="5"
+                Command="{Binding CalendarViewCommand}"/>
+    </StackPanel>
+</UserControl>

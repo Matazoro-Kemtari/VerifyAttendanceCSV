@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DetermineDifferenceApplication
+namespace Wada.DetermineDifferenceApplication
 {
     [Serializable]
     public class EmployeeNumberNotFoundException : Exception

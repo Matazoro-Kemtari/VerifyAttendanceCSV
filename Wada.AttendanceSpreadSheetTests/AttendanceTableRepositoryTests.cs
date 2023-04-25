@@ -2,8 +2,14 @@
 using Moq;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
-using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 using Wada.AttendanceTableService.ValueObjects;
+using Wada.Data.DesignDepartmentDataBase.Models;
+using Wada.Data.DesignDepartmentDataBase.Models.DepartmentCompanyHolidayAggregation;
+using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
+using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
+using Wada.Data.OrderManagement.Models;
+using Wada.Data.OrderManagement.Models.EmployeeAggregation;
+using Wada.IO;
 
 namespace Wada.AttendanceSpreadSheet.Tests
 {
@@ -11,37 +17,49 @@ namespace Wada.AttendanceSpreadSheet.Tests
     public class AttendanceTableRepositoryTests
     {
         [TestMethod()]
-        public void 正常系_勤怠表が読み込めること()
+        public async Task 正常系_勤怠表が読み込めること()
         {
             // given
             DotNetEnv.Env.Load(".env");
 
-            IStreamOpener streamOpener = new StreamOpener();
+            IFileStreamOpener streamOpener = new FileStreamOpener();
             string path = DotNetEnv.Env.GetString("TEST_XLS_PATH");
-            using Stream xlsStream = streamOpener.Open(path);
+            using Stream xlsStream = await streamOpener.OpenAsync(path);
+
+            Mock<IEmployeeRepository> employeeMock = new();
+            employeeMock.Setup(x => x.FindByEmployeeNumberAsync(It.IsAny<uint>()))
+                .ReturnsAsync(TestEmployeeFactory.Create());
+
+            Mock<IDepartmentCompanyHolidayRepository> departHoliMock = new();
+            var groupId = "__DUMMY__";
+            departHoliMock.Setup(x => x.FindByDepartmentIdAsync(It.IsAny<uint>()))
+                .ReturnsAsync(TestDepartmentCompanyHolidayFactory.Create(calendarGroupId: groupId));
 
             Mock<IOwnCompanyHolidayRepository> mock_holiday = new();
-            mock_holiday.Setup(x => x.FindByYearMonth(2022, 5))
-                .Returns(new List<OwnCompanyHoliday>{
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/1"),HolidayClassification.LegalHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/3"),HolidayClassification.RegularHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/4"),HolidayClassification.RegularHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/5"),HolidayClassification.RegularHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/6"),HolidayClassification.RegularHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/7"),HolidayClassification.RegularHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/8"),HolidayClassification.LegalHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/14"),HolidayClassification.RegularHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/15"),HolidayClassification.LegalHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/21"),HolidayClassification.RegularHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/22"),HolidayClassification.LegalHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/28"),HolidayClassification.RegularHoliday),
-                    OwnCompanyHoliday.ReConstruct(DateTime.Parse("2022/5/29"),HolidayClassification.LegalHoliday),
+            mock_holiday.Setup(x => x.FindByYearMonthAsync(groupId, 2022, 5))
+                .ReturnsAsync(new List<OwnCompanyHoliday>{
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/1"),HolidayClassification.LegalHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/3"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/4"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/5"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/6"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/7"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/8"),HolidayClassification.LegalHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/14"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/15"),HolidayClassification.LegalHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/21"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/22"),HolidayClassification.LegalHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/28"),HolidayClassification.RegularHoliday),
+                    OwnCompanyHoliday.Reconstruct(groupId, DateTime.Parse("2022/5/29"),HolidayClassification.LegalHoliday),
                 });
 
             // when
-            IAttendanceTableRepository attendanceTableRepository = new AttendanceTableRepository(mock_holiday.Object);
+            IAttendanceTableRepository attendanceTableRepository =
+                new AttendanceTableRepository(employeeMock.Object,
+                                              departHoliMock.Object,
+                                              mock_holiday.Object);
             int month = 5;
-            var actual = attendanceTableRepository.ReadByMonth(xlsStream, month);
+            var actual = await attendanceTableRepository.ReadByMonthAsync(xlsStream, month);
 
             // then
             uint employeeNumber = (uint)DotNetEnv.Env.GetInt("EMPLOYEE_NUMBER");
@@ -55,7 +73,7 @@ namespace Wada.AttendanceSpreadSheet.Tests
             Assert.AreEqual(expected.Year, actual.Year);
             Assert.AreEqual(expected.Month, actual.Month);
             CollectionAssert.AreEqual(expected.AttendanceRecords.ToList(), actual.AttendanceRecords.ToList());
-            mock_holiday.Verify(x => x.FindByYearMonth(It.IsAny<int>(),It.IsAny<int>()), Times.Once);
+            mock_holiday.Verify(x => x.FindByYearMonthAsync(groupId, It.IsAny<int>(), It.IsAny<int>()), Times.Once);
         }
 
         private static ICollection<AttendanceRecord> CreateTestRecords()

@@ -3,13 +3,13 @@ using System.Text;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 
-namespace Wada.AttendanceCSV.Tests
+namespace Wada.AttendanceCsv.Tests
 {
     [TestClass()]
     public class EmployeeAttendanceRepositoryTests
     {
         [TestMethod()]
-        public void 正常系_勤怠CSVファイルが読み込めること()
+        public async Task 正常系_勤怠CSVファイルが読み込めること()
         {
             // given
             // テストデータを読み込む
@@ -20,10 +20,10 @@ namespace Wada.AttendanceCSV.Tests
                     "StreamReader作るときに失敗した");
 
             // when
-            IEmployeeAttendanceRepository employeeAttendanceRepository
-                = new EmployeeAttendanceRepository();
+            IEmployeeAttendanceCsvReader employeeAttendanceRepository
+                = new EmployeeAttendanceCsvReader();
             IEnumerable<WorkedMonthlyReport> actuals =
-                employeeAttendanceRepository.ReadAll(reader);
+                await employeeAttendanceRepository.ReadAllAsync(reader);
 
             // then
             Assert.AreEqual(5, actuals.Count());
@@ -96,7 +96,7 @@ namespace Wada.AttendanceCSV.Tests
         [DataTestMethod]
         [DataRow("")]
         [DataRow("\n")]
-        public void 異常系_勤怠CSVファイルが0行の時例外を返すこと(string text)
+        public async Task 異常系_勤怠CSVファイルが0行の時例外を返すこと(string text)
         {
             // given
             // テストデータを読み込む
@@ -109,16 +109,14 @@ namespace Wada.AttendanceCSV.Tests
 #pragma warning restore CA2208 // 引数の例外を正しくインスタンス化します
 
             // when
-            IEmployeeAttendanceRepository employeeAttendanceRepository
-                = new EmployeeAttendanceRepository();
-            void target()
-            {
-                _ = employeeAttendanceRepository.ReadAll(reader);
-            }
+            IEmployeeAttendanceCsvReader employeeAttendanceRepository
+                = new EmployeeAttendanceCsvReader();
+            Task targetAsync()
+                => employeeAttendanceRepository.ReadAllAsync(reader);
 
             // then
             var msg = "CSVファイルにデータがありません";
-            var ex = Assert.ThrowsException<AttendanceTableServiceException>(target);
+            var ex = await Assert.ThrowsExceptionAsync<DomainException>(targetAsync);
             Assert.AreEqual(msg, ex.Message);
         }
     }

@@ -3,11 +3,13 @@ using Moq;
 using NLog;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
-using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
 using Wada.AttendanceTableService.ValueObjects;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
+using Wada.Data.DesignDepartmentDataBase.Models;
+using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
+using Wada.Data.OrderManagement.Models;
 
-namespace DetermineDifferenceApplication.Tests
+namespace Wada.DetermineDifferenceApplication.Tests
 {
     [TestClass()]
     public class DetermineDifferenceUseCaseTests
@@ -28,27 +30,27 @@ namespace DetermineDifferenceApplication.Tests
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
             // ストリームモック
-            Mock<IStreamOpener> mock_stream = new();
+            Mock<IFileStreamOpener> mock_stream = new();
 
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
-            mock_match_employee.Setup(x => x.FindAll())
-                .Returns(new List<MatchedEmployeeNumber>
+            mock_match_employee.Setup(x => x.FindAllAsync())
+                .ReturnsAsync(new List<Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber>
                 {
-                    MatchedEmployeeNumber.ReConsttuct(1001u, 1u),
-                    MatchedEmployeeNumber.ReConsttuct(1002u, 2u),
-                    MatchedEmployeeNumber.ReConsttuct(1003u, 3u),
-                    MatchedEmployeeNumber.ReConsttuct(1004u, 4u),
-                    MatchedEmployeeNumber.ReConsttuct(employeeNumber, attendancePersonalCode),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1001u, 1u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1002u, 2u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1003u, 3u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1004u, 4u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(employeeNumber, attendancePersonalCode),
                 });
 
             // S社員モック
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
-            mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
-                .Returns(AttendanceCSVReturns(attendancePersonalCode));
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
+            mock_csv.Setup(x => x.ReadAllAsync(It.IsAny<StreamReader>()))
+                .ReturnsAsync(AttendanceCSVReturns(attendancePersonalCode));
 
             // 勤怠表の読み込みモック
             AttendanceTable[] spreads = new AttendanceTable[]
@@ -65,9 +67,9 @@ namespace DetermineDifferenceApplication.Tests
                     CreateTestRecords()),
             };
             Mock<IAttendanceTableRepository> mock_spread = new();
-            mock_spread.SetupSequence(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()))
-                .Returns(spreads[0])
-                .Returns(spreads[1]);
+            mock_spread.SetupSequence(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()))
+                .ReturnsAsync(spreads[0])
+                .ReturnsAsync(spreads[1]);
 
             // when
             IDetermineDifferenceUseCase determineDifference =
@@ -80,15 +82,15 @@ namespace DetermineDifferenceApplication.Tests
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, new DateTime(2022, 5, 1));
 
             // then
             Assert.IsTrue(!differenceDTO.DetermineDifferenceEmployeesDTOs.Any());
-            mock_employee.Verify(x => x.FetchAll(), Times.Once);
+            mock_employee.Verify(x => x.FindAllAsync(), Times.Once);
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
-            mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
-            mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
-            mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
+            mock_csv.Verify(x => x.ReadAllAsync(It.IsAny<StreamReader>()), Times.Once);
+            mock_stream.Verify(x => x.OpenAsync(It.IsAny<string>()), Times.Exactly(2));
+            mock_spread.Verify(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         internal static List<WorkedMonthlyReport> AttendanceCSVReturns(uint cd) => new()
@@ -144,27 +146,27 @@ namespace DetermineDifferenceApplication.Tests
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
             // ストリームモック
-            Mock<IStreamOpener> mock_stream = new();
+            Mock<IFileStreamOpener> mock_stream = new();
 
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
-            mock_match_employee.Setup(x => x.FindAll())
-                .Returns(new List<MatchedEmployeeNumber>
+            mock_match_employee.Setup(x => x.FindAllAsync())
+                .ReturnsAsync(new List<Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber>
                 {
-                    MatchedEmployeeNumber.ReConsttuct(1001u, 1u),
-                    MatchedEmployeeNumber.ReConsttuct(1002u, 2u),
-                    MatchedEmployeeNumber.ReConsttuct(1003u, 3u),
-                    MatchedEmployeeNumber.ReConsttuct(1004u, 4u),
-                    MatchedEmployeeNumber.ReConsttuct(employeeNumber, attendancePersonalCode),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1001u, 1u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1002u, 2u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1003u, 3u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1004u, 4u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(employeeNumber, attendancePersonalCode),
                 });
 
             // S社員モック
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
-            mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
-                .Returns(LackAttendanceCSVReturns(attendancePersonalCode));
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
+            mock_csv.Setup(x => x.ReadAllAsync(It.IsAny<StreamReader>()))
+                .ReturnsAsync(LackAttendanceCSVReturns(attendancePersonalCode));
 
             // 勤怠表の読み込みモック
             AttendanceTable[] spreads = new AttendanceTable[]
@@ -181,9 +183,9 @@ namespace DetermineDifferenceApplication.Tests
                     CreateTestRecords()),
             };
             Mock<IAttendanceTableRepository> mock_spread = new();
-            mock_spread.SetupSequence(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()))
-                .Returns(spreads[0])
-                .Returns(spreads[1]);
+            mock_spread.SetupSequence(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()))
+                .ReturnsAsync(spreads[0])
+                .ReturnsAsync(spreads[1]);
 
             // when
             IDetermineDifferenceUseCase determineDifference =
@@ -196,7 +198,7 @@ namespace DetermineDifferenceApplication.Tests
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, new DateTime(2022, 5, 1));
 
             // then
             Assert.IsTrue(differenceDTO.DetermineDifferenceEmployeesDTOs.Count() == 1);
@@ -205,9 +207,9 @@ namespace DetermineDifferenceApplication.Tests
                 .First(x => x.AttendancePersonalCode == 4u)
                 .Differences.Count());
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
-            mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
-            mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
-            mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
+            mock_csv.Verify(x => x.ReadAllAsync(It.IsAny<StreamReader>()), Times.Once);
+            mock_stream.Verify(x => x.OpenAsync(It.IsAny<string>()), Times.Exactly(2));
+            mock_spread.Verify(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         [TestMethod()]
@@ -226,27 +228,27 @@ namespace DetermineDifferenceApplication.Tests
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
             // ストリームモック
-            Mock<IStreamOpener> mock_stream = new();
+            Mock<IFileStreamOpener> mock_stream = new();
 
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
-            mock_match_employee.Setup(x => x.FindAll())
-                .Returns(new List<MatchedEmployeeNumber>
+            mock_match_employee.Setup(x => x.FindAllAsync())
+                .ReturnsAsync(new List<Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber>
                 {
-                    MatchedEmployeeNumber.ReConsttuct(1001u, 1u),
-                    MatchedEmployeeNumber.ReConsttuct(1002u, 2u),
-                    MatchedEmployeeNumber.ReConsttuct(1003u, 3u),
-                    MatchedEmployeeNumber.ReConsttuct(1004u, 4u),
-                    MatchedEmployeeNumber.ReConsttuct(employeeNumber, attendancePersonalCode),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1001u, 1u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1002u, 2u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1003u, 3u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1004u, 4u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(employeeNumber, attendancePersonalCode),
                 });
 
             // S社員モック
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
-            mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
-                .Returns(AttendanceCSVReturns(attendancePersonalCode));
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
+            mock_csv.Setup(x => x.ReadAllAsync(It.IsAny<StreamReader>()))
+                .ReturnsAsync(AttendanceCSVReturns(attendancePersonalCode));
 
             // 勤怠表の読み込みモック
             AttendanceTable[] spreads = new AttendanceTable[]
@@ -258,8 +260,8 @@ namespace DetermineDifferenceApplication.Tests
                     CreateTestRecords()),
             };
             Mock<IAttendanceTableRepository> mock_spread = new();
-            mock_spread.Setup(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()))
-                .Returns(spreads[0]);
+            mock_spread.Setup(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()))
+                .ReturnsAsync(spreads[0]);
 
             // when
             IDetermineDifferenceUseCase determineDifference =
@@ -272,7 +274,7 @@ namespace DetermineDifferenceApplication.Tests
                 mock_csv.Object,
                 mock_spread.Object);
 
-            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+            var differenceDTO = await determineDifference.ExecuteAsync("dummy", paths, new DateTime(2022, 5, 1));
 
             // then
             Assert.IsTrue(differenceDTO.DetermineDifferenceEmployeesDTOs.Count() == 1);
@@ -281,9 +283,9 @@ namespace DetermineDifferenceApplication.Tests
                 .First(x => x.AttendancePersonalCode == 4u)
                 .Differences.Count());
             mock_stream_reader.Verify(x => x.Open(It.IsAny<string>()), Times.Once);
-            mock_csv.Verify(x => x.ReadAll(It.IsAny<StreamReader>()), Times.Once);
-            mock_stream.Verify(x => x.Open(It.IsAny<string>()), Times.Exactly(2));
-            mock_spread.Verify(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
+            mock_csv.Verify(x => x.ReadAllAsync(It.IsAny<StreamReader>()), Times.Once);
+            mock_stream.Verify(x => x.OpenAsync(It.IsAny<string>()), Times.Exactly(2));
+            mock_spread.Verify(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -302,26 +304,26 @@ namespace DetermineDifferenceApplication.Tests
             Mock<IStreamReaderOpener> mock_stream_reader = new();
 
             // ストリームモック
-            Mock<IStreamOpener> mock_stream = new();
+            Mock<IFileStreamOpener> mock_stream = new();
 
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
-            mock_match_employee.Setup(x => x.FindAll())
-                .Returns(new List<MatchedEmployeeNumber>
+            mock_match_employee.Setup(x => x.FindAllAsync())
+                .ReturnsAsync(new List<Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber>
                 {
-                    MatchedEmployeeNumber.ReConsttuct(1001u, 1u),
-                    MatchedEmployeeNumber.ReConsttuct(1002u, 2u),
-                    MatchedEmployeeNumber.ReConsttuct(1003u, 3u),
-                    MatchedEmployeeNumber.ReConsttuct(1004u, 4u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1001u, 1u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1002u, 2u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1003u, 3u),
+                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1004u, 4u),
                 });
 
             // S社員モック
             Mock<IEmployeeRepository> mock_employee = new();
 
             // CSVの読み込みモック
-            Mock<IEmployeeAttendanceRepository> mock_csv = new();
-            mock_csv.Setup(x => x.ReadAll(It.IsAny<StreamReader>()))
-                .Returns(AttendanceCSVReturns(attendancePersonalCode));
+            Mock<IEmployeeAttendanceCsvReader> mock_csv = new();
+            mock_csv.Setup(x => x.ReadAllAsync(It.IsAny<StreamReader>()))
+                .ReturnsAsync(AttendanceCSVReturns(attendancePersonalCode));
 
             // 勤怠表の読み込みモック
             AttendanceTable spreads =
@@ -331,8 +333,8 @@ namespace DetermineDifferenceApplication.Tests
                     new AttendanceMonth(5),
                     CreateTestRecords());
             Mock<IAttendanceTableRepository> mock_spread = new();
-            mock_spread.Setup(x => x.ReadByMonth(It.IsAny<Stream>(), It.IsAny<int>()))
-                .Returns(spreads);
+            mock_spread.Setup(x => x.ReadByMonthAsync(It.IsAny<Stream>(), It.IsAny<int>()))
+                .ReturnsAsync(spreads);
 
             // when
             IDetermineDifferenceUseCase determineDifference =
@@ -347,7 +349,7 @@ namespace DetermineDifferenceApplication.Tests
 
             async Task target()
             {
-                await determineDifference.ExecuteAsync("dummy", paths, 2022, 5);
+                await determineDifference.ExecuteAsync("dummy", paths, new DateTime(2022, 5, 1));
             }
 
             // then

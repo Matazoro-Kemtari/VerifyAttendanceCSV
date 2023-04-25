@@ -3,28 +3,31 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetEnv" Version="2.3.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
+    <PackageReference Include="DotNetEnv" Version="2.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-    <PackageReference Include="NLog" Version="5.1.0" />
+    <PackageReference Include="NLog" Version="5.1.3" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="Wada.Data.DesignDepartmentDataBase" Version="1.0.11" />
+    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.15" />
+    <PackageReference Include="Wada.Data.OrderManagement" Version="1.0.1" />
+    <PackageReference Include="Wada.Data.OrderManagement.Models" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DetermineDifferenceApplication\DetermineDifferenceApplication.csproj" />
-    <ProjectReference Include="..\RegisterOwnCompanyHolidayApplication\RegisterOwnCompanyHolidayApplication.csproj" />
     <ProjectReference Include="..\Wada.AOP.Logging\Wada.AOP.Logging.csproj" />
-    <ProjectReference Include="..\Wada.AttendanceCSV\Wada.AttendanceCSV.csproj" />
+    <ProjectReference Include="..\Wada.AttendanceCSV\Wada.AttendanceCsv.csproj" />
     <ProjectReference Include="..\Wada.AttendanceSpreadSheet\Wada.AttendanceSpreadSheet.csproj" />
     <ProjectReference Include="..\Wada.AttendanceTableService\Wada.AttendanceTableService.csproj" />
-    <ProjectReference Include="..\Wada.CommonDialogLib\Wada.CommonDialogLib.csproj" />
-    <ProjectReference Include="..\Wada.DesignDepartmentDataBse\Wada.DesignDepartmentDataBse.csproj" />
-    <ProjectReference Include="..\Wada.OrderDataBase\Wada.OrderDataBase.csproj" />
+    <ProjectReference Include="..\Wada.DetermineDifferenceApplication\Wada.DetermineDifferenceApplication.csproj" />
+    <ProjectReference Include="..\Wada.IO\Wada.IO.csproj" />
+    <ProjectReference Include="..\Wada.MatchedEmployeeNumberSpreadSheet\Wada.MatchedEmployeeNumberSpreadSheet.csproj" />
+    <ProjectReference Include="..\Wada.OwnCompanyHolidaySpreadSheet\Wada.OwnCompanyHolidaySpreadSheet.csproj" />
     <ProjectReference Include="..\Wada.VerifyAttendanceCSV\Wada.VerifyAttendanceCSV.csproj" />
   </ItemGroup>
   <ItemGroup>
