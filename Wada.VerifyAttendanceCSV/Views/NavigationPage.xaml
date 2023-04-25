@@ -12,21 +12,24 @@
              xmlns:prism="http://prismlibrary.com/"             
              prism:ViewModelLocator.AutoWireViewModel="True"
              FontSize="16">
-    <StackPanel Orientation="Vertical">
-        <Button Content="CSV照合(_V)"
-                MinWidth="70"
-                Margin="5"
-                Padding="5"
-                Command="{Binding ComparisonViewCommand}"/>
-        <Button Content="社員番号登録(_E)"
-                MinWidth="70"
-                Margin="5"
-                Padding="5"
-                Command="{Binding EmployeeViewCommand}"/>
-        <Button Content="カレンダー登録(_C)"
-                MinWidth="70"
-                Margin="5"
-                Padding="5"
-                Command="{Binding CalendarViewCommand}"/>
-    </StackPanel>
+    <DockPanel>
+        <Label DockPanel.Dock="Bottom" Content="https://icons8.com" FontSize="6"/>
+        <StackPanel Orientation="Vertical">
+            <Button Content="CSV照合(_V)"
+                    MinWidth="70"
+                    Margin="5"
+                    Padding="5"
+                    Command="{Binding ComparisonViewCommand}"/>
+            <Button Content="社員番号登録(_E)"
+                    MinWidth="70"
+                    Margin="5"
+                    Padding="5"
+                    Command="{Binding EmployeeViewCommand}"/>
+            <Button Content="カレンダー登録(_C)"
+                    MinWidth="70"
+                    Margin="5"
+                    Padding="5"
+                    Command="{Binding CalendarViewCommand}"/>
+        </StackPanel>
+    </DockPanel>
 </UserControl>
