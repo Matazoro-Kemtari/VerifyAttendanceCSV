@@ -80,7 +80,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="1" Content="本社" HorizontalAlignment="Center"/>
-                <Label Grid.Column="2" Content="桑名" HorizontalAlignment="Center"/>
+                <Label Grid.Column="2" Content="松阪" HorizontalAlignment="Center"/>
                 <Label Grid.Row="1" Content="最終日付"/>
                 <TextBlock Grid.Row="1" Grid.Column="1"
                            Margin="5"
