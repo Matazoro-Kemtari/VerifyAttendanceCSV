@@ -19,6 +19,11 @@
     <UserControl.Resources>
         <!-- BooleanをVisibility列挙型に変換するコンバータ 組み込みコンバータ -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <!--複数のコンバーターをまとめる定義-->
+        <local:ValueConverterGroup x:Key="NegativeBooleanToVisibilityConverter">
+            <local:BooleanNegativeConverter />
+            <BooleanToVisibilityConverter />
+        </local:ValueConverterGroup>
     </UserControl.Resources>
 
     <i:Interaction.Triggers>
@@ -88,6 +93,7 @@
                        Margin="5"
                        Text="勤務表エクセルのフォルダ" />
             <ListBox Grid.Row="2"
+                     x:Name="XlsxDirPath"
                      Margin="5"
                      ItemsSource="{Binding XlsxPaths}"
                      SelectedIndex="{Binding XlsxListSelectedIndex.Value}"
@@ -102,6 +108,15 @@
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
+            <TextBlock Grid.Row="2"
+                       Margin="20"
+                       Text="{Binding ToolTip, ElementName=XlsxDirPath}"
+                       Foreground="Red"
+                       FontWeight="Bold"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding HasItems, ElementName=XlsxDirPath, Converter={StaticResource NegativeBooleanToVisibilityConverter}}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
             <StackPanel Grid.Row="3" Orientation="Horizontal">
                 <TextBlock Margin="5" Text="処理対象日"/>
                 <ComboBox Margin="5"

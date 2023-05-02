@@ -3,7 +3,7 @@
 namespace Wada.DetermineDifferenceApplication
 {
     [Serializable]
-    internal class UseCaseException : Exception
+    public class UseCaseException : Exception
     {
         public UseCaseException()
         {
