@@ -18,6 +18,8 @@ using Wada.MatchedEmployeeNumberSpreadSheet;
 using Wada.OwnCompanyHolidaySpreadSheet;
 using Wada.RegisterEmployeeNumberTableApplication;
 using Wada.RegisterOwnCompanyHolidayApplication;
+using Wada.StoreApplicationConfiguration;
+using Wada.StoreSelectedXlsxDirectoriesApplication;
 using Wada.VerifyAttendanceCSV;
 
 namespace VerifyAttendanceCSV
@@ -51,6 +53,10 @@ namespace VerifyAttendanceCSV
             // Wada.IO
             _ = containerRegistry.Register<IFileStreamOpener, FileStreamOpener>();
             _ = containerRegistry.Register<IStreamReaderOpener, StreamReaderOpener>();
+
+            // 設定保存
+            _ = containerRegistry.Register<IApplicationConfigurationWriter, ApplicationConfigurationWriter>();
+            _ = containerRegistry.Register<IStoreSelectedXlsxDirectoriesUseCase, StoreSelectedXlsxDirectoriesUseCase>();
 
             // DI 勤怠表エクセル
             _ = containerRegistry.Register<IAttendanceTableRepository, AttendanceTableRepository>();

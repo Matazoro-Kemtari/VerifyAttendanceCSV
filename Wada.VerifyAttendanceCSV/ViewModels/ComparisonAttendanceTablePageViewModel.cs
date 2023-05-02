@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Input;
 using Wada.DetermineDifferenceApplication;
 using Wada.RegisterOwnCompanyHolidayApplication;
+using Wada.StoreSelectedXlsxDirectoriesApplication;
 using Wada.VerifyAttendanceCSV.Models;
 using Wada.VerifyAttendanceCSV.Views;
 
@@ -29,6 +30,7 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
     private readonly IConfiguration _configuration;
     private readonly IDetermineDifferenceUseCase _determineDifferenceUseCase;
     private readonly IFetchOwnCompanyHolidayMaxDateUseCase _fetchOwnCompanyHolidayMaxDateUseCase;
+    private readonly IStoreSelectedXlsxDirectoriesUseCase _storeSelectedXlsxDirectoriesUseCase;
 
     private ComparisonAttendanceTablePageViewModel()
     {
@@ -69,13 +71,15 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
         IDialogService dialogService,
         IConfiguration configuration,
         IDetermineDifferenceUseCase determineDifferenceUseCase,
-        IFetchOwnCompanyHolidayMaxDateUseCase fetchOwnCompanyHolidayMaxDateUseCase)
+        IFetchOwnCompanyHolidayMaxDateUseCase fetchOwnCompanyHolidayMaxDateUseCase,
+        IStoreSelectedXlsxDirectoriesUseCase storeSelectedXlsxDirectoriesUseCase)
         : this()
     {
         _dialogService = dialogService;
         _configuration = configuration;
         _determineDifferenceUseCase = determineDifferenceUseCase;
         _fetchOwnCompanyHolidayMaxDateUseCase = fetchOwnCompanyHolidayMaxDateUseCase;
+        _storeSelectedXlsxDirectoriesUseCase = storeSelectedXlsxDirectoriesUseCase;
 
         _model.CSVPath.Value = _configuration["applicationConfiguration:CSVPath"];
         _model.XlsxPaths.AddRangeOnScheduler(
@@ -113,8 +117,8 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
         {
             Mouse.OverrideCursor = Cursors.Wait;
 
+            // 検証する
             differenceDTP = await _determineDifferenceUseCase.ExecuteAsync(
-
                 CSVPath.Value,
                 XlsxPaths,
                 TargetDate.Value);
@@ -122,7 +126,14 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
         catch (EmployeeNumberNotFoundException ex)
         {
             var errorMessage = MessageNotificationViaLivet.MakeExclamationMessage(
-                $"{ex.Message}\n今は登録機能がないので 平野まで連絡ください");
+                $"社員番号対応情報を登録してください\n{ex.Message}");
+            await Messenger.RaiseAsync(errorMessage);
+            return;
+        }
+        catch (DetermineDifferenceApplication.UseCaseException ex)
+        {
+            var errorMessage = MessageNotificationViaLivet.MakeErrorMessage(
+                $"会社カレンダーを登録してください\n{ex.Message}");
             await Messenger.RaiseAsync(errorMessage);
             return;
         }
@@ -151,6 +162,13 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
         // ダイアログ表示
         IDialogResult dialogResult;
         _dialogService.ShowDialog(nameof(VerificationResultDialog), parameters, res => dialogResult = res);
+
+        // CSVファイルのパス クリア
+        _model.CSVPath.Value = string.Empty;
+
+        // 勤務表フォルダパスを保存
+        var directories = _model.XlsxPaths.Select(x => StoreXlsxDirectoryAttempt.Create(x));
+        await _storeSelectedXlsxDirectoriesUseCase.ExecuteAsync(directories);
     }
 
     /// <summary>

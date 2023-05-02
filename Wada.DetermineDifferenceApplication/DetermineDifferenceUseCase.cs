@@ -5,6 +5,7 @@ using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 using Wada.Data.DesignDepartmentDataBase.Models;
 using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
+using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
 using Wada.Data.OrderManagement.Models;
 using Wada.Data.OrderManagement.Models.EmployeeAggregation;
 using Wada.Extensions;
@@ -76,8 +77,16 @@ public class DetermineDifferenceUseCase : IDetermineDifferenceUseCase
         var employees = await _employeeRepository.FindAllAsync();
 
         // 勤務表を開く
-        var xlsReports = await Task.WhenAll(
-            ReadSpreadSheetsAsync(attendanceTableDirectories, targetDate, employeeComparisons));
+        WorkedMonthlyReport[] xlsReports;
+        try
+        {
+            xlsReports = await Task.WhenAll(
+                ReadSpreadSheetsAsync(attendanceTableDirectories, targetDate, employeeComparisons));
+        }
+        catch (OwnCompanyCalendarAggregationException ex)
+        {
+            throw new UseCaseException(ex.Message, ex);
+        }
 
         // 差分確認
         var unionDifferentialReports = GetDifference(csvReports, xlsReports);
