@@ -3,8 +3,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
     <ApplicationIcon>icons8-コラボレーション女性男性-96.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
@@ -32,6 +32,8 @@
     <ProjectReference Include="..\Wada.IO\Wada.IO.csproj" />
     <ProjectReference Include="..\Wada.MatchedEmployeeNumberSpreadSheet\Wada.MatchedEmployeeNumberSpreadSheet.csproj" />
     <ProjectReference Include="..\Wada.OwnCompanyHolidaySpreadSheet\Wada.OwnCompanyHolidaySpreadSheet.csproj" />
+    <ProjectReference Include="..\Wada.StoreApplicationConfiguration\Wada.StoreApplicationConfiguration.csproj" />
+    <ProjectReference Include="..\Wada.StoreSelectedXlsxDirectoriesApplication\Wada.StoreSelectedXlsxDirectoriesApplication.csproj" />
     <ProjectReference Include="..\Wada.VerifyAttendanceCSV\Wada.VerifyAttendanceCSV.csproj" />
   </ItemGroup>
   <ItemGroup>

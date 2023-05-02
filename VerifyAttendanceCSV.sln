@@ -55,6 +55,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.OwnCompanyHolidaySprea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.OwnCompanyHolidaySpreadSheetTests", "Wada.OwnCompanyHolidaySpreadSheetTests\Wada.OwnCompanyHolidaySpreadSheetTests.csproj", "{7586A90F-8732-4A4B-873B-78780787BC94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.StoreApplicationConfiguration", "Wada.StoreApplicationConfiguration\Wada.StoreApplicationConfiguration.csproj", "{6A54C5E7-640B-4366-8624-4041C3B365EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.StoreSelectedXlsxDirectoriesApplication", "Wada.StoreSelectedXlsxDirectoriesApplication\Wada.StoreSelectedXlsxDirectoriesApplication.csproj", "{A70CC72B-93A1-4C8F-9A76-739CDA922F89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.StoreApplicationConfigurationTests", "Wada.StoreApplicationConfigurationTests\Wada.StoreApplicationConfigurationTests.csproj", "{22CD08DE-C757-4C32-A690-63B919CC57FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +151,18 @@ Global
 		{7586A90F-8732-4A4B-873B-78780787BC94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7586A90F-8732-4A4B-873B-78780787BC94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7586A90F-8732-4A4B-873B-78780787BC94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A54C5E7-640B-4366-8624-4041C3B365EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A54C5E7-640B-4366-8624-4041C3B365EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A54C5E7-640B-4366-8624-4041C3B365EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A54C5E7-640B-4366-8624-4041C3B365EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A70CC72B-93A1-4C8F-9A76-739CDA922F89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A70CC72B-93A1-4C8F-9A76-739CDA922F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A70CC72B-93A1-4C8F-9A76-739CDA922F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A70CC72B-93A1-4C8F-9A76-739CDA922F89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22CD08DE-C757-4C32-A690-63B919CC57FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22CD08DE-C757-4C32-A690-63B919CC57FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22CD08DE-C757-4C32-A690-63B919CC57FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22CD08DE-C757-4C32-A690-63B919CC57FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +188,9 @@ Global
 		{02568EA2-88E6-4707-A4FC-300ED743A6B2} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
 		{6BDA3973-F9B3-455E-88E8-5C6506CDADA6} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 		{7586A90F-8732-4A4B-873B-78780787BC94} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{6A54C5E7-640B-4366-8624-4041C3B365EE} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{A70CC72B-93A1-4C8F-9A76-739CDA922F89} = {F09417BC-393B-4DF0-9DE4-02604E8136E4}
+		{22CD08DE-C757-4C32-A690-63B919CC57FE} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6BBC0BD-A5F6-44C4-B7A6-7FAD6289890C}
