@@ -3,7 +3,7 @@
 namespace Wada.DetermineDifferenceApplication
 {
     [Serializable]
-    public class EmployeeNumberNotFoundException : Exception
+    public class EmployeeNumberNotFoundException : UseCaseException
     {
         public EmployeeNumberNotFoundException()
         {
