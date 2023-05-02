@@ -63,21 +63,6 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
         TargetDate = _model.TargetDate
             .ToReactivePropertyAsSynchronized(x => x.Value)
             .AddTo(Disposables);
-
-        NextViewCommand = new[]
-        {
-            CSVPath.ObserveHasErrors,
-            XlsxPaths.ObserveProperty(x => x.Count)
-                     .Select(c=>c<=0),
-        }
-        .CombineLatestValuesAreAllFalse()
-        .ToAsyncReactiveCommand()
-        .WithSubscribe(() => VerifyAttendance())
-        .AddTo(Disposables);
-
-        RemoveDirectoryItemCommand = new AsyncReactiveCommand()
-            .WithSubscribe(() => RemoveDirectoryItem())
-            .AddTo(Disposables);
     }
 
     public ComparisonAttendanceTablePageViewModel(
@@ -103,6 +88,21 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
 
         LastedHoliday = _model.LastedHoliday
             .ToReactivePropertySlimAsSynchronized(x => x.Value)
+            .AddTo(Disposables);
+
+        NextViewCommand = new[]
+        {
+            CSVPath.ObserveHasErrors,
+            XlsxPaths.ObserveProperty(x => x.Count)
+                     .Select(c=> c <= 0),
+        }
+        .CombineLatestValuesAreAllFalse()
+        .ToAsyncReactiveCommand()
+        .WithSubscribe(() => VerifyAttendance())
+        .AddTo(Disposables);
+
+        RemoveDirectoryItemCommand = new AsyncReactiveCommand()
+            .WithSubscribe(() => RemoveDirectoryItem())
             .AddTo(Disposables);
     }
 
