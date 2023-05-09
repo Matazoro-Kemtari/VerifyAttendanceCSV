@@ -38,7 +38,7 @@ public class RegisterEmployeeNumberTableUseCase : IRegisterEmployeeNumberTableUs
         try
         {
             // データファイルを読み込む
-            var stream = await _fileStreamOpener.OpenAsync(filePath);
+            using var stream = await _fileStreamOpener.OpenAsync(filePath);
             var additionalEmployeeNumbers = await _matchedEmployeeNumberListReader.ReadAllAsync(stream);
 
             // 削除するか判断するため全て取得
