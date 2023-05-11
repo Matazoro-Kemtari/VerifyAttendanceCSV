@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="429px" preserveAspectRatio="none" style="width:587px;height:429px;background:#FFFFFF;" version="1.1" viewBox="0 0 587 429" width="587px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="77.7031" style="stroke:#000000;stroke-width:1.5;" width="160" x="75" y="40.0957"/><path d="M113,40.0957 L113,50.7051 L103,60.7051 L75,60.7051 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="78" y="55.6289">初回</text><rect fill="#F1F1F1" height="35.0938" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="140" x="85" y="70.7051"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="120" x="95" y="93.1621">項目分類表を整備する</text><rect fill="none" height="139.7969" style="stroke:#000000;stroke-width:1.5;" width="244" x="33" y="127.7988"/><path d="M71,127.7988 L71,138.4082 L61,148.4082 L33,148.4082 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="36" y="143.332">日次</text><rect fill="#F1F1F1" height="35.0938" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="224" x="43" y="220.502"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="204" x="53" y="242.959">受注管理の実績処理で実績を登録する</text><rect fill="none" height="84.7031" style="stroke:#000000;stroke-width:1.5;" width="268" x="21" y="277.5957"/><path d="M97,277.5957 L97,288.2051 L87,298.2051 L21,298.2051 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66" x="24" y="293.1289">月次(月末)</text><rect fill="#F1F1F1" height="35.0938" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="248" x="31" y="315.2051"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="228" x="41" y="337.6621">勤務表を勤務表提出フォルダにコピーする</text><line style="stroke:#000000;stroke-width:1.5;" x1="15" x2="15" y1="12.4551" y2="417.3926"/><rect fill="#F0FFFF" height="404.9375" style="stroke:#F0FFFF;stroke-width:1.0;" width="149" x="293" y="12.4551"/><rect fill="none" height="139.7969" style="stroke:#000000;stroke-width:1.5;" width="139" x="299" y="127.7988"/><path d="M337,127.7988 L337,138.4082 L327,148.4082 L299,148.4082 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="302" y="143.332">日次</text><rect fill="#F1F1F1" height="35.0938" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="104" x="322" y="165.4082"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="84" x="332" y="187.8652">実績を入力する</text><line style="stroke:#000000;stroke-width:1.5;" x1="293" x2="293" y1="12.4551" y2="417.3926"/><rect fill="#FAEBD7" height="404.9375" style="stroke:#FAEBD7;stroke-width:1.0;" width="126" x="442" y="12.4551"/><rect fill="#F1F1F1" height="35.0938" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="116" x="448" y="382.2988"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="96" x="458" y="404.7559">勤務表を照合する</text><line style="stroke:#000000;stroke-width:1.5;" x1="442" x2="442" y1="12.4551" y2="417.3926"/><line style="stroke:#000000;stroke-width:1.5;" x1="568" x2="568" y1="12.4551" y2="417.3926"/><line style="stroke:#181818;stroke-width:1.0;" x1="155" x2="155" y1="255.5957" y2="315.2051"/><polygon fill="#181818" points="151,305.2051,155,315.2051,159,305.2051,155,309.2051" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="374" x2="374" y1="200.502" y2="205.502"/><line style="stroke:#181818;stroke-width:1.0;" x1="374" x2="155" y1="205.502" y2="205.502"/><line style="stroke:#181818;stroke-width:1.0;" x1="155" x2="155" y1="205.502" y2="220.502"/><polygon fill="#181818" points="151,210.502,155,220.502,159,210.502,155,214.502" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="155" x2="155" y1="105.7988" y2="122.7988"/><line style="stroke:#181818;stroke-width:1.0;" x1="155" x2="374" y1="122.7988" y2="122.7988"/><line style="stroke:#181818;stroke-width:1.0;" x1="374" x2="374" y1="122.7988" y2="165.4082"/><polygon fill="#181818" points="370,155.4082,374,165.4082,378,155.4082,374,159.4082" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="155" x2="155" y1="350.2988" y2="367.2988"/><line style="stroke:#181818;stroke-width:1.0;" x1="155" x2="506" y1="367.2988" y2="367.2988"/><line style="stroke:#181818;stroke-width:1.0;" x1="506" x2="506" y1="367.2988" y2="382.2988"/><polygon fill="#181818" points="502,372.2988,506,382.2988,510,372.2988,506,376.2988" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacing" textLength="120" x="94" y="31.1406">所属長(担当者)</text><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacing" textLength="36" x="349.5" y="31.1406">部員</text><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacing" textLength="36" x="487" y="31.1406">総務</text><!--MD5=[b1b79e1bcf2655f878017fa43cc80fc1]
+@startuml BusinessFlow
+|所属長(担当者)|
+group 初回
+    :項目分類表を整備する;
+end group
+
+|#Azure|部員|
+group 日次
+    :実績を入力する;
+
+|所属長(担当者)|
+    :受注管理の実績処理で実績を登録する;
+end group
+
+group 月次(月末)
+    :勤務表を勤務表提出フォルダにコピーする;
+end group
+
+|#AntiqueWhite|総務|
+:勤務表を照合する;
+
+@enduml
+
+PlantUML version 1.2022.7(Tue Aug 23 02:01:30 JST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: MS932
+Language: ja
+Country: JP
+--></g></svg>

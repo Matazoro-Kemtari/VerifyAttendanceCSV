@@ -43,7 +43,7 @@ public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCas
             var calendarGroupId = await _ownCompanyHolidayRepository.FindCalendarGroupIdAsync((CalendarGroupClassification)calendarGroupClass);
 
             // データファイルを読み込む
-            var stream = await _fileStreamOpener.OpenAsync(filePath);
+            using var stream = await _fileStreamOpener.OpenAsync(filePath);
             var additionalEmployeeNumbers = await _ownCompanyHolidayListReader.ReadAllAsync(stream, calendarGroupId);
 
             // 読み込んだ最小日の月初と最大日の月末の範囲で削除する
@@ -52,18 +52,26 @@ public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCas
             var _maxDate = additionalEmployeeNumbers.Max(x => x.HolidayDate);
             var deletableMaxDate = new DateTime(_maxDate.Year, _maxDate.Month, DateTime.DaysInMonth(_maxDate.Year, _maxDate.Month));
 
-            // 消すべきレコードを求める
-            var _deletableHolidays = await _ownCompanyHolidayRepository.FindByAfterDateAsync(calendarGroupId, deletableMinDate);
-            var deletableHolidays = _deletableHolidays.Where(x => x.HolidayDate <= deletableMaxDate);
-
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            IEnumerable<OwnCompanyHoliday> deletableHolidays = Enumerable.Empty<OwnCompanyHoliday>();
+            try
+            {
+                // 消すべきレコードを求める
+                var _deletableHolidays = await _ownCompanyHolidayRepository.FindByAfterDateAsync(calendarGroupId, deletableMinDate);
+                deletableHolidays = _deletableHolidays.Where(x => x.HolidayDate <= deletableMaxDate);
+            }
+            catch (OwnCompanyCalendarAggregationException)
+            {
+                // 消すべきレコードがFindByAfterDateAsyncで見つからな場合発生するので無視
+            }
+
             if (deletableHolidays.Any())
                 // 一旦消す
                 await _ownCompanyHolidayRepository.RemoveRangeAsync(deletableHolidays);
 
             // データベースに登録する
             await _ownCompanyHolidayRepository.AddRangeAsync(
-                additionalEmployeeNumbers);
+            additionalEmployeeNumbers);
             scope.Complete();
         }
         catch (Exception ex) when (ex is DomainException or OwnCompanyCalendarAggregationException)

@@ -87,8 +87,8 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
 
         _fetchOwnCompanyHolidayMaxDateUseCase.ExecuteAsyc()
                                              // 正常終了した場合に継続する
-                                             .ContinueWith(x => _model.LastedHoliday.Value = x.Result.Min(),
-                                                           TaskContinuationOptions.OnlyOnRanToCompletion);
+                                             .ContinueWith(x => ContinueFetchLastedHolidayAsync(x),
+                                             TaskContinuationOptions.OnlyOnRanToCompletion);
 
         LastedHoliday = _model.LastedHoliday
             .ToReactivePropertySlimAsSynchronized(x => x.Value)
@@ -108,6 +108,20 @@ public class ComparisonAttendanceTablePageViewModel : BindableBase, IDestructibl
         RemoveDirectoryItemCommand = new AsyncReactiveCommand()
             .WithSubscribe(() => RemoveDirectoryItem())
             .AddTo(Disposables);
+    }
+
+    private async Task ContinueFetchLastedHolidayAsync(Task<LastedHoliday> lastedHolidayTask)
+    {
+        _model.LastedHoliday.Value = lastedHolidayTask.Result.Min();
+
+        // 休日カレンダー最終月が2か月のときメッセージ
+        var firstDayOfMonth = new DateTime(_model.LastedHoliday.Value.Year, _model.LastedHoliday.Value.Month, 1);
+        if (DateTime.Now.Date.AddMonths(2) >= firstDayOfMonth)
+        {
+            var errorMessage = MessageNotificationViaLivet.MakeExclamationMessage(
+                $"会社カレンダー最終月が迫っています\n従業員が工数入力を始める前までにカレンダーを登録してください");
+            await Messenger.RaiseAsync(errorMessage);
+        }
     }
 
     private async Task VerifyAttendance()

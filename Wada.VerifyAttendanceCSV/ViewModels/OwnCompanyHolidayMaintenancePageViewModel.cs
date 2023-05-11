@@ -130,6 +130,15 @@ public class OwnCompanyHolidayMaintenancePageViewModel : BindableBase, IDestruct
         var finishMessage = MessageNotificationViaLivet.MakeInformationMessage("終了しました");
         await Messenger.RaiseAsync(finishMessage);
         _model.Clear();
+
+        _ = _fetchOwnCompanyHolidayMaxDateUseCase.ExecuteAsyc()
+            // 正常終了した場合に継続する
+            .ContinueWith(x =>
+            {
+                _model.LastedHeadOfficeHoliday.Value = x.Result.HeadOffice;
+                _model.LastedKuwanaOfficeHoliday.Value = x.Result.KuwanaOffice;
+            },
+            TaskContinuationOptions.OnlyOnRanToCompletion);
     }
 
     /// <summary>
