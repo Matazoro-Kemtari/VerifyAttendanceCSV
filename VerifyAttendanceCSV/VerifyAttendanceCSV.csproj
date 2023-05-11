@@ -3,8 +3,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.1.1.2</AssemblyVersion>
-    <FileVersion>1.1.1.2</FileVersion>
+    <AssemblyVersion>1.1.1.3</AssemblyVersion>
+    <FileVersion>1.1.1.3</FileVersion>
     <ApplicationIcon>icons8-コラボレーション女性男性-96.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
