@@ -1,17 +1,47 @@
-﻿using Wada.AttendanceTableService;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.EmployeeAggregation;
+using Wada.DataBase.EFCore.OrderManagement;
 
 namespace Wada.Data.OrderManagement;
 
 public class EmployeeRepository : IEmployeeRepository
 {
-    public Task<IEnumerable<Employee>> FindAllAsync()
+    private readonly IConfiguration _configuration;
+
+    public EmployeeRepository(IConfiguration configuration)
     {
-        throw new NotImplementedException();
+        _configuration = configuration;
     }
 
-    public Task<Employee> FindByEmployeeNumberAsync(uint employeeNumber)
+    public async Task<IEnumerable<Employee>> FindAllAsync()
     {
-        throw new NotImplementedException();
+        using var dbContext = new OrderManagementContext(_configuration);
+        return await dbContext.Employees.Select(
+            x => Employee.Reconstruct((uint)x.EmployeeNumber,
+                                      x.Name,
+                                      (uint?)x.DepartmentID,
+                                      (uint?)x.AchievementProcessId))
+                         .ToListAsync();
+    }
+
+    public async Task<Employee> FindByEmployeeNumberAsync(uint employeeNumber)
+    {
+        using var dbContext = new OrderManagementContext(_configuration);
+        try
+        {
+            return await dbContext.Employees.Where(x => x.EmployeeNumber == (int)employeeNumber)
+                                            .Select(x => Employee.Reconstruct((uint)x.EmployeeNumber,
+                                                                              x.Name,
+                                                                              (uint?)x.DepartmentID,
+                                                                              (uint?)x.AchievementProcessId))
+                                            .FirstAsync();
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new EmployeeAggregationException(
+                $"社員番号を確認してください 受注管理に登録されていません 社員番号: {employeeNumber}", ex);
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Wada.AttendanceTableService.ValueObjects;
-using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
 
 namespace Wada.AttendanceTableService.AttendanceTableAggregation;
 
