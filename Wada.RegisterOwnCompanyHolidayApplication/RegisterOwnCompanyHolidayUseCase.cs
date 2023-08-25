@@ -1,9 +1,8 @@
 ﻿using System.Transactions;
 using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
-using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
+using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
+using Wada.AttendanceTableService.ValueObjects;
 using Wada.Extensions;
 
 namespace Wada.RegisterOwnCompanyHolidayApplication;
