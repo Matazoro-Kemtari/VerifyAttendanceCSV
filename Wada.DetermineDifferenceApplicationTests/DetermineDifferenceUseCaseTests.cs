@@ -3,11 +3,9 @@ using Moq;
 using NLog;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
+using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
 using Wada.AttendanceTableService.ValueObjects;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
-using Wada.Data.OrderManagement.Models;
 
 namespace Wada.DetermineDifferenceApplication.Tests
 {
@@ -35,13 +33,13 @@ namespace Wada.DetermineDifferenceApplication.Tests
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
             mock_match_employee.Setup(x => x.FindAllAsync())
-                .ReturnsAsync(new List<Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber>
+                .ReturnsAsync(new List<MatchedEmployeeNumber>
                 {
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1001u, 1u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1002u, 2u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1003u, 3u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1004u, 4u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(employeeNumber, attendancePersonalCode),
+                    MatchedEmployeeNumber.Reconstruct(1001u, 1u),
+                    MatchedEmployeeNumber.Reconstruct(1002u, 2u),
+                    MatchedEmployeeNumber.Reconstruct(1003u, 3u),
+                    MatchedEmployeeNumber.Reconstruct(1004u, 4u),
+                    MatchedEmployeeNumber.Reconstruct(employeeNumber, attendancePersonalCode),
                 });
 
             // S社員モック
@@ -151,13 +149,13 @@ namespace Wada.DetermineDifferenceApplication.Tests
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
             mock_match_employee.Setup(x => x.FindAllAsync())
-                .ReturnsAsync(new List<Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber>
+                .ReturnsAsync(new List<MatchedEmployeeNumber>
                 {
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1001u, 1u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1002u, 2u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1003u, 3u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1004u, 4u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(employeeNumber, attendancePersonalCode),
+                    MatchedEmployeeNumber.Reconstruct(1001u, 1u),
+                    MatchedEmployeeNumber.Reconstruct(1002u, 2u),
+                    MatchedEmployeeNumber.Reconstruct(1003u, 3u),
+                    MatchedEmployeeNumber.Reconstruct(1004u, 4u),
+                    MatchedEmployeeNumber.Reconstruct(employeeNumber, attendancePersonalCode),
                 });
 
             // S社員モック
@@ -233,13 +231,13 @@ namespace Wada.DetermineDifferenceApplication.Tests
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
             mock_match_employee.Setup(x => x.FindAllAsync())
-                .ReturnsAsync(new List<Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber>
+                .ReturnsAsync(new List<MatchedEmployeeNumber>
                 {
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1001u, 1u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1002u, 2u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1003u, 3u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1004u, 4u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(employeeNumber, attendancePersonalCode),
+                    MatchedEmployeeNumber.Reconstruct(1001u, 1u),
+                    MatchedEmployeeNumber.Reconstruct(1002u, 2u),
+                    MatchedEmployeeNumber.Reconstruct(1003u, 3u),
+                    MatchedEmployeeNumber.Reconstruct(1004u, 4u),
+                    MatchedEmployeeNumber.Reconstruct(employeeNumber, attendancePersonalCode),
                 });
 
             // S社員モック
@@ -309,12 +307,12 @@ namespace Wada.DetermineDifferenceApplication.Tests
             // 社員番号対応表モック
             Mock<IMatchedEmployeeNumberRepository> mock_match_employee = new();
             mock_match_employee.Setup(x => x.FindAllAsync())
-                .ReturnsAsync(new List<Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber>
+                .ReturnsAsync(new List<MatchedEmployeeNumber>
                 {
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1001u, 1u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1002u, 2u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1003u, 3u),
-                    Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation.MatchedEmployeeNumber.Reconstruct(1004u, 4u),
+                    MatchedEmployeeNumber.Reconstruct(1001u, 1u),
+                    MatchedEmployeeNumber.Reconstruct(1002u, 2u),
+                    MatchedEmployeeNumber.Reconstruct(1003u, 3u),
+                    MatchedEmployeeNumber.Reconstruct(1004u, 4u),
                 });
 
             // S社員モック

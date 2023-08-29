@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Wada.AOP.Logging;
-using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
+using Wada.AttendanceTableService;
+using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 
 namespace Wada.RegisterOwnCompanyHolidayApplication;
 

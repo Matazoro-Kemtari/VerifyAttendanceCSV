@@ -1,6 +1,6 @@
 ﻿using Wada.AOP.Logging;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
+using Wada.AttendanceTableService.ValueObjects;
 
 namespace Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
 

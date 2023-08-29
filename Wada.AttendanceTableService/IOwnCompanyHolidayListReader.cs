@@ -1,4 +1,5 @@
-﻿using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
+﻿using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
+using Wada.AttendanceTableService.ValueObjects;
 
 namespace Wada.AttendanceTableService;
 

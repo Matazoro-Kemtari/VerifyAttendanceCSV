@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Wada.AttendanceTableService;
-using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
+using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
 
 namespace Wada.RegisterEmployeeNumberTableApplication.Tests
 {

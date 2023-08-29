@@ -12,13 +12,13 @@ public class VerifyAttendanceCSVModule : IModule
         var regionManager = containerProvider.Resolve<IRegionManager>();
 
         regionManager.RegisterViewWithRegion("NavigationRegion", typeof(NavigationPage));
-        regionManager.RegisterViewWithRegion("ContentRegion", typeof(ComparisonAttendanceTablePage));
+        regionManager.RegisterViewWithRegion("ContentRegion", typeof(OwnCompanyHolidayMaintenancePage));
     }
 
     public void RegisterTypes(IContainerRegistry containerRegistry)
     {
+        containerRegistry.RegisterForNavigation<ComparisonAttendanceTablePage>();
         containerRegistry.RegisterForNavigation<MatchedEmployeeNumberMaintenancePage>();
-        containerRegistry.RegisterForNavigation<OwnCompanyHolidayMaintenancePage>();
         containerRegistry.RegisterDialog<VerificationResultDialog>();
     }
 }
