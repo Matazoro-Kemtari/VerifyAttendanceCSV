@@ -1,13 +1,9 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Drawing;
 using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
+using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 using Wada.AttendanceTableService.ValueObjects;
-using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
-using Wada.Data.OrderManagement.Models;
 
 namespace Wada.AttendanceSpreadSheet;
 
@@ -260,7 +256,7 @@ public class AttendanceTableRepository : IAttendanceTableRepository
     }
 
     [Logging]
-    private static HolidayClassification FindHoliday(DateTime day, IEnumerable<Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation.OwnCompanyHoliday>? calendar)
+    private static HolidayClassification FindHoliday(DateTime day, IEnumerable<OwnCompanyHoliday>? calendar)
     {
         var result = calendar?.SingleOrDefault(x => x.HolidayDate == day);
         return result == null ? HolidayClassification.None : result.HolidayClassification;

@@ -17,8 +17,7 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Ulid" Version="1.2.6" />
-    <PackageReference Include="Wada.Data.DesignDepartmentDataBase.Models" Version="1.0.15" />
-    <PackageReference Include="Wada.Data.OrderManagement.Models" Version="1.0.2" />
+    <PackageReference Include="Wada.Extensions" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

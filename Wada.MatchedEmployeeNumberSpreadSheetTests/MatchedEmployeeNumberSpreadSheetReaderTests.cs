@@ -1,7 +1,7 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wada.AttendanceTableService;
-using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
+using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
 
 namespace Wada.MatchedEmployeeNumberSpreadSheet.Tests
 {
@@ -60,17 +60,15 @@ namespace Wada.MatchedEmployeeNumberSpreadSheet.Tests
 
         private static void CreateTestXlsxBook(IEnumerable<object[]> testData, MemoryStream stream)
         {
-            using (var xlBook = new XLWorkbook())
-            {
-                var sheet = xlBook.AddWorksheet();
-                // ヘッダ
-                sheet.Cell("A1").InsertData(new[] { new[] { "受注管理", "勤怠" } });
-                // データ
-                sheet.Cell("A2").InsertData(
-                    testData.Select(
-                        x => new[] { x[0], x[1] }));
-                xlBook.SaveAs(stream);
-            }
+            using var xlBook = new XLWorkbook();
+            var sheet = xlBook.AddWorksheet();
+            // ヘッダ
+            sheet.Cell("A1").InsertData(new[] { new[] { "受注管理", "勤怠" } });
+            // データ
+            sheet.Cell("A2").InsertData(
+                testData.Select(
+                    x => new[] { x[0], x[1] }));
+            xlBook.SaveAs(stream);
         }
 
         #region テストデータ

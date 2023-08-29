@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
+using Wada.AttendanceTableService;
+using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 
 namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
 {

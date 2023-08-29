@@ -1,7 +1,7 @@
 ﻿using ClosedXML.Excel;
 using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
-using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
+using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
 
 namespace Wada.MatchedEmployeeNumberSpreadSheet;
 

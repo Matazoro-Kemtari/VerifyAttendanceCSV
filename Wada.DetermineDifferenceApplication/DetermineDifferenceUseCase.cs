@@ -2,12 +2,10 @@
 using System.Text.RegularExpressions;
 using Wada.AOP.Logging;
 using Wada.AttendanceTableService;
+using Wada.AttendanceTableService.EmployeeAggregation;
+using Wada.AttendanceTableService.MatchedEmployeeNumberAggregation;
+using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 using Wada.AttendanceTableService.WorkingMonthlyReportAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.MatchedEmployeeNumberAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
-using Wada.Data.OrderManagement.Models;
-using Wada.Data.OrderManagement.Models.EmployeeAggregation;
 using Wada.Extensions;
 
 namespace Wada.DetermineDifferenceApplication;
