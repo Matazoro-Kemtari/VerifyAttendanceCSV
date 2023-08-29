@@ -1,9 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Wada.AttendanceTableService;
-using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
+using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
+using Wada.AttendanceTableService.ValueObjects;
 
 namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
 {
@@ -18,33 +17,33 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             var stream = new MemoryStream();
             var allHolidays = new List<OwnCompanyHoliday>
             {
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 2, 1), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 2, 2), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 3, 1), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 3, 2), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 4, 1), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 4, 2), holidayClassification: HolidayClassification.LegalHoliday ),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 5, 1), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 5, 2), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 6, 1), holidayClassification: HolidayClassification.LegalHoliday ),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 6, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 2, 1), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 2, 2), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 3, 1), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 3, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 4, 1), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 4, 2), holidayClassification: HolidayClassification.LegalHoliday ),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 5, 1), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 5, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 6, 1), holidayClassification: HolidayClassification.LegalHoliday ),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 6, 2), holidayClassification: HolidayClassification.RegularHoliday),
             };
             var additionalHolidays = new List<OwnCompanyHoliday>
             {
-                TestOwnCompanyHolidayFactory.Create(holidayDate: DateTime.Parse("2023/1/8"),holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: DateTime.Parse("2023/2/9"),holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: DateTime.Parse("2023/3/14"),holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: DateTime.Parse("2023/1/8"),holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: DateTime.Parse("2023/2/9"),holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: DateTime.Parse("2023/3/14"),holidayClassification: HolidayClassification.RegularHoliday),
             };
             var deletableHolidays = new List<OwnCompanyHoliday>
             {
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 2, 1), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 2, 2), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 3, 1), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 3, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 2, 1), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 2, 2), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 3, 1), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 3, 2), holidayClassification: HolidayClassification.RegularHoliday),
             };
 
             Mock<IFileStreamOpener> streamMock = new();
@@ -54,7 +53,6 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             readerMock.Setup(x => x.ReadAllAsync(stream, additionalHolidays[0].CalendarGroupId)).ReturnsAsync(additionalHolidays);
 
             Mock<IOwnCompanyHolidayRepository> repositoryMock = new();
-            repositoryMock.Setup(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>())).ReturnsAsync(additionalHolidays[0].CalendarGroupId);
             repositoryMock.Setup(x => x.FindByAfterDateAsync(allHolidays[0].CalendarGroupId, DateTime.Parse("2023/1/1"))).ReturnsAsync(allHolidays);
 
             // when
@@ -65,7 +63,6 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             await useCase.ExecuteAsync(filePath, CalendarGroupAttempt.HeadOffice);
 
             // then
-            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(stream, allHolidays[0].CalendarGroupId), Times.Once);
             repositoryMock.Verify(
@@ -85,24 +82,24 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             var stream = new MemoryStream();
             var allHolidays = new List<OwnCompanyHoliday>
             {
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 2, 1), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 2, 2), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 3, 1), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 3, 2), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 4, 1), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 4, 2), holidayClassification: HolidayClassification.LegalHoliday ),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 5, 1), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 5, 2), holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 6, 1), holidayClassification: HolidayClassification.LegalHoliday ),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 6, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 2, 1), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 2, 2), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 3, 1), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 3, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 4, 1), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 4, 2), holidayClassification: HolidayClassification.LegalHoliday ),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 5, 1), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 5, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 6, 1), holidayClassification: HolidayClassification.LegalHoliday ),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 6, 2), holidayClassification: HolidayClassification.RegularHoliday),
             };
             var additionalHolidays = new List<OwnCompanyHoliday>
             {
-                TestOwnCompanyHolidayFactory.Create(holidayDate: DateTime.Parse("2023/1/8"),holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: DateTime.Parse("2023/2/9"),holidayClassification: HolidayClassification.RegularHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: DateTime.Parse("2023/3/14"),holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: DateTime.Parse("2023/1/8"),holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: DateTime.Parse("2023/2/9"),holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: DateTime.Parse("2023/3/14"),holidayClassification: HolidayClassification.RegularHoliday),
             };
 
             Mock<IFileStreamOpener> streamMock = new();
@@ -112,7 +109,6 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             readerMock.Setup(x => x.ReadAllAsync(stream, additionalHolidays[0].CalendarGroupId)).ReturnsAsync(additionalHolidays);
 
             Mock<IOwnCompanyHolidayRepository> repositoryMock = new();
-            repositoryMock.Setup(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>())).ReturnsAsync(additionalHolidays[0].CalendarGroupId);
             repositoryMock.Setup(x => x.FindByAfterDateAsync(allHolidays[0].CalendarGroupId, DateTime.Parse("2023/1/1")))
                 .ReturnsAsync(Array.Empty<OwnCompanyHoliday>());
 
@@ -124,7 +120,6 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             await useCase.ExecuteAsync(filePath, CalendarGroupAttempt.HeadOffice);
 
             // then
-            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(stream, additionalHolidays[0].CalendarGroupId), Times.Once);
             repositoryMock.Verify(
@@ -160,7 +155,6 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
 
             // then
             _ = await Assert.ThrowsExceptionAsync<UseCaseException>(target);
-            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(It.IsAny<Stream>(), It.IsAny<string>()), Times.Never);
             repositoryMock.Verify(
@@ -199,7 +193,6 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
 
             // then
             _ = await Assert.ThrowsExceptionAsync<UseCaseException>(target);
-            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(It.IsAny<Stream>(), It.IsAny<string>()), Times.Once);
             repositoryMock.Verify(
@@ -220,13 +213,13 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             var stream = new MemoryStream();
             var allHolidays = new List<OwnCompanyHoliday>
             {
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
             };
             var additionalHolidays = new List<OwnCompanyHoliday>
             {
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
             };
 
             Mock<IFileStreamOpener> streamMock = new();
@@ -250,7 +243,6 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
 
             // then
             _ = await Assert.ThrowsExceptionAsync<UseCaseException>(target);
-            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(It.IsAny<Stream>(), It.IsAny<string>()), Times.Once);
             repositoryMock.Verify(x => x.FindByAfterDateAsync(It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once);
@@ -272,8 +264,8 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
             var stream = new MemoryStream();
             var allEmployeeNumbers = new List<OwnCompanyHoliday>
             {
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
-                TestOwnCompanyHolidayFactory.Create(holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 1), holidayClassification: HolidayClassification.LegalHoliday),
+                TestOwnCompanyHolidayFactory.Create(calendarGroupId: OwnCompanyHoliday.GetCalendarGroupId(CalendarGroupClassification.HeadOffice), holidayDate: new DateTime(2023, 1, 2), holidayClassification: HolidayClassification.RegularHoliday),
             };
             var additionalEmployeeNumbers = new List<OwnCompanyHoliday>
             {
@@ -301,7 +293,6 @@ namespace Wada.RegisterOwnCompanyHolidayApplication.Tests
 
             // then
             _ = await Assert.ThrowsExceptionAsync<UseCaseException>(target);
-            repositoryMock.Verify(x => x.FindCalendarGroupIdAsync(It.IsAny<CalendarGroupClassification>()), Times.Once);
             streamMock.Verify(x => x.OpenAsync(filePath), Times.Once);
             readerMock.Verify(x => x.ReadAllAsync(It.IsAny<Stream>(), It.IsAny<string>()), Times.Once);
             repositoryMock.Verify(x => x.FindByAfterDateAsync(It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once);

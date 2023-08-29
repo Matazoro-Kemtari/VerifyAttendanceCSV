@@ -2,13 +2,10 @@
 using Moq;
 using Wada.AttendanceTableService;
 using Wada.AttendanceTableService.AttendanceTableAggregation;
+using Wada.AttendanceTableService.DepartmentCompanyHolidayAggregation;
+using Wada.AttendanceTableService.EmployeeAggregation;
+using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
 using Wada.AttendanceTableService.ValueObjects;
-using Wada.Data.DesignDepartmentDataBase.Models;
-using Wada.Data.DesignDepartmentDataBase.Models.DepartmentCompanyHolidayAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
-using Wada.Data.OrderManagement.Models;
-using Wada.Data.OrderManagement.Models.EmployeeAggregation;
 using Wada.IO;
 
 namespace Wada.AttendanceSpreadSheet.Tests

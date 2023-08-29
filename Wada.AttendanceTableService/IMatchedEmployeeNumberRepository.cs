@@ -8,7 +8,5 @@ public interface IMatchedEmployeeNumberRepository
 
     Task AddRangeAsync(IEnumerable<MatchedEmployeeNumber> matchedEmployeeNumbers);
 
-    Task RemoveAllAsync();
-
     Task RemoveRangeAsync(IEnumerable<MatchedEmployeeNumber> matchedEmployeeNumbers);
 }

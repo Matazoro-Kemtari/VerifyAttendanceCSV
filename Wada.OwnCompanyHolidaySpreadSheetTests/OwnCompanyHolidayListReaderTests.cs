@@ -1,7 +1,7 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Wada.Data.DesignDepartmentDataBase.Models.OwnCompanyCalendarAggregation;
-using Wada.Data.DesignDepartmentDataBase.Models.ValueObjects;
+using Wada.AttendanceTableService.OwnCompanyCalendarAggregation;
+using Wada.AttendanceTableService.ValueObjects;
 
 namespace Wada.OwnCompanyHolidaySpreadSheet.Tests
 {
@@ -72,17 +72,15 @@ namespace Wada.OwnCompanyHolidaySpreadSheet.Tests
 
         private static void CreateTestXlsxBook(IEnumerable<object[]> testData, MemoryStream stream)
         {
-            using (var xlBook = new XLWorkbook())
-            {
-                var sheet = xlBook.AddWorksheet();
-                // ヘッダ
-                sheet.Cell("A1").InsertData(new[] { new[] { "休日", "法定休日の場合は1" } });
-                // データ
-                sheet.Cell("A2").InsertData(
-                    testData.Select(
-                        x => new[] { x[0], x[1] }));
-                xlBook.SaveAs(stream);
-            }
+            using var xlBook = new XLWorkbook();
+            var sheet = xlBook.AddWorksheet();
+            // ヘッダ
+            sheet.Cell("A1").InsertData(new[] { new[] { "休日", "法定休日の場合は1" } });
+            // データ
+            sheet.Cell("A2").InsertData(
+                testData.Select(
+                    x => new[] { x[0], x[1] }));
+            xlBook.SaveAs(stream);
         }
 
         #region テストデータ

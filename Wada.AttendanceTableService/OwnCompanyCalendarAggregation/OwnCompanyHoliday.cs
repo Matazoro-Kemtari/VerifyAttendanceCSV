@@ -35,6 +35,15 @@ public record class OwnCompanyHoliday
                                                 HolidayClassification holidayClassification)
         => Create(calendarGroupId, holidayDate, holidayClassification);
 
+    public static string GetCalendarGroupId(CalendarGroupClassification calendarGroupClass)
+        => calendarGroupClass switch
+        {
+            CalendarGroupClassification.HeadOffice => "01GW8E3ENDPWX0FXW0788VR63J",
+            CalendarGroupClassification.MatsuzakaOffice => "01GW8Y1FA5XFHY027KZY4WX6KW",
+            _ => throw new OwnCompanyCalendarAggregationException(
+                $"引数calendarGroupNameに{calendarGroupClass}が渡されました")
+        };
+
     /// <summary>
     /// カレンダーグループID
     /// </summary>

@@ -33,7 +33,7 @@ namespace Wada.Data.OrderManagement.Tests
             // given
             // when
             IEmployeeRepository employeeRepository = new EmployeeRepository(_configuration!);
-            var allTask  =employeeRepository.FindAllAsync();
+            var allTask = employeeRepository.FindAllAsync();
             var numberTask = employeeRepository.FindByEmployeeNumberAsync(4001u);
             await Task.WhenAll(allTask, numberTask);
             var empAll = allTask.Result;

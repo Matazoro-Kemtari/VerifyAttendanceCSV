@@ -61,11 +61,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.StoreSelectedXlsxDirec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.StoreApplicationConfigurationTests", "Wada.StoreApplicationConfigurationTests\Wada.StoreApplicationConfigurationTests.csproj", "{22CD08DE-C757-4C32-A690-63B919CC57FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.Data.OrderManagement", "Wada.Data.OrderManagement\Wada.Data.OrderManagement.csproj", "{ECC2ACAF-B9F6-4445-93F2-8D49C6EAE3DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.Data.OrderManagement", "Wada.Data.OrderManagement\Wada.Data.OrderManagement.csproj", "{ECC2ACAF-B9F6-4445-93F2-8D49C6EAE3DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.Data.DesignDepartmentDataBase", "Wada.Data.DesignDepartmentDataBase\Wada.Data.DesignDepartmentDataBase.csproj", "{4AAD7ABE-FAF0-4D85-9503-C74F226F5C0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.Data.DesignDepartmentDataBase", "Wada.Data.DesignDepartmentDataBase\Wada.Data.DesignDepartmentDataBase.csproj", "{4AAD7ABE-FAF0-4D85-9503-C74F226F5C0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.Data.OrderManagementTests", "Wada.Data.OrderManagementTests\Wada.Data.OrderManagementTests.csproj", "{41770570-0B26-4FE1-8776-6133610EA49B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wada.Data.OrderManagementTests", "Wada.Data.OrderManagementTests\Wada.Data.OrderManagementTests.csproj", "{41770570-0B26-4FE1-8776-6133610EA49B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wada.Data.DesignDepartmentDataBaseTests", "Wada.Data.DesignDepartmentDataBaseTests\Wada.Data.DesignDepartmentDataBaseTests.csproj", "{A5BC3633-981C-4442-9EED-F90564C8D64E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -181,6 +183,10 @@ Global
 		{41770570-0B26-4FE1-8776-6133610EA49B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41770570-0B26-4FE1-8776-6133610EA49B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41770570-0B26-4FE1-8776-6133610EA49B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5BC3633-981C-4442-9EED-F90564C8D64E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5BC3633-981C-4442-9EED-F90564C8D64E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5BC3633-981C-4442-9EED-F90564C8D64E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5BC3633-981C-4442-9EED-F90564C8D64E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -212,6 +218,7 @@ Global
 		{ECC2ACAF-B9F6-4445-93F2-8D49C6EAE3DE} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 		{4AAD7ABE-FAF0-4D85-9503-C74F226F5C0C} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 		{41770570-0B26-4FE1-8776-6133610EA49B} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
+		{A5BC3633-981C-4442-9EED-F90564C8D64E} = {CA9E2383-0E27-4018-9723-183AC5FC2F18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6BBC0BD-A5F6-44C4-B7A6-7FAD6289890C}

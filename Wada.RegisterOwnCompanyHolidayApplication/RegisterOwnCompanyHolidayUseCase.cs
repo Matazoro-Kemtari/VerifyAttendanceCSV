@@ -39,11 +39,9 @@ public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCas
     {
         try
         {
-            var calendarGroupId = await _ownCompanyHolidayRepository.FindCalendarGroupIdAsync((CalendarGroupClassification)calendarGroupClass);
-
             // データファイルを読み込む
             using var stream = await _fileStreamOpener.OpenAsync(filePath);
-            var additionalEmployeeNumbers = await _ownCompanyHolidayListReader.ReadAllAsync(stream, calendarGroupId);
+            var additionalEmployeeNumbers = await _ownCompanyHolidayListReader.ReadAllAsync(stream, OwnCompanyHoliday.GetCalendarGroupId((CalendarGroupClassification)calendarGroupClass));
 
             // 読み込んだ最小日の月初と最大日の月末の範囲で削除する
             var _minDate = additionalEmployeeNumbers.Min(x => x.HolidayDate);
@@ -56,7 +54,7 @@ public class RegisterOwnCompanyHolidayUseCase : IRegisterOwnCompanyHolidayUseCas
             try
             {
                 // 消すべきレコードを求める
-                var _deletableHolidays = await _ownCompanyHolidayRepository.FindByAfterDateAsync(calendarGroupId, deletableMinDate);
+                var _deletableHolidays = await _ownCompanyHolidayRepository.FindByAfterDateAsync(OwnCompanyHoliday.GetCalendarGroupId((CalendarGroupClassification)calendarGroupClass), deletableMinDate);
                 deletableHolidays = _deletableHolidays.Where(x => x.HolidayDate <= deletableMaxDate);
             }
             catch (OwnCompanyCalendarAggregationException)
